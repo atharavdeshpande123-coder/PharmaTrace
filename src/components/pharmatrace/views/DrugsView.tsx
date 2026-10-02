@@ -145,8 +145,12 @@ export function DrugsView() {
 
 function DrugCard({ drug, onClick }: { drug: DrugListItem; onClick: () => void }) {
   return (
-    <button onClick={onClick} className="text-left w-full">
-      <GlassCard className="hover:-translate-y-0.5 transition-transform h-full">
+    <button onClick={onClick} className="text-left w-full group/card relative">
+      {/* Shimmer sweep on hover */}
+      <span className="pointer-events-none absolute inset-0 rounded-xl overflow-hidden opacity-0 group-hover/card:opacity-100 transition-opacity">
+        <span className="absolute -inset-y-4 -left-1/3 w-1/3 bg-gradient-to-r from-transparent via-cyan-400/10 to-transparent skew-x-12 group-hover/card:translate-x-[300%] transition-transform duration-1000 ease-out" />
+      </span>
+      <GlassCard className="hover:-translate-y-0.5 transition-transform h-full relative">
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0">
             <div className="flex items-center gap-2">

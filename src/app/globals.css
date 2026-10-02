@@ -43,8 +43,44 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-/* PharmaTrace dark futuristic Web3 pharmaceutical theme — always dark */
+/* PharmaTrace Web3 pharmaceutical theme — light (default) */
 :root {
+  --radius: 0.75rem;
+  --background: oklch(0.98 0.005 240);
+  --foreground: oklch(0.15 0.02 265);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.15 0.02 265);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.15 0.02 265);
+  --primary: oklch(0.55 0.18 195);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.95 0.01 240);
+  --secondary-foreground: oklch(0.15 0.02 265);
+  --muted: oklch(0.96 0.005 240);
+  --muted-foreground: oklch(0.45 0.02 265);
+  --accent: oklch(0.55 0.2 290);
+  --accent-foreground: oklch(0.99 0 0);
+  --destructive: oklch(0.55 0.22 25);
+  --border: oklch(0.9 0.01 240 / 80%);
+  --input: oklch(0.95 0.005 240);
+  --ring: oklch(0.55 0.18 195);
+  --chart-1: oklch(0.55 0.18 195);
+  --chart-2: oklch(0.55 0.2 290);
+  --chart-3: oklch(0.6 0.18 155);
+  --chart-4: oklch(0.7 0.18 80);
+  --chart-5: oklch(0.55 0.22 25);
+  --sidebar: oklch(0.97 0.005 240);
+  --sidebar-foreground: oklch(0.15 0.02 265);
+  --sidebar-primary: oklch(0.55 0.18 195);
+  --sidebar-primary-foreground: oklch(0.99 0 0);
+  --sidebar-accent: oklch(0.95 0.005 240);
+  --sidebar-accent-foreground: oklch(0.15 0.02 265);
+  --sidebar-border: oklch(0.9 0.01 240 / 80%);
+  --sidebar-ring: oklch(0.55 0.18 195);
+}
+
+/* PharmaTrace Web3 pharmaceutical theme — dark (futuristic, default for app) */
+.dark {
   --radius: 0.75rem;
   --background: oklch(0.07 0.02 265);
   --foreground: oklch(0.96 0.01 240);
@@ -93,6 +129,13 @@
       radial-gradient(800px circle at 90% 8%, oklch(0.22 0.16 195 / 18%), transparent 45%),
       radial-gradient(900px circle at 50% 110%, oklch(0.22 0.16 260 / 14%), transparent 50%);
     background-attachment: fixed;
+  }
+  /* Light theme: softer background glows */
+  :root:not(.dark) body {
+    background-image:
+      radial-gradient(900px circle at 12% 10%, oklch(0.85 0.08 290 / 25%), transparent 45%),
+      radial-gradient(800px circle at 90% 8%, oklch(0.85 0.08 195 / 25%), transparent 45%),
+      radial-gradient(900px circle at 50% 110%, oklch(0.85 0.08 260 / 18%), transparent 50%);
   }
 }
 

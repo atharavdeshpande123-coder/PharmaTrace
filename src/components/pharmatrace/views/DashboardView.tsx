@@ -15,6 +15,7 @@ import {
 import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { ActivityFeed } from '../ActivityFeed'
+import { NetworkStatsWidget } from '../NetworkStatsWidget'
 
 interface DashboardData {
   stats: {
@@ -98,9 +99,11 @@ export function DashboardView() {
         subtitle="Your pharmaceutical supply chain is being monitored."
         actions={
           <div className="flex gap-2">
-            <Button size="sm" variant="outline" onClick={() => navigate('register-drug')}>
-              <Package className="h-4 w-4 mr-1.5" /> Register Drug
-            </Button>
+            {(user.role === 'MANUFACTURER' || user.role === 'ADMIN') && (
+              <Button size="sm" variant="outline" onClick={() => navigate('register-drug')}>
+                <Package className="h-4 w-4 mr-1.5" /> Register Drug
+              </Button>
+            )}
             <Button size="sm" onClick={() => navigate('verify')}>
               <ShieldCheck className="h-4 w-4 mr-1.5" /> Verify
             </Button>
@@ -140,7 +143,9 @@ export function DashboardView() {
         </div>
       )}
 
-      {/* Recent activity */}
+      {/* Network + Recent activity */}
+      <NetworkStatsWidget />
+
       <div className="grid gap-4 lg:grid-cols-3">
         <div className="lg:col-span-2">
           <ActivityFeed />

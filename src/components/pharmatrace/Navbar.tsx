@@ -19,9 +19,11 @@ import {
   LayoutDashboard, ScanLine, Truck, PackagePlus, Boxes,
   Activity, BarChart3, Info, LogOut, User, Bell, ChevronDown, ShieldCheck, Network,
 } from 'lucide-react'
+import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import { NotificationBell } from './NotificationBell'
 import { CommandPalette } from './CommandPalette'
+import { ThemeToggle } from './ThemeToggle'
 
 interface NavItem {
   route: RouteName
@@ -29,13 +31,14 @@ interface NavItem {
   icon: React.ReactNode
   authRequired?: boolean
   adminOnly?: boolean
+  manufacturerOnly?: boolean
 }
 
 const NAV: NavItem[] = [
   { route: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard className="h-4 w-4" />, authRequired: true },
   { route: 'verify', label: 'Verify Drug', icon: <ScanLine className="h-4 w-4" /> },
   { route: 'supply-chain', label: 'Supply Chain', icon: <Truck className="h-4 w-4" /> },
-  { route: 'register-drug', label: 'Register Drug', icon: <PackagePlus className="h-4 w-4" />, authRequired: true },
+  { route: 'register-drug', label: 'Register Drug', icon: <PackagePlus className="h-4 w-4" />, authRequired: true, manufacturerOnly: true },
   { route: 'drugs', label: 'Drugs', icon: <Boxes className="h-4 w-4" /> },
   { route: 'blockchain', label: 'Blockchain', icon: <Network className="h-4 w-4" /> },
   { route: 'transactions', label: 'Transactions', icon: <Activity className="h-4 w-4" /> },
@@ -51,6 +54,7 @@ export function Navbar() {
 
   const visibleNav = NAV.filter((n) => {
     if (n.adminOnly) return user?.role === 'ADMIN'
+    if (n.manufacturerOnly) return user?.role === 'MANUFACTURER' || user?.role === 'ADMIN'
     if (n.authRequired) return !!user
     return true
   })
@@ -83,6 +87,7 @@ export function Navbar() {
 
         <div className="flex items-center gap-2">
           <CommandPalette />
+          <ThemeToggle />
           {user && <NotificationBell />}
           {user ? (
             <DropdownMenu>
@@ -178,21 +183,31 @@ export function MobileTabBar() {
   ]
   const visible = tabs.filter((t) => !t.auth || user)
   return (
-    <nav className="lg:hidden fixed bottom-0 inset-x-0 z-40 border-t border-border/60 bg-background/95 backdrop-blur-xl">
+    <nav className="lg:hidden fixed bottom-0 inset-x-0 z-40 border-t border-border/60 bg-background/95 backdrop-blur-xl pb-[env(safe-area-inset-bottom)]">
       <div className="grid" style={{ gridTemplateColumns: `repeat(${visible.length}, minmax(0, 1fr))` }}>
-        {visible.map((t) => (
-          <button
-            key={t.route}
-            onClick={() => navigate(t.route)}
-            className={cn(
-              'flex flex-col items-center justify-center gap-0.5 py-2 text-[10px]',
-              route === t.route ? 'text-primary' : 'text-muted-foreground',
-            )}
-          >
-            {t.icon}
-            {t.label}
-          </button>
-        ))}
+        {visible.map((t) => {
+          const active = route === t.route
+          return (
+            <button
+              key={t.route}
+              onClick={() => navigate(t.route)}
+              className={cn(
+                'relative flex flex-col items-center justify-center gap-0.5 py-2 text-[10px] transition-colors',
+                active ? 'text-primary' : 'text-muted-foreground',
+              )}
+            >
+              {active && (
+                <motion.span
+                  layoutId="mobile-tab-indicator"
+                  className="absolute top-0 left-1/2 -translate-x-1/2 h-0.5 w-8 rounded-full bg-primary"
+                  transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                />
+              )}
+              <span className={cn('transition-transform', active && 'scale-110')}>{t.icon}</span>
+              {t.label}
+            </button>
+          )
+        })}
       </div>
     </nav>
   )

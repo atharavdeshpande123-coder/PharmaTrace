@@ -10,6 +10,7 @@ import {
   ArrowRight, Cpu, Lock, QrCode, Boxes as BoxesIcon,
 } from 'lucide-react'
 import { apiGet } from '@/lib/client/api'
+import { LandingActivityWidget } from '../LandingActivityWidget'
 
 interface Stats {
   registeredDrugs: number
@@ -116,6 +117,15 @@ export function LandingView() {
             text="Live charts of verifications, transfers, and on-chain transactions. Full immutable history."
           />
         </div>
+      </section>
+
+      {/* Live activity */}
+      <section className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="text-center mb-6">
+          <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight">Live on the ledger</h2>
+          <p className="mt-2 text-muted-foreground">Real transactions from the PharmaTrace blockchain.</p>
+        </div>
+        <LandingActivityWidget />
       </section>
 
       {/* Why blockchain */}

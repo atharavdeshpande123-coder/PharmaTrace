@@ -1,56 +1,90 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef } from 'react'
 
 /**
  * Custom cursor — a single white glowing dot that follows the mouse.
- * Hides the native cursor so there's only ONE pointer visible.
+ * Uses a direct DOM ref + requestAnimationFrame for buttery-smooth
+ * tracking with zero React re-renders. The native cursor is hidden.
  * Desktop only (disabled on touch devices).
  */
 export function CustomCursor() {
-  const [position, setPosition] = useState({ x: 0, y: 0 })
-  const [hovering, setHovering] = useState(false)
-  const [visible, setVisible] = useState(false)
+  const dotRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     // Disable on mobile/touch devices
     if (window.matchMedia('(hover: none)').matches) return
 
+    const dot = dotRef.current
+    if (!dot) return
+
+    let mouseX = 0
+    let mouseY = 0
+    let dotX = 0
+    let dotY = 0
+    let rafId = 0
+    let visible = false
+
+    const animate = () => {
+      // Lerp the dot toward the mouse for smooth trailing
+      dotX += (mouseX - dotX) * 0.35
+      dotY += (mouseY - dotY) * 0.35
+      dot.style.transform = `translate(${dotX}px, ${dotY}px) translate(-50%, -50%)`
+      rafId = requestAnimationFrame(animate)
+    }
+
     const move = (e: MouseEvent) => {
-      setPosition({ x: e.clientX, y: e.clientY })
-      setVisible(true)
+      mouseX = e.clientX
+      mouseY = e.clientY
+      if (!visible) {
+        visible = true
+        dot.style.opacity = '1'
+        dotX = mouseX
+        dotY = mouseY
+      }
       // Check if hovering interactive element
       const target = e.target as HTMLElement
       const interactive = target.closest('button, a, [role=button], input, textarea, select, label')
-      setHovering(!!interactive)
+      if (interactive) {
+        dot.style.width = '14px'
+        dot.style.height = '14px'
+        dot.style.boxShadow = '0 0 12px rgba(255,255,255,0.8), 0 0 24px rgba(34,211,238,0.4)'
+      } else {
+        dot.style.width = '10px'
+        dot.style.height = '10px'
+        dot.style.boxShadow = '0 0 8px rgba(255,255,255,0.6)'
+      }
     }
-    const leave = () => setVisible(false)
+
+    const leave = () => {
+      visible = false
+      dot.style.opacity = '0'
+    }
+
+    // Start animation loop
+    rafId = requestAnimationFrame(animate)
     document.addEventListener('mousemove', move)
     document.addEventListener('mouseleave', leave)
+
     return () => {
+      cancelAnimationFrame(rafId)
       document.removeEventListener('mousemove', move)
       document.removeEventListener('mouseleave', leave)
     }
   }, [])
 
-  if (!visible) return null
-
   return (
     <>
-      {/* Hide the native cursor on desktop */}
       <style>{`* { cursor: none !important; }`}</style>
-      {/* Single white cursor — a dot with a subtle glow */}
       <div
-        className="pointer-events-none fixed z-[9999] rounded-full transition-all duration-150 ease-out"
+        ref={dotRef}
+        className="pointer-events-none fixed top-0 left-0 z-[9999] rounded-full"
         style={{
-          left: position.x,
-          top: position.y,
-          width: hovering ? 14 : 10,
-          height: hovering ? 14 : 10,
-          transform: 'translate(-50%, -50%)',
+          width: '10px',
+          height: '10px',
           backgroundColor: '#ffffff',
-          boxShadow: hovering
-            ? '0 0 12px rgba(255, 255, 255, 0.8), 0 0 24px rgba(34, 211, 238, 0.4)'
-            : '0 0 8px rgba(255, 255, 255, 0.6)',
+          boxShadow: '0 0 8px rgba(255,255,255,0.6)',
+          opacity: '0',
+          willChange: 'transform',
         }}
       />
     </>

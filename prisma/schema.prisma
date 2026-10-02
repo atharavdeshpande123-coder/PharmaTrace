@@ -3,8 +3,12 @@
 
 generator client {
   provider = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
 }
 
+// For Vercel deployment:
+//   1. Set DATABASE_URL to your PostgreSQL connection string
+//   2. Change provider to "postgresql" below
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")

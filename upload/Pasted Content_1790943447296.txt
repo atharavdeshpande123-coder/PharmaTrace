@@ -1,0 +1,2078 @@
+I already have a project called:
+
+PHARMATRACE
+
+"Blockchain-Based Pharmaceutical Drug Authentication and Supply Chain Tracking System"
+
+I want you to add a FULLY FUNCTIONAL MetaMask/EVM wallet integration to the existing application.
+
+IMPORTANT:
+
+Do not create a fake "Connect Wallet" button.
+
+I need a real wallet connection using the browser's injected Ethereum provider, so that I can connect my actual MetaMask wallet and see my real wallet address on the website.
+
+The integration must work with a real EVM-compatible test network.
+
+Do NOT use real-money transactions for the academic demo.
+
+Use a testnet/development network.
+
+==================================================
+
+1. MAIN REQUIREMENT
+   ==================================================
+
+Add a prominent:
+
+CONNECT WALLET
+
+button to PharmaTrace.
+
+When clicked:
+
+1. Detect MetaMask/injected wallet.
+2. Request wallet connection.
+3. Open MetaMask.
+4. User approves connection.
+5. Retrieve actual wallet address.
+6. Retrieve current chain/network.
+7. Display connected wallet.
+8. Listen for account changes.
+9. Listen for network changes.
+10. Allow disconnect/reset from the website.
+11. Persist connection state appropriately.
+12. Never request the user's private key or seed phrase.
+
+Example:
+
+CONNECT WALLET
+
+After connection:
+
+0x71A...92F4
+
+Connected
+
+==================================================
+2. TECHNOLOGY
+=============
+
+Use:
+
+React
+TypeScript
+Vite
+
+For Ethereum/EVM interaction use:
+
+viem
+
+or:
+
+ethers.js
+
+Prefer:
+
+viem
+
+if compatible with the existing project.
+
+Do NOT implement wallet communication manually using unsafe custom code if the library provides the required functionality.
+
+==================================================
+3. META MASK DETECTION
+======================
+
+Detect:
+
+window.ethereum
+
+If MetaMask is not installed:
+
+Display:
+
+"MetaMask not detected."
+
+Button:
+
+"Install MetaMask"
+
+The button should open the official MetaMask website.
+
+Do not create a fake wallet.
+
+If multiple injected wallets are available:
+
+Use the appropriate EIP-1193 provider handling.
+
+==================================================
+4. CONNECT WALLET FLOW
+======================
+
+When user clicks:
+
+CONNECT WALLET
+
+show:
+
+CONNECTING WALLET...
+
+Then request:
+
+eth_requestAccounts
+
+After approval:
+
+retrieve:
+
+wallet address
+
+chain ID
+
+network
+
+connected state
+
+Then show:
+
+WALLET CONNECTED
+
+Example:
+
+┌───────────────────────────────┐
+│ 🟢 WALLET CONNECTED           │
+│                               │
+│ 0x71A8...92F4                 │
+│                               │
+│ Ethereum Sepolia              │
+└───────────────────────────────┘
+
+==================================================
+5. WALLET ADDRESS
+=================
+
+Display shortened address:
+
+0x71A8...92F4
+
+But provide:
+
+COPY ADDRESS
+
+When clicked:
+
+Copy the FULL address to clipboard.
+
+Show:
+
+"Wallet address copied."
+
+Also provide:
+
+VIEW ON EXPLORER
+
+The explorer URL must be generated according to the currently selected network.
+
+==================================================
+6. WALLET DROPDOWN
+==================
+
+After connecting, replace:
+
+CONNECT WALLET
+
+with:
+
+wallet avatar/icon
+
+0x71A8...92F4
+
+▼
+
+Dropdown:
+
+Wallet Address
+Copy Address
+Network
+Chain ID
+View Explorer
+Disconnect
+
+==================================================
+7. DISCONNECT
+=============
+
+Implement:
+
+DISCONNECT WALLET
+
+Important:
+
+MetaMask itself does not necessarily expose a universal programmatic "disconnect" equivalent to disconnecting the site permission.
+
+Therefore:
+
+Disconnect should clear PharmaTrace's application connection state.
+
+Do not falsely claim that it revokes MetaMask permissions.
+
+Provide:
+
+"Disconnect from PharmaTrace"
+
+and reset the UI.
+
+==================================================
+8. ACCOUNT CHANGE
+=================
+
+Listen for:
+
+accountsChanged
+
+If the user changes MetaMask account:
+
+Automatically update:
+
+wallet address
+short address
+wallet avatar
+role/identity display
+
+Do not require page refresh.
+
+Example:
+
+Before:
+
+0x71A8...92F4
+
+User changes MetaMask account.
+
+After:
+
+0x94C2...18B7
+
+==================================================
+9. NETWORK CHANGE
+=================
+
+Listen for:
+
+chainChanged
+
+When network changes:
+
+Automatically update network information.
+
+If the user is connected to an unsupported network:
+
+Display:
+
+UNSUPPORTED NETWORK
+
+and show:
+
+SWITCH NETWORK
+
+button.
+
+==================================================
+10. USE A SAFE TEST NETWORK
+===========================
+
+Configure the project for:
+
+Ethereum Sepolia
+
+Use:
+
+Chain ID:
+11155111
+
+Do not use Ethereum Mainnet for testing.
+
+Do not ask users to send real ETH.
+
+Do not create unnecessary real transactions.
+
+The project must be safe for an academic demonstration.
+
+==================================================
+11. NETWORK STATUS
+==================
+
+Display:
+
+NETWORK
+
+Ethereum Sepolia
+
+CHAIN ID
+
+11155111
+
+RPC STATUS
+
+CONNECTED
+
+WALLET
+
+CONNECTED
+
+BLOCKCHAIN
+
+ONLINE
+
+Use green status indicators when actually connected.
+
+Do not display ONLINE if the RPC request fails.
+
+==================================================
+12. WEB3 HEADER
+===============
+
+Modify the existing futuristic navigation.
+
+Current:
+
+PharmaTrace
+Home
+Verify
+Track
+Technology
+About
+
+Add on the right:
+
+CONNECT WALLET
+
+After connection:
+
+[Wallet icon] 0x71A8...92F4
+
+Make this visually similar to a premium Web3 application.
+
+Use:
+
+glassmorphism
+neon borders
+subtle glow
+animated connection indicator
+
+==================================================
+13. WALLET CONNECTION MODAL
+===========================
+
+When clicking CONNECT WALLET:
+
+Open a beautiful modal.
+
+Title:
+
+CONNECT YOUR WALLET
+
+Subtitle:
+
+"Connect your Web3 wallet to interact with the PharmaTrace blockchain environment."
+
+Wallet option:
+
+🦊 MetaMask
+
+"Connect using MetaMask"
+
+Button:
+
+CONNECT
+
+If MetaMask is unavailable:
+
+"MetaMask is not detected."
+
+Button:
+
+INSTALL METAMASK
+
+==================================================
+14. CONNECTION STATES
+=====================
+
+Implement these states:
+
+DISCONNECTED
+
+CONNECTING
+
+CONNECTED
+
+WRONG_NETWORK
+
+NO_WALLET
+
+ERROR
+
+Each must have its own UI.
+
+==================================================
+15. ERROR HANDLING
+==================
+
+Handle:
+
+User rejected connection.
+
+Display:
+
+"Wallet connection request was rejected."
+
+MetaMask unavailable:
+
+"MetaMask was not detected in this browser."
+
+Wrong network:
+
+"Please switch to Ethereum Sepolia."
+
+Provider unavailable:
+
+"Unable to connect to the blockchain network."
+
+Account changed:
+
+Automatically update.
+
+Network changed:
+
+Automatically update.
+
+Do not expose raw technical errors directly to normal users.
+
+==================================================
+16. WALLET CONTEXT
+==================
+
+Create:
+
+WalletProvider
+
+or:
+
+useWallet()
+
+Provide:
+
+address
+
+chainId
+
+isConnected
+
+isConnecting
+
+isCorrectNetwork
+
+connectWallet()
+
+disconnectWallet()
+
+switchNetwork()
+
+copyAddress()
+
+provider
+
+publicClient
+
+walletClient
+
+==================================================
+17. COMPONENT
+=============
+
+Create:
+
+WalletConnectButton.tsx
+
+Responsibilities:
+
+* Detect wallet
+* Connect
+* Display state
+* Open wallet modal
+* Handle errors
+* Show connected address
+* Disconnect application state
+
+==================================================
+18. WALLET SERVICE
+==================
+
+Create:
+
+walletService.ts
+
+Functions:
+
+detectWallet()
+
+connectWallet()
+
+getAccounts()
+
+getChainId()
+
+switchToSepolia()
+
+getBalance()
+
+disconnectWallet()
+
+shortenAddress()
+
+isValidAddress()
+
+==================================================
+19. NEVER REQUEST PRIVATE KEY
+=============================
+
+This is mandatory.
+
+The application must NEVER request:
+
+Private key
+
+Seed phrase
+
+Secret recovery phrase
+
+MetaMask password
+
+Any wallet credentials
+
+Only request:
+
+Public wallet address
+
+Network information
+
+Blockchain signatures when explicitly required.
+
+==================================================
+20. WALLET IDENTITY
+===================
+
+Use wallet addresses as blockchain identities.
+
+Example:
+
+Manufacturer:
+
+0x71A8...92F4
+
+Distributor:
+
+0x94C2...18B7
+
+Pharmacy:
+
+0x23F1...82AC
+
+Do not assume a wallet address represents a person.
+
+It represents a connected blockchain account.
+
+==================================================
+21. PHARMACEUTICAL BATCH REGISTRATION
+=====================================
+
+Modify the existing:
+
+REGISTER BATCH
+
+workflow.
+
+When a manufacturer is logged in and has connected their wallet:
+
+Display:
+
+WALLET:
+
+0x71A8...92F4
+
+Then register batch.
+
+Store:
+
+registeredByWallet
+
+Example:
+
+registeredByWallet:
+0x71A8...92F4
+
+Also store:
+
+registeredChainId:
+11155111
+
+registeredAt:
+timestamp
+
+==================================================
+22. BATCH OWNERSHIP
+===================
+
+Add:
+
+ownerWalletAddress
+
+to the batch model.
+
+Example:
+
+Batch:
+
+PT-2026-001
+
+Owner:
+
+0x71A8...92F4
+
+When transferred:
+
+previousOwner:
+
+0x71A8...92F4
+
+newOwner:
+
+0x94C2...18B7
+
+Record this in the supply-chain event.
+
+==================================================
+23. SUPPLY CHAIN + WALLET
+=========================
+
+Modify supply-chain events.
+
+Every event should optionally contain:
+
+actorRole
+
+actorName
+
+walletAddress
+
+transactionHash
+
+timestamp
+
+location
+
+eventType
+
+Example:
+
+MANUFACTURER
+
+Wallet:
+0x71A8...92F4
+
+Event:
+BATCH_CREATED
+
+Transaction:
+0xabc123...
+
+Then:
+
+DISTRIBUTOR
+
+Wallet:
+0x94C2...18B7
+
+Event:
+BATCH_RECEIVED
+
+==================================================
+24. BLOCKCHAIN TRANSACTION
+==========================
+
+For actual blockchain interactions:
+
+Use a testnet smart contract.
+
+Do not pretend a transaction is on-chain if it wasn't submitted.
+
+When a transaction is submitted:
+
+Show:
+
+TRANSACTION SUBMITTED
+
+Then:
+
+WAITING FOR CONFIRMATION...
+
+Then:
+
+TRANSACTION CONFIRMED
+
+Display:
+
+Transaction Hash
+
+Example:
+
+0x8f72a91...
+
+Block Number
+
+Gas Used
+
+Network
+
+==================================================
+25. SMART CONTRACT
+==================
+
+Create an EVM-compatible Solidity smart contract for the academic prototype.
+
+Contract:
+
+PharmaTraceRegistry
+
+The contract should support:
+
+registerBatch()
+
+getBatch()
+
+verifyBatch()
+
+transferBatch()
+
+recordSupplyChainEvent()
+
+getBatchHistory()
+
+==================================================
+26. SOLIDITY DATA MODEL
+=======================
+
+Create a Batch struct conceptually containing:
+
+batchId
+
+verificationId
+
+drugName
+
+manufacturer
+
+manufacturingDate
+
+expiryDate
+
+currentOwner
+
+currentLocation
+
+status
+
+createdAt
+
+exists
+
+Do NOT store unnecessarily large pharmaceutical information on-chain.
+
+Use off-chain database storage for large/public metadata.
+
+Store cryptographic identifiers/hashes and important verification fields on-chain.
+
+==================================================
+27. WALLET AS CONTRACT CALLER
+=============================
+
+For:
+
+registerBatch()
+
+the connected wallet should be:
+
+msg.sender
+
+Therefore:
+
+manufacturerWallet = msg.sender
+
+For:
+
+transferBatch()
+
+the current authorized wallet must perform the operation.
+
+Use Solidity authorization:
+
+require(msg.sender == batch.currentOwner)
+
+or an appropriate role system.
+
+==================================================
+28. TRANSACTION SIGNING
+=======================
+
+When an operation requires blockchain modification:
+
+The website should call MetaMask.
+
+Example:
+
+REGISTER BATCH
+
+↓
+
+Prepare contract transaction
+
+↓
+
+MetaMask opens
+
+↓
+
+User reviews transaction
+
+↓
+
+User confirms
+
+↓
+
+Transaction submitted
+
+↓
+
+Wait for confirmation
+
+↓
+
+Show transaction hash
+
+Do not sign automatically.
+
+Do not perform transactions without user confirmation.
+
+==================================================
+29. READ-ONLY OPERATIONS
+========================
+
+Reading blockchain data should NOT require MetaMask approval.
+
+Use a public RPC/client for:
+
+getBatch()
+
+verifyBatch()
+
+getBatchHistory()
+
+get latest block
+
+etc.
+
+Only write operations require wallet signing.
+
+==================================================
+30. WALLET BALANCE
+==================
+
+In the wallet dropdown optionally display:
+
+ETH BALANCE
+
+Example:
+
+0.1532 ETH
+
+On Sepolia this is test ETH.
+
+Label clearly:
+
+TESTNET ETH
+
+Do not represent testnet ETH as real monetary value.
+
+==================================================
+31. EXPLORER
+============
+
+Add:
+
+VIEW ON BLOCK EXPLORER
+
+For Sepolia use the appropriate Sepolia explorer URL.
+
+For wallet:
+
+https://sepolia.etherscan.io/address/<ADDRESS>
+
+For transaction:
+
+https://sepolia.etherscan.io/tx/<TX_HASH>
+
+Do not hard-code Mainnet explorer links when using Sepolia.
+
+==================================================
+32. BLOCKCHAIN DASHBOARD
+========================
+
+Create:
+
+/wallet
+
+or:
+
+/web3
+
+page.
+
+Display:
+
+Connected Wallet
+
+Wallet Address
+
+Network
+
+Chain ID
+
+Test ETH Balance
+
+Registered Batches
+
+Owned Batches
+
+Transactions
+
+Blockchain Activity
+
+==================================================
+33. WALLET PROFILE CARD
+=======================
+
+Create a futuristic card:
+
+WALLET IDENTITY
+
+🟢 CONNECTED
+
+0x71A8...92F4
+
+Ethereum Sepolia
+
+Chain ID:
+11155111
+
+Test ETH:
+0.1532
+
+Registered Batches:
+4
+
+Supply Chain Events:
+12
+
+Use animated Web3 styling.
+
+==================================================
+34. WALLET + QR VERIFICATION
+============================
+
+IMPORTANT:
+
+QR verification must remain PUBLIC.
+
+A person scanning a pharmaceutical QR code should NOT need MetaMask.
+
+QR:
+
+PUBLIC USER
+↓
+PUBLIC VERIFICATION PAGE
+↓
+BATCH RECORD
+
+Wallet:
+
+MANUFACTURER / DISTRIBUTOR / PHARMACY
+↓
+CONNECT METAMASK
+↓
+BLOCKCHAIN ACTIONS
+
+This separation is mandatory.
+
+==================================================
+35. QR VERIFICATION + BLOCKCHAIN
+================================
+
+When someone scans QR:
+
+Show:
+
+REGISTERED DIGITAL RECORD VERIFIED
+
+Blockchain section:
+
+Blockchain Record:
+FOUND
+
+Transaction:
+0x...
+
+Block:
+...
+
+Network:
+Ethereum Sepolia / Hyperledger Fabric depending on configured architecture
+
+Wallet:
+
+Do NOT require wallet connection merely to read the record.
+
+==================================================
+36. WALLET VERIFICATION
+=======================
+
+For authorized supply-chain actions:
+
+Require connected wallet.
+
+Example:
+
+TRANSFER BATCH
+
+If no wallet:
+
+"Connect wallet to transfer this batch."
+
+If wallet connected:
+
+Check whether connected address owns the batch.
+
+If not owner:
+
+"Connected wallet is not authorized to transfer this batch."
+
+==================================================
+37. ROLE + WALLET
+=================
+
+Support:
+
+MANUFACTURER
+DISTRIBUTOR
+WHOLESALER
+PHARMACY
+ADMIN
+
+Map authorized demo wallets to roles through backend/admin configuration.
+
+Do NOT infer a person's identity from their wallet.
+
+Example configuration:
+
+Manufacturer wallet:
+
+0x...
+
+Distributor wallet:
+
+0x...
+
+These are demo addresses configured by the administrator.
+
+==================================================
+38. ADMIN WALLET MANAGEMENT
+===========================
+
+Create:
+
+/admin/wallets
+
+Display:
+
+Wallet Address
+Role
+Status
+Registered Date
+Last Activity
+
+Allow admin to assign:
+
+Manufacturer
+Distributor
+Wholesaler
+Pharmacy
+
+Do not expose private keys.
+
+==================================================
+39. WALLET CONNECTION PERSISTENCE
+=================================
+
+After connection:
+
+Persist only safe information such as:
+
+connected state
+wallet address
+selected network
+
+Do not store:
+
+private keys
+seed phrase
+sensitive wallet credentials
+
+On page reload:
+
+Check current provider state.
+
+If still authorized:
+
+restore connected UI.
+
+==================================================
+40. ACCOUNT CHANGE
+==================
+
+If MetaMask changes from:
+
+0xAAAA...1111
+
+to:
+
+0xBBBB...2222
+
+Immediately:
+
+update UI
+reload wallet-dependent data
+recalculate permissions
+refresh owned batches
+
+If the previous wallet was authorized to perform an operation:
+
+DO NOT continue using its permissions.
+
+==================================================
+41. NETWORK CHANGE
+==================
+
+If user changes from:
+
+Sepolia
+
+to:
+
+Ethereum Mainnet
+
+show:
+
+WRONG NETWORK
+
+"PharmaTrace currently supports Ethereum Sepolia for this demonstration."
+
+Button:
+
+SWITCH TO SEPOLIA
+
+When clicked:
+
+Request MetaMask network switch.
+
+If Sepolia is not configured:
+
+Request adding the network using wallet_addEthereumChain ONLY when necessary and with correct network configuration.
+
+Never silently switch networks.
+
+==================================================
+42. WALLET SECURITY
+===================
+
+Implement:
+
+EIP-1193 provider handling
+
+safe RPC calls
+
+network validation
+
+address validation
+
+transaction confirmation handling
+
+revert/error handling
+
+user rejection handling
+
+Do not blindly trust frontend wallet state.
+
+Backend should validate important authorization conditions.
+
+==================================================
+43. BACKEND WALLET VERIFICATION
+===============================
+
+For sensitive operations, backend should not trust:
+
+walletAddress
+
+provided by frontend alone.
+
+Implement wallet signature verification.
+
+For example:
+
+User requests an action.
+
+Backend sends a nonce.
+
+User signs:
+
+"PharmaTrace authentication nonce: XXXXX"
+
+Backend verifies the signature.
+
+Then creates authenticated wallet session.
+
+Do NOT ask the user to sign arbitrary unclear messages.
+
+Clearly explain:
+
+"Sign this message to prove ownership of your wallet. This does not send a blockchain transaction."
+
+==================================================
+44. NONCE SYSTEM
+================
+
+Create:
+
+POST /api/wallet/nonce
+
+Generate a random nonce.
+
+Frontend requests nonce.
+
+Wallet signs the message.
+
+Frontend sends signature to:
+
+POST /api/wallet/verify-signature
+
+Backend verifies:
+
+address
+signature
+nonce
+
+Then creates a secure session.
+
+Prevent:
+
+replay attacks
+
+by marking nonces as used and giving them an expiration time.
+
+==================================================
+45. SIGNATURE MESSAGE
+=====================
+
+Use a clear message:
+
+"PharmaTrace Wallet Authentication
+
+This signature proves that you control this wallet.
+
+This action does not send a transaction and does not cost gas.
+
+Nonce: XXXXX
+
+Issued At: XXXXX"
+
+The user must see what they are signing.
+
+==================================================
+46. SMART CONTRACT NETWORK
+==========================
+
+Use Ethereum Sepolia for the EVM wallet demonstration.
+
+Contract configuration:
+
+VITE_CONTRACT_ADDRESS
+
+Backend:
+
+CONTRACT_ADDRESS
+
+CHAIN_ID=11155111
+
+RPC_URL
+
+Never hard-code private RPC credentials in frontend.
+
+==================================================
+47. CONTRACT ABI
+================
+
+Generate/store the contract ABI.
+
+Frontend should use ABI for:
+
+registerBatch
+getBatch
+verifyBatch
+transferBatch
+recordSupplyChainEvent
+
+Use typed contract interactions where possible.
+
+==================================================
+48. DEPLOYMENT
+==============
+
+Provide deployment scripts.
+
+Example:
+
+npm run compile
+
+npm run deploy:sepolia
+
+npm run verify:contract
+
+The deployment process must output:
+
+Contract Address
+
+Network
+
+Chain ID
+
+Explorer URL
+
+Save contract address into environment variables.
+
+==================================================
+49. ENVIRONMENT VARIABLES
+=========================
+
+Create:
+
+.env.example
+
+Frontend:
+
+VITE_PUBLIC_APP_URL=
+VITE_CHAIN_ID=11155111
+VITE_CONTRACT_ADDRESS=
+VITE_NETWORK_NAME=Ethereum Sepolia
+
+Backend:
+
+DATABASE_URL=
+RPC_URL=
+CONTRACT_ADDRESS=
+CHAIN_ID=11155111
+JWT_SECRET=
+WALLET_AUTH_SECRET=
+
+Never put:
+
+PRIVATE_KEY
+
+into the frontend environment.
+
+==================================================
+50. PRIVATE KEY RULE
+====================
+
+If deployment requires a deployer private key:
+
+It must exist ONLY in secure deployment environment.
+
+Never commit it.
+
+Never put it in:
+
+React code
+Vite public variables
+GitHub
+README
+frontend .env
+
+Add to:
+
+.gitignore
+
+.env
+.env.*
+!.env.example
+
+==================================================
+51. UI WALLET ANIMATION
+=======================
+
+Keep the futuristic PharmaTrace Web3 style.
+
+Connect button:
+
+CONNECT WALLET
+
+On hover:
+
+glowing border
+small blockchain particles
+
+During connection:
+
+CONNECTING...
+
+Animated node:
+
+PHARMATRACE
+↓
+META MASK
+↓
+EVM NETWORK
+
+After connection:
+
+🟢 WALLET CONNECTED
+
+Animate a pulse around wallet icon.
+
+==================================================
+52. WEB3 NETWORK VISUALIZATION
+==============================
+
+Create a small visual:
+
+PHARMATRACE
+
+```
+    ↓
+```
+
+WALLET
+
+```
+    ↓
+```
+
+SMART CONTRACT
+
+```
+    ↓
+```
+
+BLOCKCHAIN
+
+Animate data packets.
+
+When transaction is submitted:
+
+packet moves from:
+
+WALLET
+
+to:
+
+SMART CONTRACT
+
+then:
+
+BLOCK
+
+then:
+
+CONFIRMED
+
+==================================================
+53. TRANSACTION MODAL
+=====================
+
+When a blockchain transaction is initiated:
+
+Show:
+
+CONFIRM BLOCKCHAIN TRANSACTION
+
+Operation:
+Register Pharmaceutical Batch
+
+Network:
+Ethereum Sepolia
+
+Wallet:
+0x71A8...92F4
+
+Estimated Gas:
+...
+
+Then:
+
+OPEN METAMASK
+
+After confirmation:
+
+TRANSACTION SUBMITTED
+
+Transaction Hash:
+0x...
+
+Then:
+
+TRANSACTION CONFIRMED
+
+Block:
+...
+
+Button:
+
+VIEW ON EXPLORER
+
+==================================================
+54. FAILED TRANSACTION
+======================
+
+If user rejects:
+
+TRANSACTION REJECTED
+
+"No blockchain transaction was submitted."
+
+If transaction reverts:
+
+TRANSACTION FAILED
+
+Show understandable reason.
+
+Do not display:
+
+SUCCESS
+
+when transaction failed.
+
+==================================================
+55. BATCH REGISTRATION WITH METAMASK
+====================================
+
+Complete workflow:
+
+Manufacturer logs in.
+
+↓
+
+Connect MetaMask.
+
+↓
+
+Wallet connected:
+
+0x71A8...92F4
+
+↓
+
+Fill batch form.
+
+↓
+
+Click:
+
+REGISTER ON BLOCKCHAIN
+
+↓
+
+Backend validates data.
+
+↓
+
+Frontend prepares smart contract call.
+
+↓
+
+MetaMask opens.
+
+↓
+
+User confirms.
+
+↓
+
+Transaction submitted.
+
+↓
+
+Wait for confirmation.
+
+↓
+
+Blockchain record created.
+
+↓
+
+Database stores:
+
+transactionHash
+blockNumber
+walletAddress
+timestamp
+
+↓
+
+Generate QR.
+
+==================================================
+56. TRANSFER BATCH WITH METAMASK
+================================
+
+Manufacturer:
+
+Connect wallet.
+
+Select batch.
+
+Click:
+
+TRANSFER BATCH
+
+Enter recipient wallet.
+
+Example:
+
+0x94C2...18B7
+
+Show:
+
+Current Owner:
+0x71A8...92F4
+
+New Owner:
+0x94C2...18B7
+
+MetaMask confirmation.
+
+After transaction:
+
+Blockchain updated.
+
+Database updated.
+
+Supply-chain event created.
+
+QR verification now shows:
+
+Current Owner:
+0x94C2...18B7
+
+==================================================
+57. WALLET VALIDATION
+=====================
+
+Validate Ethereum addresses using a proper EVM address utility.
+
+Reject:
+
+invalid addresses
+
+malformed addresses
+
+zero address where inappropriate
+
+Display:
+
+INVALID WALLET ADDRESS
+
+Do not submit invalid transactions.
+
+==================================================
+58. QR + WALLET RELATIONSHIP
+============================
+
+A QR record can show:
+
+Registered By Wallet:
+0x71A8...92F4
+
+Current Owner Wallet:
+0x94C2...18B7
+
+Transaction:
+0x...
+
+But a public user scanning the QR does NOT need a wallet.
+
+This is important for real-world usability.
+
+==================================================
+59. BLOCKCHAIN EXPLORER PAGE
+============================
+
+Create:
+
+/blockchain
+
+Display:
+
+Network:
+Ethereum Sepolia
+
+Contract:
+0x...
+
+Latest Block:
+...
+
+Registered Batches:
+...
+
+Transactions:
+...
+
+Allow clicking transaction:
+
+Open Sepolia explorer.
+
+==================================================
+60. WALLET ACTIVITY
+===================
+
+Create:
+
+/wallet/activity
+
+Show:
+
+Date
+Action
+Batch
+Transaction Hash
+Status
+Network
+
+Example:
+
+REGISTER_BATCH
+PT-2026-001
+0xABC...
+CONFIRMED
+
+TRANSFER_BATCH
+PT-2026-001
+0xDEF...
+CONFIRMED
+
+==================================================
+61. FULL DEMO FLOW
+==================
+
+Create a complete working demo.
+
+STEP 1:
+
+Open PharmaTrace.
+
+STEP 2:
+
+Click:
+
+CONNECT WALLET
+
+STEP 3:
+
+MetaMask opens.
+
+STEP 4:
+
+Connect wallet.
+
+STEP 5:
+
+Website displays actual wallet address.
+
+STEP 6:
+
+Switch to Ethereum Sepolia.
+
+STEP 7:
+
+Open:
+
+REGISTER BATCH
+
+STEP 8:
+
+Enter:
+
+Drug:
+Curevia-500
+
+Batch:
+PT-2026-001
+
+Manufacturing Date:
+2026-09-01
+
+Expiry:
+2028-09-01
+
+STEP 9:
+
+Click:
+
+REGISTER ON BLOCKCHAIN
+
+STEP 10:
+
+MetaMask opens.
+
+STEP 11:
+
+User confirms.
+
+STEP 12:
+
+Wait for confirmation.
+
+STEP 13:
+
+Display:
+
+BLOCKCHAIN TRANSACTION CONFIRMED
+
+STEP 14:
+
+Show actual transaction hash.
+
+STEP 15:
+
+Generate QR.
+
+STEP 16:
+
+QR contains:
+
+https://YOUR-DOMAIN.com/verify/PTR-2026-7A82-X91K
+
+STEP 17:
+
+Scan QR from another phone.
+
+STEP 18:
+
+Public verification page opens.
+
+STEP 19:
+
+Display batch.
+
+STEP 20:
+
+Display blockchain transaction.
+
+STEP 21:
+
+Display wallet that registered the batch.
+
+STEP 22:
+
+Display supply-chain history.
+
+==================================================
+62. DO NOT BREAK EXISTING QR SYSTEM
+===================================
+
+The MetaMask integration must NOT break:
+
+QR generation
+QR scanning
+public verification
+batch tracking
+supply-chain timeline
+
+Both systems must work independently.
+
+PUBLIC:
+
+QR → verification
+
+WEB3 USER:
+
+MetaMask → blockchain actions
+
+==================================================
+63. TESTING
+===========
+
+Create tests for:
+
+MetaMask detection
+
+Wallet connection
+
+Account switching
+
+Network switching
+
+Address validation
+
+Signature authentication
+
+Batch registration
+
+Smart contract call
+
+Transaction confirmation
+
+Transaction rejection
+
+Transfer authorization
+
+QR generation
+
+Public verification
+
+Blockchain verification
+
+==================================================
+64. README
+==========
+
+Update README with complete instructions:
+
+1. Install MetaMask.
+2. Create/use a wallet.
+3. Switch to Ethereum Sepolia.
+4. Obtain test ETH from an appropriate Sepolia faucet.
+5. Configure environment variables.
+6. Deploy smart contract.
+7. Start backend.
+8. Start frontend.
+9. Connect MetaMask.
+10. Register batch.
+11. Confirm transaction.
+12. Generate QR.
+13. Scan QR from another device.
+14. Verify blockchain record.
+
+IMPORTANT:
+
+Never ask users to provide their private key or seed phrase.
+
+==================================================
+65. FINAL SECURITY REQUIREMENT
+==============================
+
+The application must NEVER:
+
+request seed phrase
+
+request private key
+
+store private key in database
+
+store private key in frontend
+
+send transactions without MetaMask confirmation
+
+claim a transaction succeeded before confirmation
+
+claim a batch is blockchain-registered when transaction failed
+
+fake transaction hashes
+
+fake wallet addresses
+
+fake blockchain confirmations
+
+==================================================
+66. FINAL UI
+============
+
+The final navbar should look approximately like:
+
+┌────────────────────────────────────────────────────────────┐
+│ PHARMATRACE    Home Verify Track Technology       🟢 0x71A8...92F4 │
+└────────────────────────────────────────────────────────────┘
+
+Before connection:
+
+CONNECT WALLET
+
+After connection:
+
+🟢 0x71A8...92F4
+
+Ethereum Sepolia
+
+==================================================
+67. FINAL REQUIREMENT
+=====================
+
+Build the actual working integration.
+
+Do NOT provide only sample code.
+
+Do NOT create a simulated wallet.
+
+Do NOT create a fake MetaMask popup.
+
+Do NOT use hard-coded wallet addresses.
+
+Do NOT fake blockchain transactions.
+
+Use the user's actual MetaMask address.
+
+Use actual MetaMask confirmation for blockchain write operations.
+
+Use Ethereum Sepolia for the academic demonstration.
+
+Keep public QR verification accessible without MetaMask.
+
+Keep the existing futuristic Web3 pharmaceutical UI and animations.
+
+The final architecture must be:
+
+```
+                PHARMATRACE
+                     │
+      ┌──────────────┴──────────────┐
+      │                             │
+  PUBLIC USER                   WEB3 USER
+      │                             │
+   SCAN QR                     CONNECT METAMASK
+      │                             │
+  VERIFY PAGE                 WALLET ADDRESS
+      │                             │
+  BACKEND API                SMART CONTRACT
+      │                             │
+ DATABASE                    ETHEREUM SEPOLIA
+      │                             │
+ BLOCKCHAIN ←───────────────────────┘
+      │
+```
+
+SUPPLY CHAIN RECORD
+│
+VERIFICATION RESULT
+
+Build, test, and fix the complete implementation before finishing.
+
+BEGIN IMPLEMENTATION.

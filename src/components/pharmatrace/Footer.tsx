@@ -18,7 +18,7 @@ export function Footer() {
             <span className="font-semibold">PharmaTrace</span>
           </button>
           <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
-            Blockchain-powered pharmaceutical authentication & supply chain transparency. Academic prototype.
+            Verify. Trace. Trust. — Blockchain-powered pharmaceutical authentication & supply chain transparency. Academic prototype.
           </p>
           {/* Tech badges */}
           <div className="mt-3 flex flex-wrap gap-1">

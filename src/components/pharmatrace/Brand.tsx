@@ -51,7 +51,7 @@ export function BrandLockup({ className }: { className?: string }) {
           Pharma<span className="gradient-text">Trace</span>
         </div>
         <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-          Blockchain Pharma
+          Verify. Trace. Trust.
         </div>
       </div>
     </div>

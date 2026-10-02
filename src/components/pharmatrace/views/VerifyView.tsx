@@ -341,7 +341,7 @@ function ResultPanel({ result, onReset, user }: { result: VerifyResult; onReset:
         <motion.div initial={{ scale: 0.6, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', stiffness: 200 }}>
           {icon}
         </motion.div>
-        <h3 className="mt-2 text-xl font-bold">{r === 'AUTHENTIC' ? 'AUTHENTIC DRUG' : r === 'EXPIRED' ? 'EXPIRED DRUG' : r === 'FLAGGED' ? 'VERIFICATION FAILED / FLAGGED' : 'DRUG NOT VERIFIED'}</h3>
+        <h3 className="mt-2 text-xl font-bold">{r === 'AUTHENTIC' ? 'BLOCKCHAIN RECORD VERIFIED' : r === 'EXPIRED' ? 'EXPIRED BATCH RECORD' : r === 'FLAGGED' ? 'RECORD MISMATCH' : 'RECORD NOT FOUND'}</h3>
         {result.reason && <p className="mt-1 text-sm text-muted-foreground max-w-sm">{result.reason}</p>}
       </div>
 

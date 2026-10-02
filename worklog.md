@@ -444,3 +444,72 @@ Unresolved / next-phase recommendations:
 - Consider adding batch operations (e.g. bulk transfer, bulk flag) for admin.
 - Consider adding a drug comparison view (compare two batches side by side).
 - Consider adding a "Blockchain Mining Demo" that shows the proof-of-work process visually.
+
+---
+Task ID: CRON-6 (sixth 15-min web dev review)
+Agent: Z.ai Code (cron-triggered webDevReview)
+Task: Assess project status, perform QA via agent-browser, add new features (mining demo, drug comparison, split-screen register) and styling polish.
+
+Work Log:
+- Reviewed previous worklog (CRON-5) — PharmaTrace was stable with 3 new features (Reports, Network Graph, split-screen login).
+- Performed comprehensive QA via agent-browser:
+  - **Analytics page**: All 12 Recharts chart elements render (Area, Line, Pie, Bar x2 + legends). No console errors.
+  - **BlockDetail**: Clicked block #54 from Blockchain explorer → detail page renders with Block Details (Hash, Previous Hash, Nonce, Merkle Root), Transactions list, all content present.
+  - **Register validation**: Empty form submit → "Password must be at least 6 characters" toast appears.
+  - **Mobile viewport (390px)**: Top nav hidden (`display: none`), bottom tab bar visible (`display: block`). Responsive layout works.
+  - No bugs found. No console errors across all tested views.
+
+- Added 2 NEW FEATURES:
+  1. **Blockchain Mining Demo** — `src/components/pharmatrace/MiningDemoWidget.tsx` (on About page)
+     - Interactive proof-of-work visualization that mines in the browser using the Web Crypto API (real SHA-256).
+     - User can edit: Block Data (what gets hashed), Difficulty (1-5 leading zeros), Mining Speed (1-200 attempts per tick).
+     - Live displays: Current Hash (updates each tick), Attempts count, Nonce count, Status (IDLE/MINING…/MINED).
+     - Recent Attempts history (last 8 hashes with nonce + truncated hash + green checkmark if valid).
+     - Start Mining / Stop Mining / Reset buttons.
+     - On success: hash turns green, "Block mined!" message, toast notification with nonce + attempt count.
+     - Educational explanation panel explaining how proof-of-work works.
+     - **Verified**: Clicked "Start Mining" at difficulty 3 → mined successfully after ~4 seconds → status changed to "MINED" → "Mine Again" button appeared.
+
+  2. **Drug Comparison View** — `src/components/pharmatrace/views/CompareDrugsView.tsx` + new `compare-drugs` route
+     - Side-by-side comparison of two drug batches.
+     - Two dropdown selectors (Batch A, Batch B) populated from all registered drugs.
+     - 3-column comparison table: Field name | Batch A value | Batch B value.
+     - 15 fields compared: Drug Name, Generic Name, Manufacturer, Batch Number, Serial Number, Category, Dosage Form, Quantity, Mfg Date, Expiry Date, Storage, Mfg Location, Current Location, Mfg Organization, Current Owner.
+     - Additional blockchain rows: Block #, Supply Events count, Verifications count.
+     - Different fields highlighted with subtle amber background.
+     - Comparison Summary card: counts of identical vs different fields.
+     - Empty state when no batches selected.
+     - Accessible via: Drugs page "Compare" button, Command Palette "Compare Drugs" entry.
+     - **Verified**: Navigated to Compare page from Drugs → "Compare Drug Batches" heading, 2 selectors, empty state showing.
+
+- Styling polish:
+  - **Split-Screen Register Page** — redesigned `RegisterView.tsx` to match the Login split-screen design.
+    - Left panel: BrandMark logo, "Join the network." heading, interactive role selector cards (5 roles with color dots + descriptions). Clicking a role card on the left updates the form's role on the right.
+    - Right panel: GlassCard form with User/Mail/Lock/Building2/MapPin icons in inputs, password + confirm fields, role dropdown, organization + location inputs.
+    - Mobile: single column with BrandLockup at top.
+    - **Verified**: renders with "Create your PharmaTrace account" (form) and "Join the network." (branded panel) headings. Role cards interactive.
+
+- Verification:
+  - `bun run lint` — clean (0 errors, 0 warnings).
+  - agent-browser end-to-end: all features tested and working.
+  - No console errors or hydration warnings.
+  - Mining Demo: mined successfully at difficulty 3, status changed to MINED, Mine Again button appeared.
+  - Compare Drugs: page renders with 2 selectors, Batch A/B labels, empty state.
+  - Register split-screen: both panels render, role cards interactive.
+  - Dev server stable throughout testing.
+
+Stage Summary:
+- PharmaTrace now has 20 views (added CompareDrugs), an interactive mining demo, and a premium split-screen register page.
+- 2 new features added (Mining Demo, Drug Comparison).
+- Styling polish: split-screen Register redesign with interactive role selector.
+- All demo flows work end-to-end. Lint clean. No runtime errors.
+- The cron-triggered QA process continues to drive meaningful improvements each round.
+
+Unresolved / next-phase recommendations:
+- Consider adding WebSocket-based real-time updates (currently polls every 15-20s).
+- Consider adding email notification integration (currently in-app only).
+- Mobile camera permission flow could be improved with a clearer permission request UI.
+- Consider adding a "Search Results" page for the Command Palette with full-text search.
+- Consider adding batch operations (e.g. bulk transfer, bulk flag) for admin.
+- Consider adding a drug lineage/family tree view (show all batches from same manufacturer).
+- Consider adding a "Blockchain Difficulty Adjustment" simulator showing how block time changes with difficulty.

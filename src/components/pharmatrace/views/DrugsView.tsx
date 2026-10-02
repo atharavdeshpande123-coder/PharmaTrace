@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { apiGet } from '@/lib/client/api'
 import { fmtDate } from '@/lib/client/format'
-import { Boxes, Search, PackagePlus, QrCode, ArrowRight, Plus, Download } from 'lucide-react'
+import { Boxes, Search, PackagePlus, QrCode, ArrowRight, Plus, Download, GitCompare } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { exportToCsv } from '@/lib/client/csv'
 import { FavoriteButton } from '../FavoriteButton'
@@ -83,6 +83,9 @@ export function DrugsView() {
               { key: 'owner', label: 'Current Owner' },
             ])} disabled={drugs.length === 0}>
               <Download className="h-4 w-4 mr-1.5" /> Export CSV
+            </Button>
+            <Button variant="outline" size="sm" onClick={() => navigate('compare-drugs')}>
+              <GitCompare className="h-4 w-4 mr-1.5" /> Compare
             </Button>
             {(user?.role === 'MANUFACTURER' || user?.role === 'ADMIN') && (
               <Button size="sm" onClick={() => navigate('register-drug')}>

@@ -101,18 +101,21 @@ export function PublicVerifyClient({ verificationId }: { verificationId: string 
     let cancelled = false
 
     const run = async () => {
-      // Animate verification steps
+      // Start the API call IMMEDIATELY — don't wait for animation
+      const fetchPromise = fetch(`/api/public/verify/${encodeURIComponent(verificationId)}`, {
+        cache: 'no-store',
+      }).then(r => r.json()).catch(e => { throw e }) as Promise<VerifyResponse>
+
+      // Animate steps quickly (120ms each) WHILE the fetch is in progress
+      // Total animation: 7 steps × 120ms = 840ms (vs old 7 × 400ms = 2800ms)
       for (let i = 0; i < VERIFICATION_STEPS.length; i++) {
         if (cancelled) return
         setStep(i)
-        await new Promise((r) => setTimeout(r, 400))
+        await new Promise((r) => setTimeout(r, 120))
       }
 
       try {
-        const res = await fetch(`/api/public/verify/${encodeURIComponent(verificationId)}`, {
-          cache: 'no-store',
-        })
-        const json: VerifyResponse = await res.json()
+        const json = await fetchPromise
         if (!cancelled) {
           setData(json)
           setLoading(false)

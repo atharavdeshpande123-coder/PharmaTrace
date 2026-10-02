@@ -133,28 +133,6 @@ export function LoginView() {
             </button>
           </div>
         </GlassCard>
-
-        <div className="mt-5 max-w-md mx-auto w-full">
-          <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground mb-2 text-center">Demo Accounts (password: demo1234)</p>
-          <div className="grid gap-1.5">
-            {DEMO_ACCOUNTS.map((a, i) => (
-              <motion.button
-                key={a.email}
-                initial={{ opacity: 0, y: 4 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 + i * 0.05 }}
-                onClick={() => { setEmail(a.email); setPassword('demo1234') }}
-                className="flex items-center justify-between rounded-lg border border-border/60 bg-muted/40 px-3 py-1.5 text-xs hover:bg-muted transition-colors group"
-              >
-                <span className="flex items-center gap-2">
-                  <span className="h-2 w-2 rounded-full" style={{ backgroundColor: a.color }} />
-                  <span className="font-mono">{a.email}</span>
-                </span>
-                <span className="text-muted-foreground group-hover:text-foreground transition-colors">{a.role}</span>
-              </motion.button>
-            ))}
-          </div>
-        </div>
       </motion.div>
     </div>
   )

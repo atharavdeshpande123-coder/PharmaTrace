@@ -166,8 +166,21 @@ export const useWallet = create<WalletState>((set, get) => ({
     set({ status: 'CONNECTING', error: null })
 
     try {
-      // Request account access
-      const accounts = await provider.request({ method: 'eth_requestAccounts' }) as string[]
+      // First try silent check — if MetaMask already has this site authorized,
+      // it returns accounts WITHOUT showing a popup
+      let accounts: string[] = []
+      try {
+        const silentAccounts = await provider.request({ method: 'eth_accounts' }) as string[]
+        if (silentAccounts && silentAccounts.length > 0) {
+          accounts = silentAccounts
+        }
+      } catch { /* ignore silent check errors */ }
+
+      // If no accounts from silent check, request explicitly (shows popup)
+      if (accounts.length === 0) {
+        accounts = await provider.request({ method: 'eth_requestAccounts' }) as string[]
+      }
+
       if (!accounts || accounts.length === 0) {
         set({ status: 'DISCONNECTED', error: 'No accounts found.' })
         return

@@ -2,8 +2,9 @@
 import { useEffect, useState } from 'react'
 
 /**
- * Custom cursor — a glowing dot with an outer ring that expands
- * when hovering interactive elements. Desktop only.
+ * Custom cursor — a single white glowing dot that follows the mouse.
+ * Hides the native cursor so there's only ONE pointer visible.
+ * Desktop only (disabled on touch devices).
  */
 export function CustomCursor() {
   const [position, setPosition] = useState({ x: 0, y: 0 })
@@ -35,27 +36,21 @@ export function CustomCursor() {
 
   return (
     <>
-      {/* Outer ring */}
+      {/* Hide the native cursor on desktop */}
+      <style>{`* { cursor: none !important; }`}</style>
+      {/* Single white cursor — a dot with a subtle glow */}
       <div
-        className="pointer-events-none fixed z-[9999] rounded-full border transition-all duration-200 ease-out"
+        className="pointer-events-none fixed z-[9999] rounded-full transition-all duration-150 ease-out"
         style={{
           left: position.x,
           top: position.y,
-          width: hovering ? 36 : 24,
-          height: hovering ? 36 : 24,
+          width: hovering ? 14 : 10,
+          height: hovering ? 14 : 10,
           transform: 'translate(-50%, -50%)',
-          borderColor: hovering ? 'rgba(34, 211, 238, 0.6)' : 'rgba(34, 211, 238, 0.3)',
-          boxShadow: hovering ? '0 0 20px rgba(34, 211, 238, 0.3)' : 'none',
-        }}
-      />
-      {/* Inner dot */}
-      <div
-        className="pointer-events-none fixed z-[9999] h-1.5 w-1.5 rounded-full bg-cyan-400"
-        style={{
-          left: position.x,
-          top: position.y,
-          transform: 'translate(-50%, -50%)',
-          boxShadow: '0 0 8px rgba(34, 211, 238, 0.8)',
+          backgroundColor: '#ffffff',
+          boxShadow: hovering
+            ? '0 0 12px rgba(255, 255, 255, 0.8), 0 0 24px rgba(34, 211, 238, 0.4)'
+            : '0 0 8px rgba(255, 255, 255, 0.6)',
         }}
       />
     </>

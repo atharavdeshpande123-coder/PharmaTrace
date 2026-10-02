@@ -325,6 +325,25 @@
   /* make receipt text dark on white for printing */
   .glass-strong * { color: black !important; }
   .glass-strong button { display: none !important; }
+
+  /* Reports page: show main content + report-header/report-footer */
+  main, main * { visibility: visible; }
+  header, footer, nav, .fixed { visibility: hidden !important; }
+  main {
+    max-width: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  main * { color: black !important; }
+  .glass, .glass * {
+    background: white !important;
+    border: 1px solid #ddd !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+  }
+  .report-header, .report-header * { color: black !important; }
+  .report-footer { color: #666 !important; }
+  button { display: none !important; }
 }
 
 /* Reduced motion preference */

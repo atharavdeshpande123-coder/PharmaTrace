@@ -17,7 +17,7 @@ import {
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import {
   LayoutDashboard, ScanLine, Truck, PackagePlus, Boxes,
-  Activity, BarChart3, Info, LogOut, User, Bell, ChevronDown, ShieldCheck, Network,
+  Activity, BarChart3, Info, LogOut, User, Bell, ChevronDown, ShieldCheck, Network, FileText,
 } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
@@ -44,6 +44,7 @@ const NAV: NavItem[] = [
   { route: 'transactions', label: 'Transactions', icon: <Activity className="h-4 w-4" /> },
   { route: 'analytics', label: 'Analytics', icon: <BarChart3 className="h-4 w-4" /> },
   { route: 'admin-users', label: 'Admin', icon: <ShieldCheck className="h-4 w-4" />, authRequired: true, adminOnly: true },
+  { route: 'reports', label: 'Reports', icon: <FileText className="h-4 w-4" />, authRequired: true, adminOnly: true },
   { route: 'about', label: 'About', icon: <Info className="h-4 w-4" /> },
 ]
 

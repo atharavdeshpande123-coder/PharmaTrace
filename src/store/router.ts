@@ -30,6 +30,7 @@ export type RouteName =
   | 'drug-detail'
   | 'about'
   | 'admin-users'
+  | 'reports'
   | 'profile'
 
 interface RouteState {

@@ -6,7 +6,7 @@ import { apiGet } from '@/lib/client/api'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Search, Boxes, Network, Activity, ShieldCheck, PackagePlus,
-  LayoutDashboard, BarChart3, Truck, Info, ArrowRight, Hash, CornerDownLeft,
+  LayoutDashboard, BarChart3, Truck, Info, ArrowRight, Hash, CornerDownLeft, FileText,
 } from 'lucide-react'
 import { shortHash } from '@/lib/client/format'
 import { cn } from '@/lib/utils'
@@ -88,6 +88,7 @@ export function CommandPalette() {
     }
     if (user?.role === 'ADMIN') {
       pageItems.push({ id: 'p-admin', type: 'page', label: 'Admin Dashboard', sublabel: 'Users & reseed', icon: <LayoutDashboard className="h-4 w-4" />, accent: 'text-amber-300', action: () => navigate('admin-users') })
+      pageItems.push({ id: 'p-reports', type: 'page', label: 'System Reports', sublabel: 'Printable summary + PDF export', icon: <FileText className="h-4 w-4" />, accent: 'text-cyan-300', action: () => navigate('reports') })
     }
 
     const drugItems: CommandItem[] = drugs

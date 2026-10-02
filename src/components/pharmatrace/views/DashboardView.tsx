@@ -17,6 +17,7 @@ import { Button } from '@/components/ui/button'
 import { ActivityFeed } from '../ActivityFeed'
 import { NetworkStatsWidget } from '../NetworkStatsWidget'
 import { WatchlistWidget } from '../WatchlistWidget'
+import { NetworkGraphWidget } from '../NetworkGraphWidget'
 
 interface DashboardData {
   stats: {
@@ -136,12 +137,15 @@ export function DashboardView() {
       </div>
 
       {user.role === 'ADMIN' && (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <StatCard label="Total Users" value={stats.totalUsers} accent="cyan" icon={<Boxes className="h-5 w-5" />} />
-          <StatCard label="Manufacturers" value={stats.totalManufacturers} accent="violet" icon={<Package className="h-5 w-5" />} />
-          <StatCard label="Distributors" value={stats.totalDistributors} accent="sky" icon={<Truck className="h-5 w-5" />} />
-          <StatCard label="Pharmacies" value={stats.totalPharmacies} accent="emerald" icon={<ShieldCheck className="h-5 w-5" />} />
-        </div>
+        <>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <StatCard label="Total Users" value={stats.totalUsers} accent="cyan" icon={<Boxes className="h-5 w-5" />} />
+            <StatCard label="Manufacturers" value={stats.totalManufacturers} accent="violet" icon={<Package className="h-5 w-5" />} />
+            <StatCard label="Distributors" value={stats.totalDistributors} accent="sky" icon={<Truck className="h-5 w-5" />} />
+            <StatCard label="Pharmacies" value={stats.totalPharmacies} accent="emerald" icon={<ShieldCheck className="h-5 w-5" />} />
+          </div>
+          <NetworkGraphWidget />
+        </>
       )}
 
       {/* Network + Recent activity */}

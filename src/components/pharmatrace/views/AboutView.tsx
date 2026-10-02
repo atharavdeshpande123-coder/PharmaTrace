@@ -3,6 +3,7 @@ import { useRouter } from '@/store/router'
 import { PageHeader } from '../States'
 import { GlassCard } from '../GlassCard'
 import { Button } from '@/components/ui/button'
+import { NetworkGraphWidget } from '../NetworkGraphWidget'
 import {
   Info, Network, ShieldCheck, QrCode, Truck, Cpu, Lock, Boxes,
   Database, ArrowRight, ArrowDown, Boxes as BoxesIcon, BookOpen, FlaskConical, Activity,
@@ -98,6 +99,9 @@ export function AboutView() {
           </div>
         </div>
       </GlassCard>
+
+      {/* Live Network Graph */}
+      <NetworkGraphWidget />
 
       <GlassCard>
         <h3 className="font-semibold mb-3 flex items-center gap-2"><BookOpen className="h-4 w-4" /> Research Paper Alignment</h3>

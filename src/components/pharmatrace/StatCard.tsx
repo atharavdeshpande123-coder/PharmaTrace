@@ -38,7 +38,7 @@ export function StatCard({
       className={cn('glass rounded-xl p-5 transition-all duration-300 relative overflow-hidden group', className)}
       {...props}
     >
-      {/* Subtle hover gradient overlay */}
+      {/* Subtle hover gradient overlay (dark mode uses blend, light mode uses plain) */}
       <div className={cn('absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none', a.bg)} style={{ mixBlendMode: 'overlay' }} />
       {/* Top accent bar */}
       <div className={cn('absolute top-0 left-0 right-0 h-0.5 opacity-60', a.bg.replace('/15', '/60'))} />

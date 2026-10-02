@@ -144,7 +144,7 @@
    ===================================================== */
 
 @layer utilities {
-  /* Glass card */
+  /* Glass card — dark mode (default) */
   .glass {
     background: linear-gradient(135deg, oklch(0.16 0.02 265 / 65%), oklch(0.11 0.02 265 / 55%));
     backdrop-filter: blur(14px);
@@ -160,7 +160,23 @@
     box-shadow: 0 8px 40px oklch(0 0 0 / 40%), inset 0 1px 0 oklch(1 0 0 / 6%);
   }
 
-  /* Glowing border variants */
+  /* Glass card — light mode override: use solid white with subtle tint */
+  :root:not(.dark) .glass {
+    background: linear-gradient(135deg, oklch(1 0 0 / 92%), oklch(0.98 0.005 240 / 88%));
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid oklch(0.85 0.01 240 / 80%);
+    box-shadow: 0 4px 20px oklch(0 0 0 / 8%), inset 0 1px 0 oklch(1 0 0 / 80%);
+  }
+  :root:not(.dark) .glass-strong {
+    background: linear-gradient(135deg, oklch(1 0 0 / 96%), oklch(0.98 0.005 240 / 92%));
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid oklch(0.82 0.01 240 / 80%);
+    box-shadow: 0 8px 30px oklch(0 0 0 / 12%), inset 0 1px 0 oklch(1 0 0 / 90%);
+  }
+
+  /* Glowing border variants — dark mode */
   .glow-cyan {
     box-shadow: 0 0 0 1px oklch(0.78 0.16 195 / 30%), 0 0 30px oklch(0.78 0.16 195 / 25%);
   }
@@ -177,9 +193,35 @@
     box-shadow: 0 0 0 1px oklch(0.65 0.22 25 / 30%), 0 0 30px oklch(0.65 0.22 25 / 25%);
   }
 
-  /* Animated gradient text */
+  /* Light mode: reduce glow intensity for better readability */
+  :root:not(.dark) .glow-cyan {
+    box-shadow: 0 0 0 1px oklch(0.55 0.18 195 / 40%), 0 0 20px oklch(0.55 0.18 195 / 12%);
+  }
+  :root:not(.dark) .glow-violet {
+    box-shadow: 0 0 0 1px oklch(0.55 0.2 290 / 40%), 0 0 20px oklch(0.55 0.2 290 / 12%);
+  }
+  :root:not(.dark) .glow-emerald {
+    box-shadow: 0 0 0 1px oklch(0.6 0.18 155 / 40%), 0 0 20px oklch(0.6 0.18 155 / 12%);
+  }
+  :root:not(.dark) .glow-amber {
+    box-shadow: 0 0 0 1px oklch(0.7 0.18 80 / 40%), 0 0 20px oklch(0.7 0.18 80 / 12%);
+  }
+  :root:not(.dark) .glow-rose {
+    box-shadow: 0 0 0 1px oklch(0.55 0.22 25 / 40%), 0 0 20px oklch(0.55 0.22 25 / 12%);
+  }
+
+  /* Animated gradient text — dark mode (bright colors) */
   .gradient-text {
     background: linear-gradient(120deg, oklch(0.78 0.16 195), oklch(0.7 0.18 290), oklch(0.72 0.19 155));
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: gradient-pan 6s ease infinite;
+  }
+  /* Light mode: use deeper saturated colors for contrast on white */
+  :root:not(.dark) .gradient-text {
+    background: linear-gradient(120deg, oklch(0.5 0.18 195), oklch(0.5 0.2 290), oklch(0.5 0.18 155));
     background-size: 200% 200%;
     -webkit-background-clip: text;
     background-clip: text;
@@ -194,11 +236,19 @@
       linear-gradient(90deg, oklch(0.3 0.04 265 / 12%) 1px, transparent 1px);
     background-size: 48px 48px;
   }
+  :root:not(.dark) .bg-grid {
+    background-image:
+      linear-gradient(oklch(0.5 0.02 265 / 8%) 1px, transparent 1px),
+      linear-gradient(90deg, oklch(0.5 0.02 265 / 8%) 1px, transparent 1px);
+  }
 
   /* Hex pattern */
   .bg-dots {
     background-image: radial-gradient(oklch(0.4 0.04 265 / 18%) 1px, transparent 1px);
     background-size: 24px 24px;
+  }
+  :root:not(.dark) .bg-dots {
+    background-image: radial-gradient(oklch(0.5 0.02 265 / 12%) 1px, transparent 1px);
   }
 
   /* Scrollbar */
@@ -353,4 +403,89 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* =====================================================
+   Light mode: darken accent text colors for readability
+   Tailwind's -300 colors are designed for dark backgrounds.
+   In light mode we override them to -600/-700 equivalents
+   so text stays crisp and legible on white.
+   ===================================================== */
+:root:not(.dark) {
+  /* Cyan accents */
+  --tw-text-cyan-300: oklch(0.5 0.18 195);
+  /* Violet accents */
+  --tw-text-violet-300: oklch(0.5 0.2 290);
+  /* Emerald accents */
+  --tw-text-emerald-300: oklch(0.5 0.18 155);
+  /* Amber accents */
+  --tw-text-amber-300: oklch(0.6 0.18 80);
+  /* Rose accents */
+  --tw-text-rose-300: oklch(0.5 0.22 25);
+  /* Sky accents */
+  --tw-text-sky-300: oklch(0.5 0.18 240);
+}
+
+/* Override Tailwind utility text colors in light mode */
+:root:not(.dark) .text-cyan-300 { color: oklch(0.5 0.18 195) !important; }
+:root:not(.dark) .text-cyan-400 { color: oklch(0.45 0.18 195) !important; }
+:root:not(.dark) .text-violet-300 { color: oklch(0.5 0.2 290) !important; }
+:root:not(.dark) .text-violet-400 { color: oklch(0.45 0.2 290) !important; }
+:root:not(.dark) .text-emerald-300 { color: oklch(0.5 0.18 155) !important; }
+:root:not(.dark) .text-emerald-400 { color: oklch(0.45 0.18 155) !important; }
+:root:not(.dark) .text-amber-300 { color: oklch(0.6 0.18 80) !important; }
+:root:not(.dark) .text-amber-400 { color: oklch(0.55 0.18 80) !important; }
+:root:not(.dark) .text-rose-300 { color: oklch(0.5 0.22 25) !important; }
+:root:not(.dark) .text-rose-400 { color: oklch(0.45 0.22 25) !important; }
+:root:not(.dark) .text-sky-300 { color: oklch(0.5 0.18 240) !important; }
+:root:not(.dark) .text-sky-400 { color: oklch(0.45 0.18 240) !important; }
+
+/* Light mode: darken background accent tints (bg-*-500/15 etc.) */
+:root:not(.dark) .bg-cyan-500\/15 { background-color: oklch(0.55 0.18 195 / 12%) !important; }
+:root:not(.dark) .bg-cyan-500\/10 { background-color: oklch(0.55 0.18 195 / 10%) !important; }
+:root:not(.dark) .bg-violet-500\/15 { background-color: oklch(0.55 0.2 290 / 12%) !important; }
+:root:not(.dark) .bg-violet-500\/10 { background-color: oklch(0.55 0.2 290 / 10%) !important; }
+:root:not(.dark) .bg-emerald-500\/15 { background-color: oklch(0.6 0.18 155 / 12%) !important; }
+:root:not(.dark) .bg-emerald-500\/10 { background-color: oklch(0.6 0.18 155 / 10%) !important; }
+:root:not(.dark) .bg-amber-500\/15 { background-color: oklch(0.7 0.18 80 / 12%) !important; }
+:root:not(.dark) .bg-amber-500\/10 { background-color: oklch(0.7 0.18 80 / 10%) !important; }
+:root:not(.dark) .bg-rose-500\/15 { background-color: oklch(0.55 0.22 25 / 12%) !important; }
+:root:not(.dark) .bg-rose-500\/10 { background-color: oklch(0.55 0.22 25 / 10%) !important; }
+:root:not(.dark) .bg-sky-500\/15 { background-color: oklch(0.55 0.18 240 / 12%) !important; }
+:root:not(.dark) .bg-sky-500\/10 { background-color: oklch(0.55 0.18 240 / 10%) !important; }
+
+/* Light mode: darken border accent colors */
+:root:not(.dark) .border-cyan-500\/30 { border-color: oklch(0.55 0.18 195 / 40%) !important; }
+:root:not(.dark) .border-cyan-500\/40 { border-color: oklch(0.55 0.18 195 / 50%) !important; }
+:root:not(.dark) .border-violet-500\/30 { border-color: oklch(0.55 0.2 290 / 40%) !important; }
+:root:not(.dark) .border-violet-500\/40 { border-color: oklch(0.55 0.2 290 / 50%) !important; }
+:root:not(.dark) .border-emerald-500\/30 { border-color: oklch(0.6 0.18 155 / 40%) !important; }
+:root:not(.dark) .border-emerald-500\/40 { border-color: oklch(0.6 0.18 155 / 50%) !important; }
+:root:not(.dark) .border-amber-500\/30 { border-color: oklch(0.7 0.18 80 / 40%) !important; }
+:root:not(.dark) .border-amber-500\/40 { border-color: oklch(0.7 0.18 80 / 50%) !important; }
+:root:not(.dark) .border-rose-500\/30 { border-color: oklch(0.55 0.22 25 / 40%) !important; }
+:root:not(.dark) .border-rose-500\/40 { border-color: oklch(0.55 0.22 25 / 50%) !important; }
+:root:not(.dark) .border-rose-500\/50 { border-color: oklch(0.55 0.22 25 / 60%) !important; }
+
+/* Light mode: darken ring accent colors */
+:root:not(.dark) .ring-cyan-500\/30 { --tw-ring-color: oklch(0.55 0.18 195 / 40%) !important; }
+:root:not(.dark) .ring-violet-500\/30 { --tw-ring-color: oklch(0.55 0.2 290 / 40%) !important; }
+:root:not(.dark) .ring-emerald-500\/30 { --tw-ring-color: oklch(0.6 0.18 155 / 40%) !important; }
+:root:not(.dark) .ring-amber-500\/30 { --tw-ring-color: oklch(0.7 0.18 80 / 40%) !important; }
+:root:not(.dark) .ring-rose-500\/30 { --tw-ring-color: oklch(0.55 0.22 25 / 40%) !important; }
+:root:not(.dark) .ring-sky-500\/30 { --tw-ring-color: oklch(0.55 0.18 240 / 40%) !important; }
+
+/* Light mode: fix fill colors for SVG icons */
+:root:not(.dark) svg text { fill: oklch(0.2 0.02 265) !important; }
+
+/* Light mode: fix primary text color on primary background */
+:root:not(.dark) .text-primary { color: oklch(0.5 0.18 195) !important; }
+:root:not(.dark) .bg-primary\/15 { background-color: oklch(0.55 0.18 195 / 12%) !important; }
+:root:not(.dark) .bg-primary\/10 { background-color: oklch(0.55 0.18 195 / 10%) !important; }
+:root:not(.dark) .ring-primary\/30 { --tw-ring-color: oklch(0.55 0.18 195 / 40%) !important; }
+
+/* Light mode: fix skeleton shimmer */
+:root:not(.dark) .skeleton-shimmer {
+  background: linear-gradient(90deg, oklch(0.94 0.005 240) 0%, oklch(0.88 0.005 240) 50%, oklch(0.94 0.005 240) 100%) !important;
+  background-size: 1000px 100% !important;
 }

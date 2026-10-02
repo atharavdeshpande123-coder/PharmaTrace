@@ -17,7 +17,7 @@ import {
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import {
   LayoutDashboard, ScanLine, Truck, PackagePlus, Boxes,
-  Activity, BarChart3, Info, LogOut, User, Bell, ChevronDown, ShieldCheck, Network, FileText,
+  Activity, BarChart3, Info, LogOut, User, Bell, ChevronDown, ShieldCheck, Network, FileText, Settings,
 } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
@@ -115,6 +115,9 @@ export function Navbar() {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => navigate('profile')}>
                   <User className="h-4 w-4 mr-2" /> Profile
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate('settings')}>
+                  <Settings className="h-4 w-4 mr-2" /> Settings
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => navigate('dashboard')}>
                   <LayoutDashboard className="h-4 w-4 mr-2" /> Dashboard

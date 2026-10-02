@@ -23,6 +23,7 @@ import { AdminUsersView } from './views/AdminUsersView'
 import { ReportsView } from './views/ReportsView'
 import { CompareDrugsView } from './views/CompareDrugsView'
 import { LineageView } from './views/LineageView'
+import { SettingsView } from './views/SettingsView'
 import { ProfileView } from './views/ProfileView'
 import { HelpTour } from './HelpTour'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -87,6 +88,7 @@ function renderView(route: string, params: Record<string, string>) {
     case 'reports': return <ReportsView />
     case 'compare-drugs': return <CompareDrugsView />
     case 'lineage': return <LineageView />
+    case 'settings': return <SettingsView />
     case 'profile': return <ProfileView />
     default: return <LandingView />
   }

@@ -9,6 +9,7 @@ import {
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
 } from 'recharts'
 import { BarChart3, ShieldCheck, Truck, Activity, TrendingUp, PieChart as PieIcon } from 'lucide-react'
+import { VerificationHeatmap } from '../VerificationHeatmap'
 
 const COLORS = ['#22d3ee', '#a78bfa', '#34d399', '#fbbf24', '#fb7185', '#60a5fa']
 
@@ -159,6 +160,9 @@ export function AnalyticsView() {
           </ResponsiveContainer>
         </div>
       </GlassCard>
+
+      {/* Verification Heatmap */}
+      <VerificationHeatmap />
     </div>
   )
 }

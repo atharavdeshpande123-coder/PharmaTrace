@@ -5,6 +5,7 @@ import { GlassCard } from '../GlassCard'
 import { Button } from '@/components/ui/button'
 import { NetworkGraphWidget } from '../NetworkGraphWidget'
 import { MiningDemoWidget } from '../MiningDemoWidget'
+import { DifficultySimulatorWidget } from '../DifficultySimulatorWidget'
 import {
   Info, Network, ShieldCheck, QrCode, Truck, Cpu, Lock, Boxes,
   Database, ArrowRight, ArrowDown, Boxes as BoxesIcon, BookOpen, FlaskConical, Activity,
@@ -106,6 +107,9 @@ export function AboutView() {
 
       {/* Mining Demo */}
       <MiningDemoWidget />
+
+      {/* Difficulty Simulator */}
+      <DifficultySimulatorWidget />
 
       <GlassCard>
         <h3 className="font-semibold mb-3 flex items-center gap-2"><BookOpen className="h-4 w-4" /> Research Paper Alignment</h3>

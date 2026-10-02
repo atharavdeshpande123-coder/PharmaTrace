@@ -29,7 +29,6 @@ import { SearchResultsView } from './views/SearchResultsView'
 import { ProfileView } from './views/ProfileView'
 import { HelpTour } from './HelpTour'
 import { KeyboardShortcutsOverlay } from './KeyboardShortcutsOverlay'
-import { CustomCursor } from './CustomCursor'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const AUTH_ROUTES = new Set(['dashboard', 'register-drug', 'profile'])
@@ -69,7 +68,6 @@ export function AppShell() {
       <MobileTabBar />
       <HelpTour />
       <KeyboardShortcutsOverlay />
-      <CustomCursor />
     </div>
   )
 }

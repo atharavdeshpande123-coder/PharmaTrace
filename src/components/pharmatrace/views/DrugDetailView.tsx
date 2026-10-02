@@ -19,6 +19,7 @@ import {
   QrCode, Download, Flag, CheckCircle2, Package, MapPin, Clock, Cpu, Send, Printer, Loader2,
 } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { DrugStatsWidget } from '../DrugStatsWidget'
 
 interface DrugDetail {
   id: string; drugId: string; drugName: string; genericName: string | null
@@ -74,7 +75,7 @@ export function DrugDetailView() {
   const openTransfer = async () => {
     if (!drug) return
     try {
-      const res = await apiGet<{ users: any[] }>('/api/users')
+      const res = await apiGet<{ users: any[] }>('/api/users/transfer-recipients')
       setUsers(res.users.map((u) => ({ id: u.id, name: u.name, organization: u.organization, role: u.role })))
       setTransferOpen(true)
     } catch {
@@ -203,6 +204,9 @@ export function DrugDetailView() {
           </div>
         </GlassCard>
       </div>
+
+      {/* Drug Stats Widget */}
+      <DrugStatsWidget drugId={drug.drugId} />
 
       {/* Tabs */}
       <Tabs defaultValue="supply">

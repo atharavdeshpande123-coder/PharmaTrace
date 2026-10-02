@@ -156,6 +156,10 @@ export async function createTransaction(input: {
   })
   if (input.blockImmediately !== false) {
     await createBlock([tx.id])
+    // Re-fetch so we have the blockNumber populated (createBlock updates it
+    // in the DB but the `tx` variable above is stale).
+    const updated = await db.transaction.findUnique({ where: { id: tx.id } })
+    return updated ?? tx
   }
   return tx
 }

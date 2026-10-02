@@ -10,8 +10,9 @@ import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { apiGet } from '@/lib/client/api'
 import { fmtDate } from '@/lib/client/format'
-import { Boxes, Search, PackagePlus, QrCode, ArrowRight, Plus } from 'lucide-react'
+import { Boxes, Search, PackagePlus, QrCode, ArrowRight, Plus, Download } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { exportToCsv } from '@/lib/client/csv'
 
 interface DrugListItem {
   id: string; drugId: string; drugName: string; genericName: string | null
@@ -52,11 +53,42 @@ export function DrugsView() {
         title="Drug Batches"
         subtitle="Browse all pharmaceutical batches registered on the PharmaTrace ledger."
         actions={
-          (user?.role === 'MANUFACTURER' || user?.role === 'ADMIN') && (
-            <Button size="sm" onClick={() => navigate('register-drug')}>
-              <PackagePlus className="h-4 w-4 mr-1.5" /> Register Drug
+          <div className="flex gap-2">
+            <Button variant="outline" size="sm" onClick={() => exportToCsv(`pharmatrace-drugs-${new Date().toISOString().slice(0, 10)}.csv`, drugs.map((d) => ({
+              drugId: d.drugId,
+              drugName: d.drugName,
+              genericName: d.genericName ?? '',
+              manufacturerName: d.manufacturerName,
+              batchNumber: d.batchNumber,
+              serialNumber: d.serialNumber,
+              manufacturingDate: new Date(d.manufacturingDate).toISOString().slice(0, 10),
+              expiryDate: new Date(d.expiryDate).toISOString().slice(0, 10),
+              quantity: d.quantity,
+              status: d.status,
+              currentLocation: d.currentLocation ?? '',
+              owner: d.currentOwner.organization ?? d.currentOwner.name,
+            })), [
+              { key: 'drugId', label: 'Drug ID' },
+              { key: 'drugName', label: 'Drug Name' },
+              { key: 'genericName', label: 'Generic Name' },
+              { key: 'manufacturerName', label: 'Manufacturer' },
+              { key: 'batchNumber', label: 'Batch Number' },
+              { key: 'serialNumber', label: 'Serial Number' },
+              { key: 'manufacturingDate', label: 'Manufacturing Date' },
+              { key: 'expiryDate', label: 'Expiry Date' },
+              { key: 'quantity', label: 'Quantity' },
+              { key: 'status', label: 'Status' },
+              { key: 'currentLocation', label: 'Current Location' },
+              { key: 'owner', label: 'Current Owner' },
+            ])} disabled={drugs.length === 0}>
+              <Download className="h-4 w-4 mr-1.5" /> Export CSV
             </Button>
-          )
+            {(user?.role === 'MANUFACTURER' || user?.role === 'ADMIN') && (
+              <Button size="sm" onClick={() => navigate('register-drug')}>
+                <PackagePlus className="h-4 w-4 mr-1.5" /> Register Drug
+              </Button>
+            )}
+          </div>
         }
       />
 

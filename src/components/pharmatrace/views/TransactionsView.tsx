@@ -10,7 +10,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { apiGet } from '@/lib/client/api'
 import { fmtDate, fmtRelative, shortHash, copyToClipboard } from '@/lib/client/format'
 import { toast } from 'sonner'
-import { Activity, Search, Hash, ArrowRight, Copy, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Activity, Search, Hash, ArrowRight, Copy, ChevronLeft, ChevronRight, Download } from 'lucide-react'
+import { exportToCsv } from '@/lib/client/csv'
 
 interface TxItem {
   id: string
@@ -62,6 +63,27 @@ export function TransactionsView() {
         icon={<Activity className="h-5 w-5" />}
         title="Transaction History"
         subtitle="Every on-chain transaction, newest first."
+        actions={
+          <Button variant="outline" size="sm" onClick={() => exportToCsv(`pharmatrace-transactions-${new Date().toISOString().slice(0, 10)}.csv`, txs.map((t) => ({
+            transactionHash: t.transactionHash,
+            type: t.type,
+            drugName: t.drug?.drugName ?? '',
+            batchNumber: t.drug?.batchNumber ?? '',
+            drugId: t.drug?.drugId ?? '',
+            blockNumber: t.block?.blockNumber ?? '',
+            timestamp: new Date(t.timestamp).toISOString(),
+          })), [
+            { key: 'transactionHash', label: 'Transaction Hash' },
+            { key: 'type', label: 'Type' },
+            { key: 'drugName', label: 'Drug Name' },
+            { key: 'batchNumber', label: 'Batch Number' },
+            { key: 'drugId', label: 'Drug ID' },
+            { key: 'blockNumber', label: 'Block Number' },
+            { key: 'timestamp', label: 'Timestamp (ISO)' },
+          ])} disabled={txs.length === 0}>
+            <Download className="h-4 w-4 mr-1.5" /> Export CSV
+          </Button>
+        }
       />
 
       <GlassCard className="p-3">

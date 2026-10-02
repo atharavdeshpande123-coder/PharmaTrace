@@ -128,3 +128,78 @@ Unresolved / next-phase recommendations:
 - Consider adding CSV export for transactions and drug lists.
 - Consider adding a dark/light theme toggle (currently dark-only).
 - Mobile camera permission flow could be improved with a clearer permission request UI.
+
+---
+Task ID: CRON-2 (second 15-min web dev review)
+Agent: Z.ai Code (cron-triggered webDevReview)
+Task: Assess project status, perform QA via agent-browser, fix bugs, add new features (tamper demo, drug stats widget, CSV export) and styling polish.
+
+Work Log:
+- Reviewed previous worklog (CRON-1) — PharmaTrace was stable with 4 new features added (Command Palette, Dispense Receipt, Live Activity Feed, Public Verify auto-run).
+- Performed comprehensive QA via agent-browser, focusing on flows NOT tested in CRON-1:
+  - **Manufacturer register-drug flow**: Logged in as manufacturer@pharmatrace.demo → filled Register Drug form (TestCillin 250mg, BAT-TEST-2026-001) → success screen appeared with QR + block #61. ✅
+  - **Distributor transfer flow**: Logged in as distributor@pharmatrace.demo → opened Cetirizine drug → clicked Transfer.
+
+- Found and fixed 2 BUGS:
+  1. **BUG: TransferDialog failed for non-admin users** — the dialog called `/api/users` (admin-only, returned 403 FORBIDDEN) to load the recipient list. Distributors/pharmacies/wholesalers couldn't open the transfer dialog at all (toast: "Could not load transfer recipients").
+     - **Fix**: Created new public endpoint `GET /api/users/transfer-recipients` that returns only the public-safe fields (id, name, organization, location, role) for any authenticated user, excluding the current user. Updated `DrugDetailView.openTransfer()` to call this endpoint instead.
+     - **Verified**: Distributor can now open the transfer dialog, select a recipient (HealthPlus Pharmacy), and complete the transfer → status changed to "In Transit" + new TRANSFERRED event in timeline.
+
+  2. **BUG: Supply chain events showed "Block #—" (null blockNumber)** — `createTransaction()` in `service.ts` returned the `tx` object from the initial `db.transaction.create()` call, but at that point `blockNumber` was still null. The `createBlock([tx.id])` call updated the DB row but the returned `tx` variable was stale. All contract functions (registerDrug, transferDrug, etc.) then used `tx.blockNumber` (null) when creating supply chain events, so the timeline showed "Block #—" for every event.
+     - **Fix**: `createTransaction()` now re-fetches the transaction with `db.transaction.findUnique({ where: { id: tx.id } })` after `createBlock()` so the returned object has `blockNumber` populated.
+     - **Verified**: New transfers/registrations now show correct block numbers (e.g. "Block #62"). Re-seeded the database via Admin → Reseed so all historical events now have block numbers too (e.g. "Block #8", "#39", "#40").
+
+- Added 3 NEW FEATURES:
+  1. **Blockchain Tamper Demo** (admin-only, educational) — `src/app/api/blockchain/tamper/route.ts` + `restore/route.ts` + UI in BlockchainView
+     - New "Tamper Demo" button (admin only, visible when chain is VERIFIED) opens a confirmation dialog explaining what happens.
+     - On confirm: corrupts the latest block's hash (prefixes with "TAMPERED_") and stashes the original in the merkleRoot field as `RESTORE:<hash>`.
+     - A red "⚠ Chain Integrity Compromised" warning banner appears with the reason and a "Restore Original Hash" button.
+     - The tampered block in the list shows a red border, glow, AlertTriangle icon, and animated "⚠ Tampered" badge.
+     - "Verify Chain Integrity" now reports COMPROMISED.
+     - "Restore Chain" button reverts all tampered blocks to their original hashes.
+     - **Verified end-to-end**: tampered block #53 → COMPROMISED → restored → VERIFIED.
+
+  2. **Drug Stats Widget** — `src/components/pharmatrace/DrugStatsWidget.tsx` + `src/app/api/drugs/[id]/stats/route.ts`
+     - New "Batch Analytics" card on the drug detail page (between the overview/QR cards and the tabs).
+     - Shows: Verifications count, Authentic count, Transfers count, Received count (4 mini stats).
+     - Animated shelf-life progress bar (color-coded: emerald < 80%, amber 80-99%, rose ≥ 100%) with days-since-manufacture and days-remaining.
+     - Authenticity rate percentage (color-coded).
+     - Last verification + last transfer timestamps.
+     - Failed/flagged verification count (amber warning).
+     - **Verified**: widget renders on drug detail with real data.
+
+  3. **CSV Export** — `src/lib/client/csv.ts` + buttons on Transactions & Drugs views
+     - New `exportToCsv(filename, rows, headers)` utility that builds a CSV blob and triggers a browser download.
+     - Proper CSV escaping (quotes fields containing commas, quotes, or newlines).
+     - Transactions page: "Export CSV" button downloads all filtered transactions with columns: Transaction Hash, Type, Drug Name, Batch Number, Drug ID, Block Number, Timestamp.
+     - Drugs page: "Export CSV" button downloads all filtered drugs with columns: Drug ID, Drug Name, Generic Name, Manufacturer, Batch Number, Serial Number, Manufacturing Date, Expiry Date, Quantity, Status, Current Location, Current Owner.
+     - **Verified**: both exports produce well-formatted CSV files (downloaded to ~/Downloads/, confirmed contents with `head`).
+
+- Styling polish:
+  - **Print-friendly CSS** in `globals.css` — `@media print` hides everything except the `.glass-strong` receipt dialog, forces white background + black text, hides buttons. The dispense receipt now prints cleanly without nav/footer.
+  - **Reduced-motion media query** — `@media (prefers-reduced-motion: reduce)` disables all animations/transitions for accessibility.
+  - **Tampered block visual flag** — BlockRow shows red border, glow, AlertTriangle icon, and animated "⚠ Tampered" badge when the hash starts with "TAMPERED_".
+
+- Verification:
+  - `bun run lint` — clean (0 errors, 0 warnings).
+  - agent-browser end-to-end: all features tested and working.
+  - No console errors or hydration warnings.
+  - Dev server crashed once during testing (Fast Refresh runtime error) — restarted with `bun run dev` and confirmed all APIs respond.
+  - Blockchain integrity: VERIFIED after tamper+restore cycle.
+  - All 4 verification states still work (AUTHENTIC, NOT_FOUND, EXPIRED, FLAGGED).
+
+Stage Summary:
+- PharmaTrace is now significantly more feature-rich and robust.
+- 2 bugs fixed (TransferDialog 403 for non-admins, null blockNumber in supply chain events).
+- 3 new features added (Blockchain Tamper Demo, Drug Stats Widget, CSV Export).
+- Styling polish: print CSS, reduced-motion, tampered block visual flag.
+- All demo flows work end-to-end. Lint clean. No runtime errors.
+- The cron-triggered QA process continues to surface real bugs and drive improvements.
+
+Unresolved / next-phase recommendations:
+- Consider adding a "Blockchain Network Stats" widget on the dashboard (nodes, hash rate, block time).
+- Consider adding user avatar upload / profile editing.
+- Consider adding a "Recent Activity" widget to the landing page (currently only shows stats).
+- Consider adding a dark/light theme toggle (currently dark-only).
+- Consider adding WebSocket-based real-time updates (currently polls every 15s).
+- Mobile camera permission flow could be improved with a clearer permission request UI.

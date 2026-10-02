@@ -258,3 +258,37 @@
   to { opacity: 1; transform: scale(1); }
 }
 .animate-scale-in { animation: scale-in 0.35s ease-out both; }
+
+/* =====================================================
+   Print styles — for the dispense receipt
+   Hides everything except the receipt when printing.
+   ===================================================== */
+@media print {
+  body * { visibility: hidden; }
+  /* show only the receipt dialog */
+  .glass-strong, .glass-strong * { visibility: visible; }
+  .glass-strong {
+    position: fixed !important;
+    top: 0; left: 0; right: 0;
+    margin: 0 !important;
+    max-width: none !important;
+    width: auto !important;
+    border: none !important;
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+  }
+  /* make receipt text dark on white for printing */
+  .glass-strong * { color: black !important; }
+  .glass-strong button { display: none !important; }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

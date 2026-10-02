@@ -36,6 +36,7 @@ export type RouteName =
   | 'settings'
   | 'system-health'
   | 'search'
+  | 'wallet'
   | 'profile'
 
 interface RouteState {

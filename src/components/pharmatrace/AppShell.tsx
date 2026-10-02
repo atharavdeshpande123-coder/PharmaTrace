@@ -26,18 +26,25 @@ import { LineageView } from './views/LineageView'
 import { SettingsView } from './views/SettingsView'
 import { SystemHealthView } from './views/SystemHealthView'
 import { SearchResultsView } from './views/SearchResultsView'
+import { WalletView } from './views/WalletView'
 import { ProfileView } from './views/ProfileView'
 import { HelpTour } from './HelpTour'
 import { KeyboardShortcutsOverlay } from './KeyboardShortcutsOverlay'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useWallet } from '@/store/wallet'
 
 const AUTH_ROUTES = new Set(['dashboard', 'register-drug', 'profile'])
 
 export function AppShell() {
   const { route, params } = useRouter()
   const { user, loading, fetchMe } = useAuth()
+  const walletInit = useWallet((s) => s.init)
 
   useEffect(() => { fetchMe() }, [fetchMe])
+  useEffect(() => {
+    const timer = setTimeout(() => walletInit(), 100)
+    return () => clearTimeout(timer)
+  }, [walletInit])
 
   // Route guards
   useEffect(() => {
@@ -95,6 +102,7 @@ function renderView(route: string, params: Record<string, string>) {
     case 'settings': return <SettingsView />
     case 'system-health': return <SystemHealthView />
     case 'search': return <SearchResultsView />
+    case 'wallet': return <WalletView />
     case 'profile': return <ProfileView />
     default: return <LandingView />
   }

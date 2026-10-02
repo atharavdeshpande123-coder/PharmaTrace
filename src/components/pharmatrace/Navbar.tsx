@@ -17,13 +17,14 @@ import {
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import {
   LayoutDashboard, ScanLine, Truck, PackagePlus, Boxes,
-  Activity, BarChart3, Info, LogOut, User, Bell, ChevronDown, ShieldCheck, Network, FileText, Settings,
+  Activity, BarChart3, Info, LogOut, User, Bell, ChevronDown, ShieldCheck, Network, FileText, Settings, Wallet,
 } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import { NotificationBell } from './NotificationBell'
 import { CommandPalette } from './CommandPalette'
 import { ThemeToggle } from './ThemeToggle'
+import { WalletConnectButton } from './WalletConnectButton'
 
 interface NavItem {
   route: RouteName
@@ -43,6 +44,7 @@ const NAV: NavItem[] = [
   { route: 'blockchain', label: 'Blockchain', icon: <Network className="h-4 w-4" /> },
   { route: 'transactions', label: 'Transactions', icon: <Activity className="h-4 w-4" /> },
   { route: 'analytics', label: 'Analytics', icon: <BarChart3 className="h-4 w-4" /> },
+  { route: 'wallet', label: 'Web3', icon: <Wallet className="h-4 w-4" /> },
   { route: 'admin-users', label: 'Admin', icon: <ShieldCheck className="h-4 w-4" />, authRequired: true, adminOnly: true },
   { route: 'reports', label: 'Reports', icon: <FileText className="h-4 w-4" />, authRequired: true, adminOnly: true },
   { route: 'system-health', label: 'Health', icon: <Activity className="h-4 w-4" />, authRequired: true, adminOnly: true },
@@ -90,6 +92,7 @@ export function Navbar() {
         <div className="flex items-center gap-2">
           <CommandPalette />
           <ThemeToggle />
+          <WalletConnectButton />
           {user && <NotificationBell />}
           {user ? (
             <DropdownMenu>

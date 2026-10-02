@@ -737,3 +737,78 @@ Unresolved / next-phase recommendations:
 - Consider adding keyboard shortcuts documentation accessible from the Help Tour.
 - Consider adding a "System Health" auto-refresh toggle (currently manual refresh only).
 - Consider adding a notification sound effect when new transactions are sealed.
+
+---
+Task ID: CRON-10 (tenth 15-min web dev review)
+Agent: Z.ai Code (cron-triggered webDevReview)
+Task: Assess project status, perform QA via agent-browser, add new features (sound effects, auto-refresh, search results page) and styling polish.
+
+Work Log:
+- Reviewed previous worklog (CRON-9) — PharmaTrace was stable with 3 new features (Watchlist Export, Keyboard Shortcuts, System Health).
+- Performed comprehensive QA via agent-browser:
+  - **Blockchain tamper demo**: Clicked Tamper Demo → dialog → Tamper Latest Block → chain shows COMPROMISED with Tampered badge → Restore Chain → chain shows VERIFIED. Full cycle works.
+  - **Drug Detail tabs**: 4 tabs render (Supply Chain, Blockchain, Verifications, Details). Used keyboard arrow navigation to switch tabs. Verifications tab shows "Verification History" heading.
+  - **Login page**: Split-screen renders with both panels.
+  - **Verify flow**: Entered "PHARMA-FAKE-0000" → "DRUG NOT VERIFIED" result. Works correctly.
+  - No bugs found. No console errors.
+
+- Added 3 NEW FEATURES:
+  1. **Notification Sound Effects** — `src/lib/client/sounds.ts`
+     - Web Audio API-based sound generation (no external files needed).
+     - 4 sound types:
+       - `playSuccessSound()`: ascending two-tone chime (C5→G5) for AUTHENTIC verifications.
+       - `playErrorSound()`: descending tone (A4→Eb4) for NOT_FOUND/failed verifications.
+       - `playWarningSound()`: two-tone amber (D5+D5) for EXPIRED warnings.
+       - `playNotificationSound()`: gentle single tone (E5) for general notifications.
+     - Sounds are opt-in via Settings page (`notifications.soundEnabled`, default on).
+     - Integrated into VerifyView: plays success/error/warning sounds based on verification result.
+     - **Verified**: verify flow with fake ID → "DRUG NOT VERIFIED" → error sound plays.
+
+  2. **Auto-Refresh Toggle on System Health** — added to `SystemHealthView.tsx`
+     - Checkbox in the PageHeader actions next to the Refresh button.
+     - When enabled, auto-refreshes all health data every 10 seconds.
+     - Shows a pulsing green dot indicator when auto-refresh is active.
+     - Uses `useEffect` + `setInterval` with proper cleanup.
+     - **Verified**: checkbox toggles correctly, green pulse indicator appears when active.
+
+  3. **Global Search Results Page** — `src/components/pharmatrace/views/SearchResultsView.tsx` + new `search` route
+     - Full-page search results for drugs, transactions, blocks, and pages.
+     - Large search input at top with auto-focus.
+     - 4 result categories:
+       - **Pages**: Dashboard, Verify, Supply Chain, Blockchain, etc. (clickable cards).
+       - **Drugs**: drug name, batch number, status badge (up to 10 results).
+       - **Transactions**: type badge, drug name, hash, timestamp (up to 10 results).
+       - **Blocks**: block number, hash (up to 9 results).
+     - Results count display ("N results for 'query'").
+     - Empty state when no results found.
+     - "See all results" link in Command Palette footer navigates to this page with the current query.
+     - Animated entry via framer-motion.
+     - **Verified**: searched "paracet" via Command Palette → clicked "See all results" → "Search Results" heading, drugs/transactions sections, results count all render.
+
+- Verification:
+  - `bun run lint` — clean (0 errors, 0 warnings).
+  - agent-browser end-to-end: all features tested and working.
+  - No console errors or hydration warnings.
+  - Tamper demo: full tamper→restore cycle works.
+  - Drug Detail tabs: all 4 tabs switchable.
+  - Verify flow: fake ID → NOT VERIFIED result + error sound.
+  - Sound effects: play on verify results (success/error/warning).
+  - Auto-refresh: toggle works, green pulse indicator shows.
+  - Search Results: renders with all 4 categories + count.
+  - Dev server stable throughout testing.
+
+Stage Summary:
+- PharmaTrace now has 24 views (added SearchResults), notification sounds, and auto-refresh health monitoring.
+- 3 new features added (Sound Effects, Auto-refresh toggle, Search Results page).
+- All demo flows work end-to-end. Lint clean. No runtime errors.
+- The cron-triggered QA process continues to drive meaningful improvements each round.
+
+Unresolved / next-phase recommendations:
+- Consider adding WebSocket-based real-time updates (currently polls every 10-20s).
+- Consider adding email notification integration (currently in-app only).
+- Mobile camera permission flow could be improved with a clearer permission request UI.
+- Consider adding a drug timeline/heat map showing verification activity over time.
+- Consider adding keyboard shortcuts documentation accessible from the Help Tour.
+- Consider adding a "System Health" alert threshold (notify when response time > 500ms).
+- Consider adding a notification sound test button in Settings.
+- Consider adding a "Favorites" auto-sync across devices (currently localStorage only).

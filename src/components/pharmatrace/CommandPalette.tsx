@@ -263,7 +263,12 @@ export function CommandPalette() {
                   <span><kbd className="rounded bg-muted-foreground/15 px-1 py-0.5 font-mono">↵</kbd> select</span>
                   <span><kbd className="rounded bg-muted-foreground/15 px-1 py-0.5 font-mono">esc</kbd> close</span>
                 </div>
-                <span className="flex items-center gap-1">PharmaTrace Search <ArrowRight className="h-2.5 w-2.5" /></span>
+                <button
+                  onClick={() => { navigate('search', { q: query }); setOpen(false) }}
+                  className="flex items-center gap-1 hover:text-foreground transition-colors"
+                >
+                  See all results <ArrowRight className="h-2.5 w-2.5" />
+                </button>
               </div>
             </motion.div>
           </motion.div>

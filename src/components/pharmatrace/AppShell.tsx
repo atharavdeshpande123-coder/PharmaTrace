@@ -25,6 +25,7 @@ import { CompareDrugsView } from './views/CompareDrugsView'
 import { LineageView } from './views/LineageView'
 import { SettingsView } from './views/SettingsView'
 import { SystemHealthView } from './views/SystemHealthView'
+import { SearchResultsView } from './views/SearchResultsView'
 import { ProfileView } from './views/ProfileView'
 import { HelpTour } from './HelpTour'
 import { KeyboardShortcutsOverlay } from './KeyboardShortcutsOverlay'
@@ -93,6 +94,7 @@ function renderView(route: string, params: Record<string, string>) {
     case 'lineage': return <LineageView />
     case 'settings': return <SettingsView />
     case 'system-health': return <SystemHealthView />
+    case 'search': return <SearchResultsView />
     case 'profile': return <ProfileView />
     default: return <LandingView />
   }

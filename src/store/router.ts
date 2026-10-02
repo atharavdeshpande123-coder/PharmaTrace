@@ -35,6 +35,7 @@ export type RouteName =
   | 'lineage'
   | 'settings'
   | 'system-health'
+  | 'search'
   | 'profile'
 
 interface RouteState {

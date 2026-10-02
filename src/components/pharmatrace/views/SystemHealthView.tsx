@@ -49,6 +49,7 @@ export function SystemHealthView() {
   const [error, setError] = useState<string | null>(null)
   const [responseTime, setResponseTime] = useState<number | null>(null)
   const [refreshCount, setRefreshCount] = useState(0)
+  const [autoRefresh, setAutoRefresh] = useState(false)
 
   const load = async () => {
     setLoading(true); setError(null)
@@ -65,6 +66,14 @@ export function SystemHealthView() {
     finally { setLoading(false) }
     setRefreshCount((c) => c + 1)
   }
+
+  // Auto-refresh every 10 seconds when enabled
+  useEffect(() => {
+    if (!autoRefresh) return
+    const id = setInterval(() => { load() }, 10000)
+    return () => clearInterval(id)
+  }, [autoRefresh])
+
   useEffect(() => { load() }, [])
 
   if (loading) return <LoadingState label="Checking system health…" />
@@ -84,10 +93,22 @@ export function SystemHealthView() {
         title="System Health"
         subtitle="Real-time monitoring of the PharmaTrace blockchain network and services."
         actions={
-          <Button variant="outline" size="sm" onClick={load} disabled={loading}>
-            <RefreshCw className={`h-4 w-4 mr-1.5 ${loading ? 'animate-spin' : ''}`} />
-            Refresh
-          </Button>
+          <div className="flex items-center gap-2">
+            <label className="flex items-center gap-1.5 text-xs text-muted-foreground cursor-pointer select-none">
+              <input
+                type="checkbox"
+                checked={autoRefresh}
+                onChange={(e) => setAutoRefresh(e.target.checked)}
+                className="h-3.5 w-3.5 accent-primary"
+              />
+              Auto-refresh
+              {autoRefresh && <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse ml-0.5" />}
+            </label>
+            <Button variant="outline" size="sm" onClick={load} disabled={loading}>
+              <RefreshCw className={`h-4 w-4 mr-1.5 ${loading ? 'animate-spin' : ''}`} />
+              Refresh
+            </Button>
+          </div>
         }
       />
 

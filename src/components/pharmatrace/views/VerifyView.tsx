@@ -10,6 +10,7 @@ import { Label } from '@/components/ui/label'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { VerificationBadge } from '../Badges'
 import { apiPost } from '@/lib/client/api'
+import { playSuccessSound, playErrorSound, playWarningSound } from '@/lib/client/sounds'
 import { toast } from 'sonner'
 import {
   ScanLine, QrCode, Keyboard, Upload, Camera, CameraOff,
@@ -99,12 +100,13 @@ export function VerifyView() {
     try {
       const r = await apiPost<VerifyResult>('/api/verify', { query, method })
       setResult(r)
-      if (r.result === 'AUTHENTIC') toast.success('Drug verified — AUTHENTIC')
-      else if (r.result === 'EXPIRED') toast.warning('Drug is genuine but expired')
-      else if (r.result === 'FLAGGED') toast.error('Verification failed — flagged')
-      else toast.error('Drug not found in blockchain record')
+      if (r.result === 'AUTHENTIC') { toast.success('Drug verified — AUTHENTIC'); playSuccessSound() }
+      else if (r.result === 'EXPIRED') { toast.warning('Drug is genuine but expired'); playWarningSound() }
+      else if (r.result === 'FLAGGED') { toast.error('Verification failed — flagged'); playErrorSound() }
+      else { toast.error('Drug not found in blockchain record'); playErrorSound() }
     } catch (e) {
       toast.error((e as Error).message || 'Verification failed')
+      playErrorSound()
     } finally {
       setLoading(false)
       stopCamera()

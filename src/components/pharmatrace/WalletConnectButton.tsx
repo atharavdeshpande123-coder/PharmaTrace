@@ -26,25 +26,12 @@ export function WalletConnectButton() {
 
   const [showModal, setShowModal] = useState(false)
   const [mounted, setMounted] = useState(false)
-  const [hasDisconnected, setHasDisconnected] = useState(false)
 
   useEffect(() => {
     const timer = setTimeout(() => setMounted(true), 0)
     init()
     return () => clearTimeout(timer)
   }, [init])
-
-  // When user clicks "Connect Wallet" after disconnect, skip the modal
-  // and go straight to connecting (MetaMask handles the popup)
-  const handleConnectClick = () => {
-    if (hasDisconnected && isMetaMaskAvailable) {
-      // Direct reconnect — MetaMask will show its own popup
-      setHasDisconnected(false)
-      connectWallet()
-    } else {
-      setShowModal(true)
-    }
-  }
 
   if (!mounted) return null
 
@@ -55,7 +42,7 @@ export function WalletConnectButton() {
         <Button
           variant="outline"
           size="sm"
-          onClick={handleConnectClick}
+          onClick={() => setShowModal(true)}
           className="border-cyan-500/30 hover:border-cyan-500/60 hover:bg-cyan-500/5 text-cyan-300 transition-all"
         >
           <Wallet className="h-4 w-4 mr-1.5" />

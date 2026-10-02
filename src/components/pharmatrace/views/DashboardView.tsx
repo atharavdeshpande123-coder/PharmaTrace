@@ -16,6 +16,7 @@ import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { ActivityFeed } from '../ActivityFeed'
 import { NetworkStatsWidget } from '../NetworkStatsWidget'
+import { WatchlistWidget } from '../WatchlistWidget'
 
 interface DashboardData {
   stats: {
@@ -179,14 +180,20 @@ export function DashboardView() {
         </GlassCard>
       </div>
 
-      {/* Recent drugs */}
-      <GlassCard>
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="font-semibold">Recent Drug Batches</h3>
-          <button onClick={() => navigate('drugs')} className="text-xs text-primary hover:underline inline-flex items-center">
-            View all <ArrowRight className="h-3 w-3 ml-1" />
-          </button>
+      {/* Watchlist + Recent drugs */}
+      <div className="grid gap-4 lg:grid-cols-3">
+        <div className="lg:col-span-1">
+          <WatchlistWidget />
         </div>
+        <div className="lg:col-span-2">
+          {/* Recent drugs */}
+          <GlassCard>
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="font-semibold">Recent Drug Batches</h3>
+              <button onClick={() => navigate('drugs')} className="text-xs text-primary hover:underline inline-flex items-center">
+                View all <ArrowRight className="h-3 w-3 ml-1" />
+              </button>
+            </div>
         <div className="overflow-x-auto scrollbar-thin">
           <table className="w-full text-sm">
             <thead className="text-left text-xs uppercase tracking-wider text-muted-foreground border-b border-border/60">
@@ -217,7 +224,9 @@ export function DashboardView() {
             </tbody>
           </table>
         </div>
-      </GlassCard>
+          </GlassCard>
+        </div>
+      </div>
     </div>
   )
 }

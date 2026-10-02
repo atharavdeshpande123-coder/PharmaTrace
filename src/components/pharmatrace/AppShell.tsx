@@ -21,6 +21,7 @@ import { DrugDetailView } from './views/DrugDetailView'
 import { AboutView } from './views/AboutView'
 import { AdminUsersView } from './views/AdminUsersView'
 import { ProfileView } from './views/ProfileView'
+import { HelpTour } from './HelpTour'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const AUTH_ROUTES = new Set(['dashboard', 'register-drug', 'profile'])
@@ -58,6 +59,7 @@ export function AppShell() {
       </main>
       <Footer />
       <MobileTabBar />
+      <HelpTour />
     </div>
   )
 }

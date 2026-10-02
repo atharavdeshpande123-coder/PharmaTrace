@@ -13,6 +13,7 @@ import { fmtDate } from '@/lib/client/format'
 import { Boxes, Search, PackagePlus, QrCode, ArrowRight, Plus, Download } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { exportToCsv } from '@/lib/client/csv'
+import { FavoriteButton } from '../FavoriteButton'
 
 interface DrugListItem {
   id: string; drugId: string; drugName: string; genericName: string | null
@@ -145,7 +146,7 @@ export function DrugsView() {
 
 function DrugCard({ drug, onClick }: { drug: DrugListItem; onClick: () => void }) {
   return (
-    <button onClick={onClick} className="text-left w-full group/card relative">
+    <div role="button" tabIndex={0} onClick={onClick} onKeyDown={(e) => { if (e.key === 'Enter') onClick() }} className="text-left w-full group/card relative cursor-pointer">
       {/* Shimmer sweep on hover */}
       <span className="pointer-events-none absolute inset-0 rounded-xl overflow-hidden opacity-0 group-hover/card:opacity-100 transition-opacity">
         <span className="absolute -inset-y-4 -left-1/3 w-1/3 bg-gradient-to-r from-transparent via-cyan-400/10 to-transparent skew-x-12 group-hover/card:translate-x-[300%] transition-transform duration-1000 ease-out" />
@@ -159,8 +160,11 @@ function DrugCard({ drug, onClick }: { drug: DrugListItem; onClick: () => void }
             </div>
             <div className="mt-0.5 text-xs text-muted-foreground">{drug.genericName ?? drug.drugCategory ?? '—'}</div>
           </div>
-          <div className="rounded-lg bg-primary/15 p-1.5 text-primary ring-1 ring-primary/30 shrink-0">
-            <QrCode className="h-4 w-4" />
+          <div className="flex items-center gap-1 shrink-0">
+            <FavoriteButton drugId={drug.drugId} drugName={drug.drugName} />
+            <div className="rounded-lg bg-primary/15 p-1.5 text-primary ring-1 ring-primary/30">
+              <QrCode className="h-4 w-4" />
+            </div>
           </div>
         </div>
         <div className="mt-3 grid grid-cols-2 gap-x-3 gap-y-1 text-xs">
@@ -176,7 +180,7 @@ function DrugCard({ drug, onClick }: { drug: DrugListItem; onClick: () => void }
           <span className="text-primary inline-flex items-center">View <ArrowRight className="h-3 w-3 ml-0.5" /></span>
         </div>
       </GlassCard>
-    </button>
+    </div>
   )
 }
 

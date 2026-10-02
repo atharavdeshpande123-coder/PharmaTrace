@@ -20,6 +20,7 @@ import {
 } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { DrugStatsWidget } from '../DrugStatsWidget'
+import { FavoriteButton } from '../FavoriteButton'
 
 interface DrugDetail {
   id: string; drugId: string; drugName: string; genericName: string | null
@@ -130,7 +131,8 @@ export function DrugDetailView() {
         title={drug.drugName}
         subtitle={`${drug.genericName ?? drug.drugCategory ?? ''} · ${drug.dosageForm ?? ''}`.trim()}
         actions={
-          <div className="flex gap-2 flex-wrap">
+          <div className="flex gap-2 flex-wrap items-center">
+            <FavoriteButton drugId={drug.drugId} drugName={drug.drugName} className="border border-border/60 bg-muted/40" />
             <Button variant="outline" size="sm" onClick={() => navigate('verify', { id: drug.drugId })}><ShieldCheck className="h-4 w-4 mr-1" /> Verify</Button>
             {user?.id === drug.currentOwner.id && drug.status !== 'DISPENSED' && (
               <Button size="sm" onClick={openTransfer}><Send className="h-4 w-4 mr-1" /> Transfer</Button>

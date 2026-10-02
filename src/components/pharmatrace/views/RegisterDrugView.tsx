@@ -29,6 +29,8 @@ export function RegisterDrugView() {
   const [result, setResult] = useState<RegisterResult | null>(null)
   const [qr, setQr] = useState<string | null>(null)
   const [verificationUrl, setVerificationUrl] = useState<string | null>(null)
+  const [medicineData, setMedicineData] = useState<Record<string, unknown> | null>(null)
+  const [showMedicineData, setShowMedicineData] = useState(false)
   const [form, setForm] = useState({
     drugName: '', genericName: '', batchNumber: '', serialNumber: '',
     manufacturingDate: '', expiryDate: '', quantity: '1000',
@@ -59,6 +61,7 @@ export function RegisterDrugView() {
       const qrData = await qrRes.json()
       setQr(qrData.dataUrl)
       setVerificationUrl(qrData.verificationUrl)
+      setMedicineData(qrData.medicineData || null)
     } catch (err) {
       toast.error((err as Error).message || 'Registration failed')
     } finally {
@@ -126,7 +129,37 @@ export function RegisterDrugView() {
                 <QrCode className="h-4 w-4 mr-1.5" /> Verify Now
               </Button>
             </div>
-            <Button variant="ghost" className="mt-3" onClick={() => { setResult(null); setQr(null) }}>
+
+            {/* Medicine Data in QR */}
+            {medicineData && (
+              <div className="mt-4">
+                <button
+                  onClick={() => setShowMedicineData((v) => !v)}
+                  className="text-xs text-primary hover:underline inline-flex items-center gap-1"
+                >
+                  {showMedicineData ? '▾' : '▸'} VIEW MEDICINE DATA ENCODED IN QR
+                </button>
+                {showMedicineData && (
+                  <div className="mt-2 rounded-lg border border-border/60 bg-muted/20 p-3 text-left">
+                    <p className="text-xs text-muted-foreground mb-2">
+                      When someone scans this QR code, they will see this complete medicine data:
+                    </p>
+                    <div className="grid sm:grid-cols-2 gap-1.5 text-xs">
+                      {Object.entries(medicineData).map(([key, val]) => (
+                        <div key={key} className="flex items-start justify-between gap-2">
+                          <span className="text-muted-foreground">{key}:</span>
+                          <span className="font-mono text-right break-all">
+                            {val === null || val === undefined ? '—' : typeof val === 'string' && val.match(/^\d{4}-\d{2}-\d{2}/) ? val.split('T')[0] : String(val).slice(0, 60)}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            <Button variant="ghost" className="mt-3" onClick={() => { setResult(null); setQr(null); setMedicineData(null) }}>
               Register Another Batch
             </Button>
           </GlassCard>

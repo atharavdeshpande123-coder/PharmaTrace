@@ -268,17 +268,20 @@ function VerifyResult({ data }: { data: VerifyResponse }) {
         </div>
       </div>
 
-      {/* Product + Batch info */}
+      {/* Product + Batch info — COMPLETE MEDICINE DATA */}
       <div className="grid md:grid-cols-2 gap-4">
         <div className="glass rounded-xl p-5">
           <h3 className="font-semibold mb-3 flex items-center gap-2">
-            <Package className="h-4 w-4 text-cyan-300" /> PRODUCT INFORMATION
+            <Package className="h-4 w-4 text-cyan-300" /> MEDICINE / TABLET INFORMATION
           </h3>
           <div className="space-y-1.5 text-sm">
             <Row label="Drug Name" value={data.product!.drugName} />
             <Row label="Generic Name" value={data.product!.genericName} />
+            {data.product?.brandName && <Row label="Brand Name" value={data.product.brandName} />}
             <Row label="Dosage Form" value={data.product!.dosageForm} />
             <Row label="Strength" value={data.product!.strength} />
+            <Row label="Category" value={data.product!.category} />
+            {data.product?.ndc && <Row label="NDC" value={data.product.ndc} mono />}
           </div>
         </div>
         <div className="glass rounded-xl p-5">
@@ -287,10 +290,12 @@ function VerifyResult({ data }: { data: VerifyResponse }) {
           </h3>
           <div className="space-y-1.5 text-sm">
             <Row label="Batch Number" value={data.batch!.batchNumber} mono />
+            <Row label="Serial Number" value={data.batch!.serialNumber} mono />
             <Row label="Verification ID" value={data.batch!.verificationId} mono />
             <Row label="Manufacturing Date" value={fmtDate(data.batch!.manufacturingDate)} />
             <Row label="Expiry Date" value={fmtDate(data.batch!.expiryDate)} isExpired={isExpired} />
             <Row label="Quantity" value={String(data.batch!.quantity)} />
+            <Row label="Storage Requirement" value={data.batch!.storageRequirement} />
             <Row label="Status" value={data.batch!.status} />
           </div>
         </div>

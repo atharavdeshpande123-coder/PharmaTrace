@@ -24,6 +24,9 @@ export function generateDrugId(): string {
 /**
  * Generate a signed QR token. The token is the drugId + an HMAC so we can
  * detect tampering when a customer scans a printed QR code.
+ *
+ * IMPORTANT: Uses "-" as separator instead of ":" because colons in URLs
+ * can break some QR scanners and mobile browsers.
  */
 export function generateQrToken(drugId: string): string {
   const sig = crypto
@@ -31,24 +34,43 @@ export function generateQrToken(drugId: string): string {
     .update(drugId)
     .digest('hex')
     .slice(0, 16)
-  return `${drugId}:${sig}`
+  return `${drugId}-${sig}`
 }
 
 /**
  * Verify a QR token and return the drugId it represents.
+ * Handles both old format (colon) and new format (dash) for backward compat.
  */
 export function verifyQrToken(token: string): string | null {
+  // Try new format (dash separator): PHARMA-XXXX-XXXX-XXXX-XXXX-signature
+  // The drugId is "PHARMA-XXXX-XXXX-XXXX", so the signature is the last segment
+  const parts = token.split('-')
+  if (parts.length >= 6) {
+    // drugId = first 5 parts joined with dash, sig = last part
+    const drugId = parts.slice(0, 5).join('-')
+    const sig = parts.slice(5).join('-')
+    const expected = crypto
+      .createHmac('sha256', QR_SECRET)
+      .update(drugId)
+      .digest('hex')
+      .slice(0, 16)
+    if (sig === expected) return drugId
+  }
+
+  // Try old format (colon separator) for backward compatibility
   const idx = token.lastIndexOf(':')
-  if (idx < 0) return null
-  const drugId = token.slice(0, idx)
-  const sig = token.slice(idx + 1)
-  const expected = crypto
-    .createHmac('sha256', QR_SECRET)
-    .update(drugId)
-    .digest('hex')
-    .slice(0, 16)
-  if (sig !== expected) return null
-  return drugId
+  if (idx >= 0) {
+    const drugId = token.slice(0, idx)
+    const sig = token.slice(idx + 1)
+    const expected = crypto
+      .createHmac('sha256', QR_SECRET)
+      .update(drugId)
+      .digest('hex')
+      .slice(0, 16)
+    if (sig === expected) return drugId
+  }
+
+  return null
 }
 
 /**

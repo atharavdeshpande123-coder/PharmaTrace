@@ -513,3 +513,70 @@ Unresolved / next-phase recommendations:
 - Consider adding batch operations (e.g. bulk transfer, bulk flag) for admin.
 - Consider adding a drug lineage/family tree view (show all batches from same manufacturer).
 - Consider adding a "Blockchain Difficulty Adjustment" simulator showing how block time changes with difficulty.
+
+---
+Task ID: CRON-7 (seventh 15-min web dev review)
+Agent: Z.ai Code (cron-triggered webDevReview)
+Task: Assess project status, perform QA via agent-browser, add new features (drug lineage, admin bulk operations, glasscard gradient borders) and styling polish.
+
+Work Log:
+- Reviewed previous worklog (CRON-6) — PharmaTrace was stable with 2 new features (Mining Demo, Drug Comparison) and split-screen register redesign.
+- Performed comprehensive QA via agent-browser:
+  - **Command Palette**: Opened with Cmd+K, typed "paracet" → found "Paracetamol 500mg" result. Works.
+  - **Notifications bell**: Clicked bell → dropdown opened with 2 notifications ("Expired batch detected", "Suspicious drug flagged"). Clicked "Mark all read" → badge cleared. Works.
+  - **Help Tour**: Cleared localStorage → reload → tour auto-opened. Stepped through all 6 steps (Welcome → Verify → Supply Chain → Blockchain → Register → Dashboard). Works.
+  - **NetworkGraphWidget**: Renders on dashboard with 18 nodes, 5 edges, 18 labels. Works.
+  - No bugs found. No console errors across all tested views.
+
+- Added 2 NEW FEATURES:
+  1. **Drug Lineage View** — `src/components/pharmatrace/views/LineageView.tsx` + new `lineage` route + `GET /api/drugs/by-manufacturer/:id` endpoint
+     - Shows all drug batches from a single manufacturer — the complete "family tree."
+     - Manufacturer selector dropdown (auto-populated from all drugs).
+     - Manufacturer info card: organization, name, location, join date, manufacturer ID.
+     - Stats grid: Total Batches, Total Quantity, Delivered, Flagged, Transactions.
+     - Batch Family Tree timeline: vertical timeline with colored dots (cyan=violet=emerald=amber=rose by status), each batch shows drug name, status badge, batch number, quantity, event/tx/verification counts, owner, location.
+     - Click any batch to navigate to drug detail.
+     - Status Distribution card: Delivered, In Transit, Flagged, Expired counts.
+     - Backend endpoint aggregates stats: totalBatches, totalQuantity, verifiedCount, inTransitCount, deliveredCount, flaggedCount, expiredCount, dispensedCount, totalTransactions, totalVerifications.
+     - Accessible via: Drugs page "Lineage" button, Command Palette "Drug Lineage" entry.
+     - **Verified**: Navigated from Drugs → Lineage → "Drug Lineage" heading, manufacturer info, 5 stat cards, Batch Family Tree timeline, Status Distribution all render.
+
+  2. **Admin Bulk Flag Operations** — `src/app/api/admin/bulk-flag/route.ts` + `BulkOperationsWidget.tsx` on Admin page
+     - `POST /api/admin/bulk-flag` endpoint (admin-only): accepts `{ drugIds: string[], reason: string }`, flags up to 50 drugs at once via the `flagDrug()` chaincode function. Returns flagged + failed arrays.
+     - `BulkOperationsWidget` on the Admin page:
+       - Drug list with checkboxes (only non-flagged, non-dispensed drugs shown).
+       - "Select Expired (N)" quick action — selects all expired drugs in one click.
+       - "Select All" / "Clear" buttons.
+       - Selection count + "Flag (N)" button (red, destructive variant).
+       - Confirmation dialog with reason textarea (min 3 chars), "Confirm Flag N Drug(s)" button.
+       - Each flag creates a DRUG_FLAGGED transaction on the blockchain.
+     - **Verified**: Selected 1 expired drug → dialog opened → entered reason → confirmed → drug flagged (verified via API: 2 flagged drugs now, was 1 before).
+
+- Styling polish:
+  - **GlassCard animated gradient border**: Added a gradient border that appears on hover using CSS mask technique (cyan→violet→emerald gradient, opacity 0→1 transition, 500ms duration). The border uses `maskComposite: exclude` to create a 1px border ring without affecting the card content.
+  - **LineageView timeline**: Vertical gradient timeline line (cyan→violet→emerald), colored status dots per batch, staggered entry animations.
+
+- Verification:
+  - `bun run lint` — clean (0 errors, 0 warnings).
+  - agent-browser end-to-end: all features tested and working.
+  - No console errors or hydration warnings.
+  - Drug Lineage: manufacturer info, 5 stat cards, family tree timeline, status distribution all render.
+  - Bulk Flag: selected expired drug → dialog → confirmed → drug flagged (verified via API: 2 flagged drugs now).
+  - GlassCard gradient border: renders without errors.
+  - Dev server crashed once during reload (was already running from CRON-6 for ~2 hours) — restarted successfully.
+
+Stage Summary:
+- PharmaTrace now has 21 views (added Lineage), a bulk operations tool for admins, and polished GlassCard hover effects.
+- 2 new features added (Drug Lineage, Admin Bulk Flag).
+- Styling polish: GlassCard animated gradient border, LineageView timeline.
+- All demo flows work end-to-end. Lint clean. No runtime errors.
+- The cron-triggered QA process continues to drive meaningful improvements each round.
+
+Unresolved / next-phase recommendations:
+- Consider adding WebSocket-based real-time updates (currently polls every 15-20s).
+- Consider adding email notification integration (currently in-app only).
+- Mobile camera permission flow could be improved with a clearer permission request UI.
+- Consider adding a "Search Results" page for the Command Palette with full-text search.
+- Consider adding a "Blockchain Difficulty Adjustment" simulator showing how block time changes with difficulty.
+- Consider adding a drug timeline/heat map showing verification activity over time.
+- Consider adding a "Settings" page with notification preferences, theme default, language.

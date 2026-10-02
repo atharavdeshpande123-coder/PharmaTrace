@@ -6,7 +6,7 @@ import { apiGet } from '@/lib/client/api'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Search, Boxes, Network, Activity, ShieldCheck, PackagePlus,
-  LayoutDashboard, BarChart3, Truck, Info, ArrowRight, Hash, CornerDownLeft, FileText, GitCompare,
+  LayoutDashboard, BarChart3, Truck, Info, ArrowRight, Hash, CornerDownLeft, FileText, GitCompare, GitBranch,
 } from 'lucide-react'
 import { shortHash } from '@/lib/client/format'
 import { cn } from '@/lib/utils'
@@ -82,6 +82,7 @@ export function CommandPalette() {
       { id: 'p-analytics', type: 'page', label: 'Analytics', sublabel: 'Live charts & insights', icon: <BarChart3 className="h-4 w-4" />, accent: 'text-amber-300', action: () => navigate('analytics') },
       { id: 'p-drugs', type: 'page', label: 'Drug Batches', sublabel: 'All registered batches', icon: <Boxes className="h-4 w-4" />, accent: 'text-emerald-300', action: () => navigate('drugs') },
       { id: 'p-compare', type: 'page', label: 'Compare Drugs', sublabel: 'Side-by-side batch comparison', icon: <GitCompare className="h-4 w-4" />, accent: 'text-cyan-300', action: () => navigate('compare-drugs') },
+      { id: 'p-lineage', type: 'page', label: 'Drug Lineage', sublabel: 'All batches from a manufacturer', icon: <GitBranch className="h-4 w-4" />, accent: 'text-violet-300', action: () => navigate('lineage') },
       { id: 'p-about', type: 'page', label: 'About PharmaTrace', sublabel: 'Architecture & paper alignment', icon: <Info className="h-4 w-4" />, accent: 'text-muted-foreground', action: () => navigate('about') },
     ]
     if (user?.role === 'MANUFACTURER' || user?.role === 'ADMIN') {

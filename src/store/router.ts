@@ -32,6 +32,7 @@ export type RouteName =
   | 'admin-users'
   | 'reports'
   | 'compare-drugs'
+  | 'lineage'
   | 'profile'
 
 interface RouteState {

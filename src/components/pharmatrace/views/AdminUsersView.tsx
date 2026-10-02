@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { apiGet, apiPost } from '@/lib/client/api'
+import { BulkOperationsWidget } from '../BulkOperationsWidget'
 import { fmtDate } from '@/lib/client/format'
 import { toast } from 'sonner'
 import { ShieldCheck, Users, Search, RefreshCw, Boxes, Package, Truck, Building2 } from 'lucide-react'
@@ -90,6 +91,9 @@ export function AdminUsersView() {
         <StatCard label="Distributors" value={(roleCounts.DISTRIBUTOR ?? 0) + (roleCounts.WHOLESALER ?? 0)} accent="sky" icon={<Truck className="h-5 w-5" />} />
         <StatCard label="Pharmacies" value={roleCounts.PHARMACY ?? 0} accent="emerald" icon={<ShieldCheck className="h-5 w-5" />} />
       </div>
+
+      {/* Bulk Operations */}
+      <BulkOperationsWidget />
 
       <GlassCard className="p-3">
         <div className="flex flex-col sm:flex-row gap-2">

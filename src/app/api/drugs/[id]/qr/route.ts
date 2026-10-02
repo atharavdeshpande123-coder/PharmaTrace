@@ -5,7 +5,9 @@ import { db } from '@/lib/db'
 import { fail, ok, withHandler } from '@/lib/api'
 
 // GET /api/drugs/:id/qr — generate a QR code PNG data URL for the drug.
-// Public endpoint: anyone with a drug id can render its QR for verification.
+// The QR encodes a PUBLIC HTTPS verification URL:
+//   ${PUBLIC_APP_URL}/verify/${qrToken}
+// This URL works on ANY device with a standard QR scanner — no app required.
 export const GET = withHandler(async (_req: NextRequest, ctx) => {
   const { id } = await ctx!.params
   const drug = await db.drug.findFirst({
@@ -13,15 +15,29 @@ export const GET = withHandler(async (_req: NextRequest, ctx) => {
     select: { drugId: true, qrToken: true, drugName: true, batchNumber: true },
   })
   if (!drug) return fail('Drug not found', 404)
+
+  // Build the public verification URL
+  const publicAppUrl = process.env.PUBLIC_APP_URL || 'http://localhost:3000'
+  const verificationUrl = `${publicAppUrl}/verify/${drug.qrToken}`
+
   const user = await getCurrentUser()
-  const payload = drug.qrToken
-  const dataUrl = await QRCode.toDataURL(payload, {
+
+  const dataUrl = await QRCode.toDataURL(verificationUrl, {
     errorCorrectionLevel: 'M',
     margin: 2,
     width: 512,
     color: { dark: '#0a0a0f', light: '#ffffff' },
   })
-  return ok({ qrToken: drug.qrToken, drugId: drug.drugId, drugName: drug.drugName, batchNumber: drug.batchNumber, dataUrl, isAdmin: !!user && user.role === 'ADMIN' })
+
+  return ok({
+    qrToken: drug.qrToken,
+    drugId: drug.drugId,
+    drugName: drug.drugName,
+    batchNumber: drug.batchNumber,
+    verificationUrl,
+    dataUrl,
+    isAdmin: !!user && user.role === 'ADMIN',
+  })
 })
 
 // POST /api/drugs/:id/flag — admin only

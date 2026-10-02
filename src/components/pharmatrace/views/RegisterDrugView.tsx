@@ -28,6 +28,7 @@ export function RegisterDrugView() {
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<RegisterResult | null>(null)
   const [qr, setQr] = useState<string | null>(null)
+  const [verificationUrl, setVerificationUrl] = useState<string | null>(null)
   const [form, setForm] = useState({
     drugName: '', genericName: '', batchNumber: '', serialNumber: '',
     manufacturingDate: '', expiryDate: '', quantity: '1000',
@@ -57,6 +58,7 @@ export function RegisterDrugView() {
       const qrRes = await fetch(`/api/drugs/${res.drug.drugId}/qr`)
       const qrData = await qrRes.json()
       setQr(qrData.dataUrl)
+      setVerificationUrl(qrData.verificationUrl)
     } catch (err) {
       toast.error((err as Error).message || 'Registration failed')
     } finally {
@@ -83,6 +85,12 @@ export function RegisterDrugView() {
                 <DetailRow label="Serial Number" value={result.drug.serialNumber} mono />
                 <DetailRow label="Transaction Hash" value={shortHash(result.transaction.transactionHash)} mono />
                 <DetailRow label="Block Number" value={`#${result.transaction.blockNumber}`} mono />
+                {verificationUrl && (
+                  <div className="mt-2 pt-2 border-t border-border/40">
+                    <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">PUBLIC VERIFICATION URL</div>
+                    <div className="font-mono text-[10px] break-all text-cyan-300">{verificationUrl}</div>
+                  </div>
+                )}
               </div>
               <div className="rounded-lg border border-border/60 bg-white p-3 flex items-center justify-center">
                 {qr ? (
@@ -96,6 +104,11 @@ export function RegisterDrugView() {
               <Button variant="outline" onClick={() => { navigator.clipboard.writeText(result.drug.drugId); toast.success('Drug ID copied') }}>
                 <Copy className="h-4 w-4 mr-1.5" /> Copy Drug ID
               </Button>
+              {verificationUrl && (
+                <Button variant="outline" onClick={() => { navigator.clipboard.writeText(verificationUrl); toast.success('Verification URL copied') }}>
+                  <Copy className="h-4 w-4 mr-1.5" /> Copy URL
+                </Button>
+              )}
               {qr && (
                 <a href={qr} download={`pharmatrace-${result.drug.drugId}.png`}>
                   <Button variant="outline"><Download className="h-4 w-4 mr-1.5" /> Download QR</Button>
@@ -103,6 +116,11 @@ export function RegisterDrugView() {
               )}
               {qr && (
                 <Button variant="outline" onClick={() => window.print()}><Printer className="h-4 w-4 mr-1.5" /> Print QR</Button>
+              )}
+              {verificationUrl && (
+                <a href={verificationUrl} target="_blank" rel="noopener noreferrer">
+                  <Button variant="secondary"><QrCode className="h-4 w-4 mr-1.5" /> TEST QR</Button>
+                </a>
               )}
               <Button onClick={() => navigate('verify', { id: result.drug.drugId })}>
                 <QrCode className="h-4 w-4 mr-1.5" /> Verify Now

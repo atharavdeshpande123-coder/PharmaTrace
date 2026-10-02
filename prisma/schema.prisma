@@ -10,7 +10,7 @@ generator client {
 //   1. Set DATABASE_URL to your PostgreSQL connection string
 //   2. Change provider to "postgresql" below
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 

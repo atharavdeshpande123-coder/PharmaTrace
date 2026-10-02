@@ -92,6 +92,7 @@ export function CommandPalette() {
     if (user?.role === 'ADMIN') {
       pageItems.push({ id: 'p-admin', type: 'page', label: 'Admin Dashboard', sublabel: 'Users & reseed', icon: <LayoutDashboard className="h-4 w-4" />, accent: 'text-amber-300', action: () => navigate('admin-users') })
       pageItems.push({ id: 'p-reports', type: 'page', label: 'System Reports', sublabel: 'Printable summary + PDF export', icon: <FileText className="h-4 w-4" />, accent: 'text-cyan-300', action: () => navigate('reports') })
+      pageItems.push({ id: 'p-health', type: 'page', label: 'System Health', sublabel: 'Uptime, response time, chain status', icon: <Activity className="h-4 w-4" />, accent: 'text-emerald-300', action: () => navigate('system-health') })
     }
 
     const drugItems: CommandItem[] = drugs

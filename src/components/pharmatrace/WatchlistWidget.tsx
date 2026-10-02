@@ -6,9 +6,10 @@ import { GlassCard } from './GlassCard'
 import { StatusBadge } from './Badges'
 import { EmptyState, LoadingState } from './States'
 import { apiGet } from '@/lib/client/api'
-import { Star, ArrowRight, Boxes } from 'lucide-react'
+import { Star, ArrowRight, Boxes, Download } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
+import { exportToCsv } from '@/lib/client/csv'
 
 interface FavDrug {
   id: string
@@ -60,12 +61,35 @@ export function WatchlistWidget() {
             </span>
           )}
         </h3>
-        <button
-          onClick={() => navigate('drugs')}
-          className="text-xs text-primary hover:underline inline-flex items-center"
-        >
-          Browse all <ArrowRight className="h-3 w-3 ml-1" />
-        </button>
+        <div className="flex items-center gap-2">
+          {drugs.length > 0 && (
+            <button
+              onClick={() => exportToCsv(`pharmatrace-watchlist-${new Date().toISOString().slice(0, 10)}.csv`, drugs.map((d) => ({
+                drugId: d.drugId,
+                drugName: d.drugName,
+                batchNumber: d.batchNumber,
+                status: d.status,
+                currentLocation: d.currentLocation ?? '',
+              })), [
+                { key: 'drugId', label: 'Drug ID' },
+                { key: 'drugName', label: 'Drug Name' },
+                { key: 'batchNumber', label: 'Batch Number' },
+                { key: 'status', label: 'Status' },
+                { key: 'currentLocation', label: 'Current Location' },
+              ])}
+              className="text-xs text-primary hover:underline inline-flex items-center"
+              title="Export watchlist as CSV"
+            >
+              <Download className="h-3 w-3 mr-0.5" /> Export
+            </button>
+          )}
+          <button
+            onClick={() => navigate('drugs')}
+            className="text-xs text-primary hover:underline inline-flex items-center"
+          >
+            Browse all <ArrowRight className="h-3 w-3 ml-1" />
+            </button>
+        </div>
       </div>
 
       {loading ? (

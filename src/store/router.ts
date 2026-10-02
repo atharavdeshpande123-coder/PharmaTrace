@@ -34,6 +34,7 @@ export type RouteName =
   | 'compare-drugs'
   | 'lineage'
   | 'settings'
+  | 'system-health'
   | 'profile'
 
 interface RouteState {

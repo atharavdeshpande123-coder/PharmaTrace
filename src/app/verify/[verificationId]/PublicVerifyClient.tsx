@@ -117,12 +117,22 @@ export function PublicVerifyClient({ verificationId }: { verificationId: string 
       try {
         const json = await fetchPromise
         if (!cancelled) {
-          setData(json)
+          // Handle API errors gracefully (e.g. database not connected on Vercel)
+          if (json.error && !json.success) {
+            // If it's a database connection error, show a specific message
+            if (json.error.includes('Database') || json.error.includes('prisma') || json.error.includes('Internal Server Error')) {
+              setError('PharmaTrace database is not yet configured. If you are the admin, please set DATABASE_URL in your environment variables.')
+            } else {
+              setError(json.error)
+            }
+          } else {
+            setData(json)
+          }
           setLoading(false)
         }
       } catch (e) {
         if (!cancelled) {
-          setError((e as Error).message || 'Failed to verify record')
+          setError('Unable to connect to the verification service. Please try again later.')
           setLoading(false)
         }
       }

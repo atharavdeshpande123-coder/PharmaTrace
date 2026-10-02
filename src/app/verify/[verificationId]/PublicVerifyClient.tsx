@@ -4,6 +4,7 @@ import {
   ShieldCheck, AlertTriangle, Clock, CheckCircle2, XCircle,
   Boxes, Truck, Network, Cpu, MapPin, Calendar, Activity,
   Package, Building2, ArrowRight, ArrowDown, Loader2,
+  Database, ExternalLink,
 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -57,6 +58,16 @@ interface VerifyResponse {
     recordStatus: string
     chainIntegrity: string
     isDemo: boolean
+  }
+  source?: {
+    dataSource: string
+    sourceName: string
+    sourceUrl: string | null
+    retrievedAt: string
+    sourceIdentifier: string
+    sourceHash: string | null
+    walletAddress: string | null
+    country: string | null
   }
   supplyChainHistory?: Array<{
     stage: string
@@ -316,6 +327,34 @@ function VerifyResult({ data }: { data: VerifyResponse }) {
           <Row label="Chain Integrity" value={data.blockchain!.chainIntegrity} />
         </div>
       </div>
+
+      {/* Source Provenance */}
+      {data.source && (
+        <div className="glass rounded-xl p-5">
+          <h3 className="font-semibold mb-3 flex items-center gap-2">
+            <Database className="h-4 w-4 text-cyan-300" /> SOURCE INFORMATION
+          </h3>
+          <div className="grid sm:grid-cols-2 gap-4 text-sm">
+            <Row label="Data Source" value={data.source.sourceName} />
+            <Row label="Source Identifier" value={data.source.sourceIdentifier} mono />
+            <Row label="Retrieved At" value={fmtDate(data.source.retrievedAt, true)} />
+            {data.source.country && <Row label="Country" value={data.source.country} />}
+            {data.source.sourceHash && <Row label="Source Hash" value={truncateHash(data.source.sourceHash)} mono />}
+            {data.source.walletAddress && <Row label="Registered By Wallet" value={truncateHash(data.source.walletAddress)} mono />}
+          </div>
+          {data.source.sourceUrl && (
+            <a href={data.source.sourceUrl} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex">
+              <span className="inline-flex items-center gap-1.5 rounded-lg border border-cyan-500/30 bg-cyan-500/5 px-3 py-1.5 text-xs text-cyan-300 hover:bg-cyan-500/10 transition-colors">
+                <ExternalLink className="h-3.5 w-3.5" /> VIEW ORIGINAL SOURCE
+              </span>
+            </a>
+          )}
+          <div className="mt-3 text-[10px] text-muted-foreground">
+            This record was retrieved from a real authoritative source. PharmaTrace does not claim FDA/CDSCO approval —
+            only that the source record was found and matched.
+          </div>
+        </div>
+      )}
 
       {/* Supply Chain Timeline */}
       {data.supplyChainHistory && data.supplyChainHistory.length > 0 && (

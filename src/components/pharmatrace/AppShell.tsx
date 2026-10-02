@@ -27,6 +27,7 @@ import { SettingsView } from './views/SettingsView'
 import { SystemHealthView } from './views/SystemHealthView'
 import { SearchResultsView } from './views/SearchResultsView'
 import { WalletView } from './views/WalletView'
+import { DrugSearchView } from './views/DrugSearchView'
 import { ProfileView } from './views/ProfileView'
 import { HelpTour } from './HelpTour'
 import { KeyboardShortcutsOverlay } from './KeyboardShortcutsOverlay'
@@ -103,6 +104,7 @@ function renderView(route: string, params: Record<string, string>) {
     case 'system-health': return <SystemHealthView />
     case 'search': return <SearchResultsView />
     case 'wallet': return <WalletView />
+    case 'drug-search': return <DrugSearchView />
     case 'profile': return <ProfileView />
     default: return <LandingView />
   }

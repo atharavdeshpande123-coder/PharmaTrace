@@ -70,6 +70,16 @@ model Drug {
   createdAt            DateTime @default(now())
   updatedAt            DateTime @updatedAt
 
+  // === Real Data Provenance ===
+  dataSource           String?  // 'openFDA' | 'CDSCO/SUGAM' | 'AUTHORIZED' | 'PHARMATRACE'
+  sourceIdentifier     String?  // NDC, FDA ID, CDSCO license, etc.
+  sourceUrl            String?  // URL to the original source record
+  sourceRetrievedAt    DateTime? // when the source data was retrieved
+  sourceHash           String?  // SHA-256 hash of the canonical source record
+  brandName            String?  // brand name from authoritative source
+  ndc                  String?  // NDC code from FDA
+  walletAddress        String?  // wallet that registered the batch (EVM)
+
   supplyChainEvents SupplyChainEvent[]
   transactions       Transaction[]
   verifications      VerificationRecord[]

@@ -17,7 +17,7 @@ import {
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import {
   LayoutDashboard, ScanLine, Truck, PackagePlus, Boxes,
-  Activity, BarChart3, Info, LogOut, User, Bell, ChevronDown, ShieldCheck, Network, FileText, Settings, Wallet,
+  Activity, BarChart3, Info, LogOut, User, Bell, ChevronDown, ShieldCheck, Network, FileText, Settings, Wallet, Search,
 } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
@@ -41,6 +41,7 @@ const NAV: NavItem[] = [
   { route: 'supply-chain', label: 'Supply Chain', icon: <Truck className="h-4 w-4" /> },
   { route: 'register-drug', label: 'Register Drug', icon: <PackagePlus className="h-4 w-4" />, authRequired: true, manufacturerOnly: true },
   { route: 'drugs', label: 'Drugs', icon: <Boxes className="h-4 w-4" /> },
+  { route: 'drug-search', label: 'Drug Search', icon: <Search className="h-4 w-4" /> },
   { route: 'blockchain', label: 'Blockchain', icon: <Network className="h-4 w-4" /> },
   { route: 'transactions', label: 'Transactions', icon: <Activity className="h-4 w-4" /> },
   { route: 'analytics', label: 'Analytics', icon: <BarChart3 className="h-4 w-4" /> },

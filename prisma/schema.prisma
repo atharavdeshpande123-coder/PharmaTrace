@@ -1,0 +1,162 @@
+// PharmaTrace - Blockchain-Based Pharmaceutical Drug Authentication
+// and Supply Chain Tracking System (Prisma schema)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// =====================================================
+// USER MODEL
+// =====================================================
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  name          String
+  passwordHash  String
+  role          String   @default("CUSTOMER") // MANUFACTURER | DISTRIBUTOR | WHOLESALER | PHARMACY | ADMIN | CUSTOMER
+  organization  String?
+  location      String?
+  avatarColor   String?  // for demo avatar
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  registeredDrugs  Drug[]           @relation("ManufacturerDrugs")
+  ownedDrugs       Drug[]           @relation("CurrentOwnerDrugs")
+  eventsFrom       SupplyChainEvent[] @relation("EventsFrom")
+  eventsTo         SupplyChainEvent[] @relation("EventsTo")
+  transactionsFrom Transaction[]    @relation("TransactionFrom")
+  transactionsTo   Transaction[]    @relation("TransactionTo")
+  transactionsActor Transaction[]   @relation("TransactionActor")
+  verifications    VerificationRecord[]
+  notifications    Notification[]
+}
+
+// =====================================================
+// DRUG MODEL (drug batch)
+// =====================================================
+model Drug {
+  id                   String   @id @default(cuid())
+  drugId               String   @unique // public PHARMA-DRUG-ID
+  drugName             String
+  genericName         String?
+  manufacturerName     String
+  manufacturerId       String
+  manufacturer         User     @relation("ManufacturerDrugs", fields: [manufacturerId], references: [id])
+  batchNumber          String   @unique
+  serialNumber         String   @unique
+  manufacturingDate    DateTime
+  expiryDate           DateTime
+  quantity             Int
+  drugCategory         String?
+  dosageForm           String?
+  storageRequirement   String?
+  manufacturingLocation String?
+  description          String?
+  status               String   @default("REGISTERED") // REGISTERED | IN_TRANSIT | DELIVERED | VERIFIED | FLAGGED | EXPIRED | DISPENSED
+  currentOwnerId       String
+  currentOwner         User     @relation("CurrentOwnerDrugs", fields: [currentOwnerId], references: [id])
+  currentLocation      String?
+  qrToken              String   @unique // signed verification token
+  registrationBlockNumber Int?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  supplyChainEvents SupplyChainEvent[]
+  transactions       Transaction[]
+  verifications      VerificationRecord[]
+}
+
+// =====================================================
+// SUPPLY CHAIN EVENT MODEL
+// =====================================================
+model SupplyChainEvent {
+  id             String   @id @default(cuid())
+  drugId         String
+  drug           Drug     @relation(fields: [drugId], references: [id], onDelete: Cascade)
+  eventType      String   // REGISTERED | RECEIVED | TRANSFERRED | VERIFIED | FLAGGED | DISPENSED
+  fromUserId     String?
+  fromUser       User?    @relation("EventsFrom", fields: [fromUserId], references: [id])
+  toUserId       String?
+  toUser         User?    @relation("EventsTo", fields: [toUserId], references: [id])
+  location       String?
+  quantity       Int?
+  notes          String?
+  transactionId  String?
+  blockNumber    Int?
+  timestamp      DateTime @default(now())
+}
+
+// =====================================================
+// TRANSACTION MODEL
+// =====================================================
+model Transaction {
+  id              String   @id @default(cuid())
+  transactionHash String   @unique
+  drugId          String?
+  drug            Drug?    @relation(fields: [drugId], references: [id], onDelete: Cascade)
+  type            String   // DRUG_REGISTERED | DRUG_RECEIVED | DRUG_TRANSFERRED | DRUG_VERIFIED | DRUG_FLAGGED | DRUG_DISPENSED
+  fromId          String?
+  fromUser        User?    @relation("TransactionFrom", fields: [fromId], references: [id])
+  toId            String?
+  toUser          User?    @relation("TransactionTo", fields: [toId], references: [id])
+  data            String   // JSON string payload
+  blockNumber     Int?
+  block           BlockchainBlock? @relation(fields: [blockNumber], references: [blockNumber])
+  userId          String?
+  user            User?    @relation("TransactionActor", fields: [userId], references: [id])
+  timestamp       DateTime @default(now())
+}
+
+// =====================================================
+// BLOCKCHAIN BLOCK MODEL
+// =====================================================
+model BlockchainBlock {
+  blockNumber    Int      @id
+  timestamp      DateTime @default(now())
+  previousHash   String
+  hash           String
+  nonce          Int      @default(0)
+  merkleRoot     String?
+  transactions   Transaction[]
+
+  @@index([previousHash])
+}
+
+// =====================================================
+// VERIFICATION RECORD MODEL
+// =====================================================
+model VerificationRecord {
+  id                 String   @id @default(cuid())
+  drugId             String?
+  drug               Drug?    @relation(fields: [drugId], references: [id], onDelete: Cascade)
+  query              String   // the code/ID searched
+  verificationMethod String   // QR_SCAN | MANUAL_ENTRY | IMAGE_UPLOAD
+  result             String   // AUTHENTIC | NOT_FOUND | FLAGGED | EXPIRED
+  reason             String?
+  transactionId      String?
+  blockNumber       Int?
+  verifierId        String?
+  verifier          User?    @relation(fields: [verifierId], references: [id])
+  timestamp         DateTime @default(now())
+}
+
+// =====================================================
+// NOTIFICATION MODEL
+// =====================================================
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      String   // DRUG_REGISTERED | DRUG_TRANSFERRED | DRUG_RECEIVED | VERIFICATION_SUCCESS | SUSPICIOUS_DRUG | DRUG_EXPIRED
+  title     String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}

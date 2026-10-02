@@ -1,0 +1,2222 @@
+You are an expert full-stack software engineer, blockchain developer, UI/UX designer, and project architect.
+
+I want you to build a COMPLETE, RUNNABLE, DEMONSTRABLE web application for my college mini-project.
+
+PROJECT TITLE:
+“Blockchain-Based Pharmaceutical Drug Authentication and Supply Chain Tracking System”
+
+PROJECT NAME:
+“PharmaTrace”
+
+IMPORTANT:
+I have provided a reference research paper named:
+“Blockchain-Based_Approach_for_Pharmaceutical_Drug_Authentication.pdf”
+
+Use this paper as the primary conceptual reference for the system architecture and functionality. The paper describes a system involving user account management, QR/batch-code verification, blockchain/backend integration, smart contracts, pharmaceutical data, drug traceability, and immutable verification records. It discusses Hyperledger Fabric as the permissioned blockchain platform and smart contracts/chaincode for validating medication information.
+
+Do NOT simply create a static frontend mockup.
+
+I want a COMPLETE working web application with:
+
+* frontend
+* backend
+* database
+* blockchain simulation/integration layer
+* smart-contract/chaincode logic
+* authentication
+* QR generation
+* QR scanning
+* drug registration
+* supply-chain tracking
+* drug verification
+* transaction/audit history
+* role-based dashboards
+* responsive UI
+* realistic demo data
+* API integration between frontend and backend
+* proper project structure
+* error handling
+* validation
+* loading states
+* empty states
+* success/failure states
+* setup instructions
+* README
+* sample credentials
+* seed/demo data
+
+The application must be easy to run locally for a college demonstration.
+
+==================================================
+
+1. CORE PROJECT OBJECTIVE
+   ==================================================
+
+Build a blockchain-based pharmaceutical drug authentication and supply-chain tracking platform.
+
+The system should allow pharmaceutical manufacturers to register drug batches and generate unique QR codes.
+
+The supply-chain participants should be able to update and track the movement of a drug batch.
+
+A user/customer/pharmacist should be able to scan or manually enter a QR/batch code and verify whether the drug is authentic.
+
+The system should show:
+
+1. Drug identity
+2. Drug name
+3. Manufacturer
+4. Batch number
+5. Manufacturing date
+6. Expiry date
+7. Quantity
+8. Current supply-chain status
+9. Current owner/location
+10. Complete supply-chain journey
+11. Blockchain transaction history
+12. Verification result
+13. Timestamp
+14. Tamper/invalid status where applicable
+
+The main concept is:
+
+Manufacturer → Distributor → Wholesaler → Pharmacy → Customer
+
+Every important supply-chain event should create a blockchain-style immutable transaction record.
+
+The verification process should compare the submitted QR/batch information against the registered blockchain record.
+
+If the information is valid:
+Display:
+
+“AUTHENTIC DRUG”
+
+If the drug does not exist:
+Display:
+
+“DRUG NOT FOUND / INVALID”
+
+If the batch exists but has suspicious or inconsistent information:
+Display:
+
+“VERIFICATION FAILED / FLAGGED”
+
+If the drug is expired:
+Display:
+
+“EXPIRED DRUG”
+
+The UI must clearly distinguish these states.
+
+==================================================
+2. IMPORTANT IMPLEMENTATION DECISION
+====================================
+
+This is a COLLEGE MINI-PROJECT.
+
+Therefore, prioritize:
+
+* reliability
+* easy setup
+* working demonstration
+* clean architecture
+* realistic blockchain behavior
+* understandable code
+* attractive UI
+
+Do NOT make the project unnecessarily complicated.
+
+If running a complete Hyperledger Fabric network would make the project difficult to run on a normal student laptop, create a modular blockchain abstraction.
+
+Architecture should allow:
+
+Frontend
+↓
+Backend REST API
+↓
+Blockchain Service
+↓
+Blockchain Adapter
+↓
+Either:
+A. Hyperledger Fabric integration
+OR
+B. Local blockchain simulation for easy demonstration
+
+The application must work in DEMO MODE without requiring a complicated external blockchain setup.
+
+However, keep the architecture ready for real Hyperledger Fabric integration.
+
+Create a clear blockchain service such as:
+
+BlockchainService
+
+with functions such as:
+
+registerDrug()
+transferDrug()
+verifyDrug()
+getDrugHistory()
+createTransaction()
+getTransactionHistory()
+
+Do not fake blockchain concepts only in the UI.
+
+Implement actual hash-linked blocks/transactions in demo mode.
+
+Each block should contain:
+
+* block index
+* timestamp
+* previousHash
+* hash
+* transaction data
+* nonce or equivalent proof field if appropriate
+
+Every new transaction should reference the previous block hash.
+
+Provide a blockchain explorer page where the user can inspect blocks.
+
+==================================================
+3. TECHNOLOGY STACK
+===================
+
+Use a modern, stable and easy-to-run stack.
+
+Preferred:
+
+Frontend:
+
+* React
+* TypeScript
+* Vite
+* Tailwind CSS
+* modern component architecture
+* Lucide icons or equivalent
+* Framer Motion for animations
+
+Backend:
+
+* Node.js
+* Express
+* TypeScript
+
+Database:
+
+* SQLite for easiest local setup
+  OR PostgreSQL if required by the generated architecture.
+
+ORM:
+
+* Prisma if using relational database.
+
+Blockchain:
+
+* Custom local blockchain adapter for DEMO MODE
+* Structure the code so Hyperledger Fabric can be connected later
+
+QR:
+
+* QR generation library
+* QR scanning library using browser camera
+
+Authentication:
+
+* JWT
+* bcrypt/password hashing
+
+Charts:
+
+* Recharts or equivalent
+
+Do not use unnecessary technologies.
+
+Everything must be installable with standard commands.
+
+==================================================
+4. VISUAL DESIGN
+================
+
+The frontend must look like a futuristic professional Web3/blockchain pharmaceutical platform.
+
+Do NOT create a generic hospital website.
+
+Design inspiration:
+
+* Web3 dashboard
+* cryptocurrency analytics dashboard
+* blockchain explorer
+* pharmaceutical technology
+* cybersecurity dashboard
+
+Visual style:
+
+Dark futuristic interface as the primary theme.
+
+Use:
+
+* deep black/charcoal background
+* glassmorphism cards
+* subtle gradients
+* glowing borders
+* cyan/blue/purple accent effects
+* green for verified/authentic
+* red for invalid/failed
+* amber for warning
+* white/light-gray typography
+
+Do not overuse neon colors.
+
+The interface must remain professional enough for a college project presentation.
+
+Add:
+
+* animated background particles
+* subtle grid pattern
+* glowing blockchain nodes
+* animated connection lines
+* smooth page transitions
+* card hover effects
+* animated counters
+* animated charts
+* blockchain block animations
+* QR scan animation
+* verification pulse animation
+
+Animations must remain smooth and not affect usability.
+
+Provide a responsive mobile/tablet/desktop layout.
+
+==================================================
+5. BRANDING
+===========
+
+Application name:
+
+PharmaTrace
+
+Tagline:
+
+“Blockchain-Powered Pharmaceutical Authentication & Supply Chain Transparency”
+
+Logo concept:
+
+A combination of:
+
+* pharmaceutical capsule
+* blockchain nodes
+* shield/checkmark
+* connected network
+
+Create the logo using SVG/CSS/icons instead of requiring external copyrighted assets.
+
+Top navigation should contain:
+
+PharmaTrace logo
+
+Dashboard
+Verify Drug
+Track Supply Chain
+Register Drug
+Blockchain
+Transactions
+Analytics
+About
+
+User profile / login control on the right.
+
+==================================================
+6. LANDING PAGE
+===============
+
+Create a premium landing page.
+
+Hero section:
+
+Heading:
+
+“Trust Every Dose.”
+
+Subheading:
+
+“Verify pharmaceutical authenticity and trace every drug batch through a transparent blockchain-powered supply chain.”
+
+Primary CTA:
+
+“Verify a Drug”
+
+Secondary CTA:
+
+“Explore Supply Chain”
+
+Add an animated pharmaceutical/blockchain visualization.
+
+Show a visual flow:
+
+MANUFACTURER
+↓
+DISTRIBUTOR
+↓
+WHOLESALER
+↓
+PHARMACY
+↓
+CUSTOMER
+
+Add animated blockchain nodes connecting these entities.
+
+Below hero, display statistics:
+
+* Registered Drugs
+* Verified Batches
+* Supply Chain Events
+* Blockchain Transactions
+
+Use realistic seeded demo values.
+
+Do not hardcode fake values in multiple places.
+
+These statistics should come from backend APIs.
+
+==================================================
+7. AUTHENTICATION
+=================
+
+Create:
+
+Login
+Register
+Forgot Password UI
+Logout
+Protected Routes
+
+Registration fields:
+
+* Full Name
+* Email
+* Password
+* Confirm Password
+* Role
+
+Roles:
+
+1. Manufacturer
+2. Distributor
+3. Wholesaler
+4. Pharmacy
+5. Admin
+6. Customer/Verifier
+
+Use JWT authentication.
+
+Passwords must never be stored in plain text.
+
+Use bcrypt hashing.
+
+Implement role-based authorization.
+
+Examples:
+
+Manufacturer:
+
+* register drugs
+* generate QR codes
+* view own batches
+* transfer drugs
+
+Distributor:
+
+* receive batches
+* transfer batches
+* view supply chain
+
+Wholesaler:
+
+* receive
+* transfer
+* track
+
+Pharmacy:
+
+* receive
+* verify
+* sell/dispense
+
+Customer:
+
+* verify drug
+* view authenticity
+* view public traceability information
+
+Admin:
+
+* manage users
+* view all drugs
+* view all transactions
+* inspect blockchain
+* monitor suspicious records
+
+==================================================
+8. DASHBOARD
+============
+
+After login, show role-specific dashboard.
+
+Dashboard cards:
+
+Total Drugs
+Verified Drugs
+Pending Transfers
+Expired Drugs
+Flagged Drugs
+Blockchain Transactions
+
+Add charts:
+
+* drug verification activity
+* supply-chain activity
+* verification success/failure
+* drugs by status
+* transactions over time
+
+Add recent activity.
+
+Example:
+
+“Batch PAR-2026-0001 verified successfully”
+
+“Batch PAR-2026-0002 transferred from Manufacturer to Distributor”
+
+“Batch PAR-2026-0003 flagged for verification”
+
+Every activity should have timestamp.
+
+==================================================
+9. DRUG REGISTRATION
+====================
+
+Create:
+
+“Register New Drug”
+
+Form fields:
+
+Drug Name
+Generic Name
+Manufacturer
+Batch Number
+Serial Number
+Manufacturing Date
+Expiry Date
+Quantity
+Drug Category
+Dosage/Form
+Storage Requirements
+Manufacturing Location
+Description
+
+Validation:
+
+* required fields
+* valid dates
+* expiry must be after manufacturing date
+* quantity must be positive
+* batch number must be unique
+* serial number must be unique
+
+On submission:
+
+1. Validate form
+2. Create drug record
+3. Generate unique drug ID
+4. Create blockchain transaction
+5. Add transaction to block
+6. Generate QR code
+7. Display success screen
+
+Success screen:
+
+“Drug Batch Registered Successfully”
+
+Show:
+
+Drug ID
+Batch Number
+Blockchain Transaction ID
+Block Number
+QR Code
+
+Provide:
+
+Download QR
+Print QR
+Copy Drug ID
+
+==================================================
+10. QR CODE SYSTEM
+==================
+
+Every registered drug batch must receive a unique QR code.
+
+QR content should contain a secure identifier.
+
+Example:
+
+PHARMA-DRUG-ID
+
+Do not store sensitive information directly inside QR code.
+
+QR should point to:
+
+/verify/<drugId>
+
+or contain a signed verification token.
+
+Create QR generation functionality.
+
+Create QR scanner functionality using browser camera.
+
+Also allow manual code entry.
+
+==================================================
+11. VERIFY DRUG PAGE
+====================
+
+This is the MOST IMPORTANT page.
+
+Design it as a premium verification interface.
+
+Heading:
+
+“Verify Pharmaceutical Drug”
+
+Three verification methods:
+
+1. Scan QR Code
+2. Enter Batch/Drug ID
+3. Upload QR image if supported
+
+Create a large scanning area.
+
+Camera scanning animation.
+
+After scanning:
+
+Show loading animation:
+
+“Querying blockchain…”
+
+Then:
+
+“Validating pharmaceutical record…”
+
+Then:
+
+“Checking supply-chain history…”
+
+Then:
+
+result.
+
+==================================================
+12. AUTHENTIC RESULT
+====================
+
+If valid:
+
+Large green verification indicator.
+
+Text:
+
+“AUTHENTIC DRUG”
+
+Show:
+
+✓ Blockchain record found
+✓ Manufacturer verified
+✓ Batch verified
+✓ Supply-chain history verified
+✓ Expiry status valid
+
+Drug details:
+
+Drug Name
+Generic Name
+Manufacturer
+Batch Number
+Manufacturing Date
+Expiry Date
+Quantity
+Current Location
+Current Owner
+Status
+
+Display:
+
+Blockchain Transaction ID
+Block Number
+Timestamp
+
+Add:
+
+“View Blockchain Record”
+
+button.
+
+==================================================
+13. INVALID RESULT
+==================
+
+If drug ID does not exist:
+
+Show red warning interface.
+
+Title:
+
+“DRUG NOT VERIFIED”
+
+Explain:
+
+“No matching blockchain record was found for this pharmaceutical identifier.”
+
+Do NOT expose unnecessary internal technical information.
+
+Buttons:
+
+Try Again
+Report Suspicious Drug
+
+==================================================
+14. EXPIRED DRUG
+================
+
+If expiry date has passed:
+
+Show amber/red warning.
+
+Title:
+
+“EXPIRED DRUG”
+
+Display:
+
+Expiry Date
+Current Date
+Batch Number
+Manufacturer
+
+Do not mark an expired but genuine batch as counterfeit.
+
+Distinguish:
+
+Authenticity
+from
+Expiry Status.
+
+==================================================
+15. SUPPLY CHAIN TRACKING
+=========================
+
+Create a visually impressive supply-chain tracking page.
+
+Display a horizontal/vertical timeline:
+
+Manufacturer
+↓
+Distributor
+↓
+Wholesaler
+↓
+Pharmacy
+↓
+Customer
+
+Each stage should show:
+
+* organization
+* location
+* timestamp
+* transaction ID
+* status
+* blockchain block
+
+Example:
+
+MANUFACTURER
+ABC Pharmaceuticals
+Mumbai, India
+Registered
+01 Oct 2026, 09:15 AM
+Block #102
+
+↓
+
+DISTRIBUTOR
+XYZ Distribution
+Pune, India
+Received
+02 Oct 2026, 03:40 PM
+Block #103
+
+↓
+
+PHARMACY
+HealthPlus Pharmacy
+Pune, India
+Received
+03 Oct 2026, 11:20 AM
+Block #104
+
+Use animated timeline.
+
+Allow the user to click each event and inspect transaction details.
+
+==================================================
+16. TRANSFER DRUG
+=================
+
+Create:
+
+“Transfer Drug Batch”
+
+Fields:
+
+Drug/Batch ID
+From
+To
+Destination
+Quantity
+Transfer Notes
+
+Before transfer:
+
+Check current ownership.
+
+Check available quantity.
+
+Check drug status.
+
+On transfer:
+
+1. Validate transfer
+2. Create supply-chain event
+3. Create blockchain transaction
+4. Generate new block
+5. Update current owner
+6. Update location
+7. Show transaction receipt
+
+Transaction receipt:
+
+Transfer Successful
+
+Transaction ID
+Block Number
+Previous Hash
+Current Hash
+Timestamp
+From
+To
+
+==================================================
+17. BLOCKCHAIN EXPLORER
+=======================
+
+Create a complete blockchain explorer.
+
+Page title:
+
+“Blockchain Ledger”
+
+Display:
+
+Total Blocks
+Latest Block
+Transactions
+Chain Integrity
+
+Show blocks as cards.
+
+Each block:
+
+Block #
+Timestamp
+Hash
+Previous Hash
+Transaction Count
+
+Click a block.
+
+Show:
+
+Block Details
+Transactions
+Hash
+Previous Hash
+Timestamp
+Nonce if implemented
+
+Create visual chain:
+
+Block 101
+↓
+Block 102
+↓
+Block 103
+↓
+Block 104
+
+Animate the connection between blocks.
+
+Provide a:
+
+“Verify Chain Integrity”
+
+button.
+
+The system should calculate whether hashes correctly link.
+
+If valid:
+
+“Blockchain Integrity Verified”
+
+If tampered:
+
+“Chain Integrity Error”
+
+==================================================
+18. TRANSACTION PAGE
+====================
+
+Create transaction history.
+
+Columns:
+
+Transaction ID
+Type
+Drug ID
+Batch Number
+From
+To
+Timestamp
+Block
+Status
+
+Transaction types:
+
+DRUG_REGISTERED
+DRUG_RECEIVED
+DRUG_TRANSFERRED
+DRUG_VERIFIED
+DRUG_FLAGGED
+DRUG_DISPENSED
+
+Add:
+
+search
+filter
+sort
+pagination
+
+Click transaction to view full details.
+
+==================================================
+19. ADMIN DASHBOARD
+===================
+
+Admin dashboard should show:
+
+Total users
+Total manufacturers
+Total distributors
+Total pharmacies
+Total registered drugs
+Total blockchain transactions
+Total verifications
+Flagged drugs
+Expired drugs
+
+Charts:
+
+Verification activity
+Supply-chain activity
+Users by role
+Drug status
+
+Admin can:
+
+View users
+View drugs
+View transactions
+View blockchain
+View flagged drugs
+
+==================================================
+20. ANALYTICS PAGE
+==================
+
+Create professional analytics dashboard.
+
+Charts:
+
+Drug registrations over time
+Verification attempts
+Successful verifications
+Failed verifications
+Expired drugs
+Supply-chain transfers
+Transactions per day
+
+Use Recharts.
+
+Charts must retrieve data from backend APIs.
+
+==================================================
+21. DATABASE DESIGN
+===================
+
+Create proper database models.
+
+Minimum models:
+
+User
+Drug
+DrugBatch
+SupplyChainEvent
+Transaction
+BlockchainBlock
+VerificationRecord
+Notification
+
+Suggested relationships:
+
+User
+has many DrugBatches
+
+DrugBatch
+has many SupplyChainEvents
+
+DrugBatch
+has many VerificationRecords
+
+DrugBatch
+has many Transactions
+
+BlockchainBlock
+has many Transactions
+
+Use unique constraints where appropriate.
+
+Important fields:
+
+USER:
+id
+name
+email
+passwordHash
+role
+organization
+location
+createdAt
+
+DRUG:
+id
+drugName
+genericName
+manufacturer
+batchNumber
+serialNumber
+manufacturingDate
+expiryDate
+quantity
+dosageForm
+storageRequirement
+manufacturingLocation
+status
+currentOwnerId
+currentLocation
+qrToken
+createdAt
+
+SUPPLY_CHAIN_EVENT:
+id
+drugId
+eventType
+fromUserId
+toUserId
+location
+quantity
+notes
+transactionId
+timestamp
+
+TRANSACTION:
+id
+transactionHash
+drugId
+type
+from
+to
+data
+blockNumber
+timestamp
+
+BLOCK:
+id
+blockNumber
+timestamp
+previousHash
+hash
+nonce
+transactions
+
+VERIFICATION:
+id
+drugId
+verificationMethod
+result
+ip/session information only if appropriate
+timestamp
+
+Do not store unnecessary personal data.
+
+==================================================
+22. API DESIGN
+==============
+
+Create REST APIs.
+
+Authentication:
+
+POST /api/auth/register
+POST /api/auth/login
+GET /api/auth/me
+
+Drugs:
+
+POST /api/drugs
+GET /api/drugs
+GET /api/drugs/:id
+PUT /api/drugs/:id
+
+Verification:
+
+GET /api/verify/:id
+POST /api/verify
+
+Supply chain:
+
+POST /api/supply-chain/transfer
+GET /api/supply-chain/:drugId
+
+Blockchain:
+
+GET /api/blockchain/blocks
+GET /api/blockchain/blocks/:number
+GET /api/blockchain/transactions
+GET /api/blockchain/verify-integrity
+
+Analytics:
+
+GET /api/analytics/dashboard
+GET /api/analytics/verifications
+GET /api/analytics/supply-chain
+
+Users:
+
+GET /api/users
+GET /api/users/:id
+
+Implement proper validation and error responses.
+
+==================================================
+23. BLOCKCHAIN LOGIC
+====================
+
+Implement a real educational blockchain simulation.
+
+Create:
+
+Block class
+Blockchain class
+Transaction class
+
+Block properties:
+
+index
+timestamp
+transactions
+previousHash
+hash
+nonce
+
+Use SHA-256 hashing.
+
+Hash should depend on:
+
+index
+timestamp
+transactions
+previousHash
+nonce
+
+Genesis block should be created automatically.
+
+Every transaction should be stored inside a block.
+
+When a new block is mined/created:
+
+previousHash = previous block hash
+
+currentHash = SHA256(block contents)
+
+Implement:
+
+addTransaction()
+createBlock()
+calculateHash()
+verifyChain()
+getBlock()
+getTransaction()
+
+The blockchain should persist to the database.
+
+Do NOT store blockchain only in browser memory.
+
+==================================================
+24. SMART CONTRACT / CHAINCODE ABSTRACTION
+==========================================
+
+Create a separate blockchain contract/service layer.
+
+Example functions:
+
+registerDrug()
+verifyDrug()
+transferDrug()
+receiveDrug()
+flagDrug()
+getDrugHistory()
+
+Business rules:
+
+A drug must be registered before transfer.
+
+Only the current owner can transfer a batch.
+
+Quantity cannot become negative.
+
+A drug cannot be transferred after expiry if business rules prohibit it.
+
+Verification must not modify the drug record.
+
+Every verification should generate an auditable verification transaction where appropriate.
+
+Use clear comments explaining how this corresponds to Hyperledger Fabric chaincode.
+
+If actual Fabric integration is included, isolate it under:
+
+/blockchain/fabric/
+
+If demo blockchain is used:
+
+/blockchain/local/
+
+Use an adapter interface:
+
+BlockchainAdapter
+
+Implement:
+
+LocalBlockchainAdapter
+
+Keep:
+
+FabricBlockchainAdapter
+
+as an extension point or clearly documented implementation if practical.
+
+==================================================
+25. SECURITY
+============
+
+Implement:
+
+JWT authentication
+bcrypt password hashing
+input validation
+rate limiting for verification endpoint
+CORS configuration
+helmet/security headers
+parameterized database queries/ORM
+server-side validation
+role-based authorization
+
+Never expose password hashes.
+
+Do not place secrets directly into source code.
+
+Use:
+
+.env
+
+Create:
+
+.env.example
+
+Example:
+
+DATABASE_URL=
+JWT_SECRET=
+PORT=
+BLOCKCHAIN_MODE=local
+
+==================================================
+26. ERROR HANDLING
+==================
+
+Create professional error states.
+
+Examples:
+
+Network error
+Server error
+Invalid QR
+Invalid batch number
+Drug not found
+Unauthorized
+Forbidden
+Expired drug
+Duplicate batch
+Invalid transfer
+Insufficient quantity
+Blockchain integrity failure
+
+Use toast notifications.
+
+Do not show raw stack traces to users.
+
+Log detailed errors only on server side.
+
+==================================================
+27. LOADING STATES
+==================
+
+Every asynchronous operation must have a loading state.
+
+Examples:
+
+“Connecting to blockchain…”
+“Fetching drug record…”
+“Validating batch…”
+“Creating blockchain transaction…”
+“Generating QR code…”
+
+Use skeleton loaders where appropriate.
+
+==================================================
+28. RESPONSIVE DESIGN
+=====================
+
+Desktop:
+
+Full sidebar/dashboard.
+
+Tablet:
+
+Collapsible sidebar.
+
+Mobile:
+
+Bottom navigation or compact menu.
+
+Verification page must be especially mobile-friendly because QR scanning may be done using mobile devices.
+
+==================================================
+29. ACCESSIBILITY
+=================
+
+Implement:
+
+semantic HTML
+keyboard navigation
+visible focus states
+proper labels
+ARIA where required
+sufficient contrast
+accessible buttons
+accessible forms
+
+Do not rely only on color to indicate verification status.
+
+==================================================
+30. DEMO DATA
+=============
+
+Seed realistic fictional pharmaceutical data.
+
+IMPORTANT:
+
+Use fictional companies and fictional pharmaceutical products.
+
+Do not present fictional companies as real companies.
+
+Example manufacturers:
+
+NovaCure Pharmaceuticals
+MediCore Labs
+AstraNova Healthcare
+
+Example drugs:
+
+Paracetamol 500mg
+Amoxicillin 500mg
+Azithromycin 250mg
+Vitamin D3 60000 IU
+
+Create at least:
+
+10 drug batches
+5 manufacturers/users
+5 distributors/users
+5 pharmacies/users
+20+ blockchain transactions
+multiple supply-chain events
+
+Create both:
+
+valid drugs
+expired drug
+flagged drug
+invalid verification scenario
+
+Make the demo visually rich.
+
+==================================================
+31. DEMO ACCOUNTS
+=================
+
+Create sample accounts.
+
+Example:
+
+[admin@pharmatrace.demo](mailto:admin@pharmatrace.demo)
+
+[manufacturer@pharmatrace.demo](mailto:manufacturer@pharmatrace.demo)
+
+[distributor@pharmatrace.demo](mailto:distributor@pharmatrace.demo)
+
+[pharmacy@pharmatrace.demo](mailto:pharmacy@pharmatrace.demo)
+
+[customer@pharmatrace.demo](mailto:customer@pharmatrace.demo)
+
+Use an obvious demo password documented in README.
+
+Clearly mark these as DEMO ACCOUNTS.
+
+==================================================
+32. NOTIFICATION SYSTEM
+=======================
+
+Create notification dropdown.
+
+Examples:
+
+Drug batch registered
+Drug transferred
+Drug received
+Verification successful
+Suspicious drug detected
+Drug expired
+
+Use timestamps.
+
+==================================================
+33. SEARCH
+==========
+
+Global search should support:
+
+Drug ID
+Batch number
+Drug name
+Transaction ID
+
+Show categorized results.
+
+==================================================
+34. DRUG DETAILS PAGE
+=====================
+
+Create:
+
+/drugs/:id
+
+Display:
+
+Drug overview
+Authenticity
+Batch information
+Manufacturer
+Current owner
+Current location
+Expiry status
+QR code
+Supply-chain history
+Blockchain history
+Verification history
+
+Use tabs:
+
+Overview
+Supply Chain
+Blockchain
+Verification History
+
+==================================================
+35. VERIFICATION HISTORY
+========================
+
+Show:
+
+Date
+Verification result
+Method
+Drug ID
+Transaction ID
+
+Example:
+
+02 Oct 2026
+QR Scan
+AUTHENTIC
+Transaction #TX1029
+
+==================================================
+36. QR SCANNER UX
+=================
+
+Scanner screen should contain:
+
+Camera frame
+corner brackets
+animated scanning line
+permission state
+camera unavailable state
+manual input fallback
+
+If camera permission is denied:
+
+Show:
+
+“Camera access unavailable. Enter the drug ID manually.”
+
+Never make camera access mandatory.
+
+==================================================
+37. PUBLIC VERIFICATION
+=======================
+
+Create a public verification route:
+
+/verify/:drugId
+
+A person should be able to scan the QR and view verification without logging in.
+
+Public page should show only safe information:
+
+Drug name
+Batch
+Manufacturer
+Manufacturing date
+Expiry
+Authenticity
+Current supply-chain stage
+verification timestamp
+
+Do not expose private user information.
+
+==================================================
+38. API SECURITY
+================
+
+Public verification endpoint should have:
+
+rate limiting
+input validation
+safe response structure
+
+Do not allow public users to modify anything.
+
+Only authenticated authorized roles can:
+
+register
+transfer
+receive
+flag
+manage records
+
+==================================================
+39. UI COMPONENTS
+=================
+
+Create reusable components:
+
+Navbar
+Sidebar
+Footer
+GlassCard
+StatCard
+StatusBadge
+VerificationCard
+BlockchainBlock
+TransactionRow
+Timeline
+QRCodeCard
+QRScanner
+DrugForm
+TransferForm
+Modal
+Toast
+LoadingSpinner
+Skeleton
+DataTable
+ChartCard
+EmptyState
+ErrorState
+ConfirmDialog
+
+==================================================
+40. ROUTES
+==========
+
+Create these routes:
+
+/
+/login
+/register
+/dashboard
+/verify
+/verify/:drugId
+/drugs
+/drugs/register
+/drugs/:id
+/supply-chain
+/blockchain
+/blockchain/:blockNumber
+/transactions
+/analytics
+/users
+/profile
+/about
+
+Protect routes according to roles.
+
+==================================================
+41. ABOUT PAGE
+==============
+
+Explain the academic project.
+
+Sections:
+
+Problem
+Solution
+Blockchain Role
+QR Authentication
+Supply Chain Tracking
+Smart Contracts
+Technology Stack
+Future Scope
+
+Mention that this is an academic prototype and not a production pharmaceutical regulatory system.
+
+==================================================
+42. FUTURE SCOPE
+================
+
+Include:
+
+Hyperledger Fabric deployment
+IoT sensor integration
+temperature monitoring
+cold-chain tracking
+real pharmaceutical database APIs
+mobile application
+NFC integration
+advanced anomaly detection
+regulatory integration
+multi-organization permissioned blockchain
+
+Do not claim these features are currently implemented unless they actually are.
+
+==================================================
+43. BLOCKCHAIN VISUALIZATION
+============================
+
+Create a futuristic blockchain visualization on dashboard.
+
+Example:
+
+[Manufacturer]
+|
+↓
+[Block #101]
+|
+↓
+[Block #102]
+|
+↓
+[Block #103]
+|
+↓
+[Block #104]
+|
+↓
+[Pharmacy]
+
+Each block should visually display:
+
+Block number
+Hash
+Timestamp
+Transaction count
+
+Add subtle animated data flow.
+
+==================================================
+44. VERIFICATION ANIMATION
+==========================
+
+When verifying:
+
+Step 1:
+
+Scanning QR…
+
+Step 2:
+
+Retrieving blockchain record…
+
+Step 3:
+
+Validating hash…
+
+Step 4:
+
+Checking manufacturer…
+
+Step 5:
+
+Checking batch…
+
+Step 6:
+
+Checking expiry…
+
+Step 7:
+
+Checking supply-chain history…
+
+Then reveal final result.
+
+This should make the project impressive during college presentation.
+
+==================================================
+45. DASHBOARD EXPERIENCE
+========================
+
+The dashboard should immediately communicate:
+
+“Your pharmaceutical supply chain is being monitored.”
+
+Include:
+
+Blockchain status:
+CONNECTED
+
+Chain integrity:
+VERIFIED
+
+Last block:
+#XXXX
+
+Network status:
+ONLINE
+
+Verification status:
+ACTIVE
+
+These values should come from the backend.
+
+==================================================
+46. PROJECT STRUCTURE
+=====================
+
+Create a clean monorepo structure similar to:
+
+pharmatrace/
+│
+├── frontend/
+│   ├── src/
+│   ├── components/
+│   ├── pages/
+│   ├── hooks/
+│   ├── services/
+│   ├── types/
+│   └── ...
+│
+├── backend/
+│   ├── src/
+│   ├── controllers/
+│   ├── routes/
+│   ├── services/
+│   ├── middleware/
+│   ├── models/
+│   └── ...
+│
+├── blockchain/
+│   ├── local/
+│   ├── fabric/
+│   └── interfaces/
+│
+├── prisma/
+│   ├── schema.prisma
+│   └── seed.ts
+│
+├── docs/
+│
+├── .env.example
+├── README.md
+└── package.json
+
+Adapt the structure if the chosen stack requires a better organization.
+
+==================================================
+47. README
+==========
+
+Generate a detailed README containing:
+
+Project overview
+Features
+Architecture
+Technology stack
+Folder structure
+Prerequisites
+Installation
+Environment variables
+Database setup
+Migration
+Seed data
+Running frontend
+Running backend
+Running demo blockchain
+Demo accounts
+Testing
+API documentation
+Blockchain explanation
+QR verification explanation
+Troubleshooting
+Future scope
+
+Commands should be exact and copy-pasteable.
+
+==================================================
+48. SETUP EXPERIENCE
+====================
+
+The project must be runnable using something similar to:
+
+npm install
+
+npm run setup
+
+npm run dev
+
+If separate frontend/backend commands are required, clearly document them.
+
+Do not require obscure tools unless absolutely necessary.
+
+==================================================
+49. TESTING
+===========
+
+Create basic tests for:
+
+User registration
+Login
+Drug registration
+Duplicate batch prevention
+Drug verification
+Invalid drug
+Expired drug
+Drug transfer
+Quantity validation
+Blockchain hash validation
+Blockchain integrity
+Unauthorized transfer
+
+Create at least basic backend API tests.
+
+==================================================
+50. DATA CONSISTENCY
+====================
+
+Very important:
+
+Do not hardcode different drug information in different pages.
+
+There must be one source of truth.
+
+If a drug is transferred:
+
+Dashboard
+Drug details
+Supply-chain page
+Blockchain
+Transaction page
+Verification page
+
+must all reflect the updated state.
+
+If a blockchain block is created:
+
+The transaction must appear consistently across the relevant pages.
+
+==================================================
+51. NO FAKE UI FUNCTIONALITY
+============================
+
+Do NOT create buttons that do nothing.
+
+Every button must either:
+
+* perform an action
+* navigate to a working page
+* open a working modal
+* display a meaningful explanation
+
+Do not create fake “AI” buttons.
+
+Do not display fake blockchain transactions that are not stored.
+
+Do not show fake real-time data.
+
+Use seeded demo data for demonstration, but clearly distinguish demo data from live data.
+
+==================================================
+52. IMPORTANT BLOCKCHAIN EDUCATIONAL EXPLANATION
+================================================
+
+Inside the application, include a small educational explanation:
+
+“Why Blockchain?”
+
+Explain:
+
+Traditional database:
+records can be changed by authorized administrators.
+
+Blockchain:
+records are linked through cryptographic hashes and designed to provide tamper-evident history.
+
+Explain that the prototype uses a local educational blockchain adapter and that a permissioned Hyperledger Fabric deployment can be used for a production-oriented architecture.
+
+Do not claim that blockchain alone guarantees pharmaceutical authenticity.
+
+Explain that authenticity depends on trustworthy data entered by authorized participants.
+
+==================================================
+53. RESEARCH PAPER ALIGNMENT
+============================
+
+Align the implementation conceptually with the provided research paper.
+
+The paper describes:
+
+User Account Management
+Code Submission and Input Validation
+Backend and Blockchain Integration
+Smart Contracts and Validation
+
+Implement these as core modules.
+
+The paper also discusses:
+
+QR codes
+batch numbers
+manufacturing dates
+expiry dates
+blockchain records
+smart contracts
+Hyperledger Fabric
+audit trails
+pharmaceutical database integration
+
+Represent these concepts appropriately in the application.
+
+However, clearly label any features that are prototype extensions rather than features directly implemented in the paper.
+
+==================================================
+54. IMPORTANT ACADEMIC PRESENTATION FEATURES
+============================================
+
+Add a dedicated:
+
+“System Architecture”
+
+page or section.
+
+Show:
+
+User
+↓
+Frontend
+↓
+Backend API
+↓
+Authentication
+↓
+Drug Database
+↓
+Blockchain Service
+↓
+Smart Contract / Chaincode
+↓
+Blockchain Ledger
+
+Also show:
+
+Manufacturer
+↓
+Distributor
+↓
+Wholesaler
+↓
+Pharmacy
+↓
+Customer
+
+Create a visually impressive architecture diagram using HTML/SVG/CSS.
+
+==================================================
+55. DEMONSTRATION FLOW
+======================
+
+The complete application must support this demonstration:
+
+STEP 1:
+
+Login as Manufacturer.
+
+STEP 2:
+
+Register a new pharmaceutical batch.
+
+STEP 3:
+
+Generate QR code.
+
+STEP 4:
+
+Show blockchain transaction.
+
+STEP 5:
+
+Login as Distributor.
+
+STEP 6:
+
+Receive the batch.
+
+STEP 7:
+
+Transfer batch to Pharmacy.
+
+STEP 8:
+
+Login as Pharmacy.
+
+STEP 9:
+
+Receive batch.
+
+STEP 10:
+
+Open public verification.
+
+STEP 11:
+
+Scan QR.
+
+STEP 12:
+
+System checks blockchain.
+
+STEP 13:
+
+Display:
+
+AUTHENTIC DRUG
+
+STEP 14:
+
+Open supply-chain timeline.
+
+STEP 15:
+
+Open blockchain explorer.
+
+STEP 16:
+
+Show corresponding blocks and transactions.
+
+STEP 17:
+
+Demonstrate invalid batch.
+
+STEP 18:
+
+Demonstrate expired batch.
+
+STEP 19:
+
+Open admin analytics.
+
+This complete flow must work.
+
+==================================================
+56. IMPORTANT UI TEXT
+=====================
+
+Use professional wording.
+
+Examples:
+
+“Blockchain Verification”
+“Authenticity Confirmed”
+“Supply Chain Verified”
+“Batch Registered”
+“Blockchain Record Found”
+“Chain Integrity Verified”
+“Suspicious Record”
+“Verification Failed”
+“Expired Product”
+“Transaction Confirmed”
+“Immutable Audit Trail”
+
+Avoid excessive technical jargon on public-facing screens.
+
+==================================================
+57. PERFORMANCE
+===============
+
+Optimize:
+
+lazy loading
+API calls
+database queries
+pagination
+chart rendering
+QR scanner lifecycle
+animations
+
+Do not create unnecessary re-renders.
+
+==================================================
+58. FINAL REQUIREMENT
+=====================
+
+Build the project rather than only explaining how to build it.
+
+I want actual source code and working files.
+
+First inspect the project environment.
+
+Then create the complete application.
+
+Do not stop after creating only the frontend.
+
+Do not stop after creating only the database.
+
+Do not stop after creating only the blockchain simulation.
+
+Connect everything.
+
+After implementation:
+
+1. Run the project.
+2. Check for compilation errors.
+3. Check TypeScript errors.
+4. Check API errors.
+5. Check database errors.
+6. Test authentication.
+7. Test drug registration.
+8. Test QR generation.
+9. Test verification.
+10. Test transfer.
+11. Test blockchain creation.
+12. Test blockchain integrity.
+13. Test responsive layout.
+14. Fix all discovered errors.
+
+If something cannot be implemented exactly because the environment does not support it, implement the closest functional local alternative and clearly document the limitation.
+
+Do not replace functionality with a screenshot or static mockup.
+
+==================================================
+59. FINAL OUTPUT FROM YOU
+=========================
+
+After building the project, provide:
+
+A. Complete project structure
+
+B. Technologies used
+
+C. How the blockchain works
+
+D. How QR verification works
+
+E. How supply-chain tracking works
+
+F. How smart-contract/chaincode logic works
+
+G. Database schema explanation
+
+H. API list
+
+I. Demo credentials
+
+J. Exact commands to run the project
+
+K. College demonstration steps
+
+L. Known limitations
+
+M. Future scope
+
+N. Explanation of how this implementation maps to the research paper
+
+Most importantly:
+
+MAKE THE WEBSITE ACTUALLY RUN.
+
+The final application should look like a polished futuristic Web3 pharmaceutical platform rather than a basic college CRUD project.
+
+The core academic concept remains:
+
+“Blockchain-Based Pharmaceutical Drug Authentication and Supply Chain Tracking System”
+
+The main user journey must be:
+
+REGISTER DRUG
+→ GENERATE QR
+→ RECORD ON BLOCKCHAIN
+→ MOVE THROUGH SUPPLY CHAIN
+→ SCAN QR
+→ VERIFY BLOCKCHAIN RECORD
+→ DISPLAY AUTHENTICITY
+→ SHOW COMPLETE TRACEABILITY
+
+Build the complete project now.

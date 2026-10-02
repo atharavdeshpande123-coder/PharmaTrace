@@ -1,0 +1,2002 @@
+     1→     1→You are an expert full-stack software engineer, blockchain developer, UI/UX designer, and project architect.
+     2→     2→
+     3→     3→I want you to build a COMPLETE, RUNNABLE, DEMONSTRABLE web application for my college mini-project.
+     4→     4→
+     5→     5→PROJECT TITLE:
+     6→     6→“Blockchain-Based Pharmaceutical Drug Authentication and Supply Chain Tracking System”
+     7→     7→
+     8→     8→PROJECT NAME:
+     9→     9→“PharmaTrace”
+    10→    10→
+    11→    11→IMPORTANT:
+    12→    12→I have provided a reference research paper named:
+    13→    13→“Blockchain-Based_Approach_for_Pharmaceutical_Drug_Authentication.pdf”
+    14→    14→
+    15→    15→Use this paper as the primary conceptual reference for the system architecture and functionality. The paper describes a system involving user account management, QR/batch-code verification, blockchain/backend integration, smart contracts, pharmaceutical data, drug traceability, and immutable verification records. It discusses Hyperledger Fabric as the permissioned blockchain platform and smart contracts/chaincode for validating medication information.
+    16→    16→
+    17→    17→Do NOT simply create a static frontend mockup.
+    18→    18→
+    19→    19→I want a COMPLETE working web application with:
+    20→    20→
+    21→    21→* frontend
+    22→    22→* backend
+    23→    23→* database
+    24→    24→* blockchain simulation/integration layer
+    25→    25→* smart-contract/chaincode logic
+    26→    26→* authentication
+    27→    27→* QR generation
+    28→    28→* QR scanning
+    29→    29→* drug registration
+    30→    30→* supply-chain tracking
+    31→    31→* drug verification
+    32→    32→* transaction/audit history
+    33→    33→* role-based dashboards
+    34→    34→* responsive UI
+    35→    35→* realistic demo data
+    36→    36→* API integration between frontend and backend
+    37→    37→* proper project structure
+    38→    38→* error handling
+    39→    39→* validation
+    40→    40→* loading states
+    41→    41→* empty states
+    42→    42→* success/failure states
+    43→    43→* setup instructions
+    44→    44→* README
+    45→    45→* sample credentials
+    46→    46→* seed/demo data
+    47→    47→
+    48→    48→The application must be easy to run locally for a college demonstration.
+    49→    49→
+    50→    50→==================================================
+    51→    51→
+    52→    52→1. CORE PROJECT OBJECTIVE
+    53→    53→   ==================================================
+    54→    54→
+    55→    55→Build a blockchain-based pharmaceutical drug authentication and supply-chain tracking platform.
+    56→    56→
+    57→    57→The system should allow pharmaceutical manufacturers to register drug batches and generate unique QR codes.
+    58→    58→
+    59→    59→The supply-chain participants should be able to update and track the movement of a drug batch.
+    60→    60→
+    61→    61→A user/customer/pharmacist should be able to scan or manually enter a QR/batch code and verify whether the drug is authentic.
+    62→    62→
+    63→    63→The system should show:
+    64→    64→
+    65→    65→1. Drug identity
+    66→    66→2. Drug name
+    67→    67→3. Manufacturer
+    68→    68→4. Batch number
+    69→    69→5. Manufacturing date
+    70→    70→6. Expiry date
+    71→    71→7. Quantity
+    72→    72→8. Current supply-chain status
+    73→    73→9. Current owner/location
+    74→    74→10. Complete supply-chain journey
+    75→    75→11. Blockchain transaction history
+    76→    76→12. Verification result
+    77→    77→13. Timestamp
+    78→    78→14. Tamper/invalid status where applicable
+    79→    79→
+    80→    80→The main concept is:
+    81→    81→
+    82→    82→Manufacturer → Distributor → Wholesaler → Pharmacy → Customer
+    83→    83→
+    84→    84→Every important supply-chain event should create a blockchain-style immutable transaction record.
+    85→    85→
+    86→    86→The verification process should compare the submitted QR/batch information against the registered blockchain record.
+    87→    87→
+    88→    88→If the information is valid:
+    89→    89→Display:
+    90→    90→
+    91→    91→“AUTHENTIC DRUG”
+    92→    92→
+    93→    93→If the drug does not exist:
+    94→    94→Display:
+    95→    95→
+    96→    96→“DRUG NOT FOUND / INVALID”
+    97→    97→
+    98→    98→If the batch exists but has suspicious or inconsistent information:
+    99→    99→Display:
+   100→   100→
+   101→   101→“VERIFICATION FAILED / FLAGGED”
+   102→   102→
+   103→   103→If the drug is expired:
+   104→   104→Display:
+   105→   105→
+   106→   106→“EXPIRED DRUG”
+   107→   107→
+   108→   108→The UI must clearly distinguish these states.
+   109→   109→
+   110→   110→==================================================
+   111→   111→2. IMPORTANT IMPLEMENTATION DECISION
+   112→   112→====================================
+   113→   113→
+   114→   114→This is a COLLEGE MINI-PROJECT.
+   115→   115→
+   116→   116→Therefore, prioritize:
+   117→   117→
+   118→   118→* reliability
+   119→   119→* easy setup
+   120→   120→* working demonstration
+   121→   121→* clean architecture
+   122→   122→* realistic blockchain behavior
+   123→   123→* understandable code
+   124→   124→* attractive UI
+   125→   125→
+   126→   126→Do NOT make the project unnecessarily complicated.
+   127→   127→
+   128→   128→If running a complete Hyperledger Fabric network would make the project difficult to run on a normal student laptop, create a modular blockchain abstraction.
+   129→   129→
+   130→   130→Architecture should allow:
+   131→   131→
+   132→   132→Frontend
+   133→   133→↓
+   134→   134→Backend REST API
+   135→   135→↓
+   136→   136→Blockchain Service
+   137→   137→↓
+   138→   138→Blockchain Adapter
+   139→   139→↓
+   140→   140→Either:
+   141→   141→A. Hyperledger Fabric integration
+   142→   142→OR
+   143→   143→B. Local blockchain simulation for easy demonstration
+   144→   144→
+   145→   145→The application must work in DEMO MODE without requiring a complicated external blockchain setup.
+   146→   146→
+   147→   147→However, keep the architecture ready for real Hyperledger Fabric integration.
+   148→   148→
+   149→   149→Create a clear blockchain service such as:
+   150→   150→
+   151→   151→BlockchainService
+   152→   152→
+   153→   153→with functions such as:
+   154→   154→
+   155→   155→registerDrug()
+   156→   156→transferDrug()
+   157→   157→verifyDrug()
+   158→   158→getDrugHistory()
+   159→   159→createTransaction()
+   160→   160→getTransactionHistory()
+   161→   161→
+   162→   162→Do not fake blockchain concepts only in the UI.
+   163→   163→
+   164→   164→Implement actual hash-linked blocks/transactions in demo mode.
+   165→   165→
+   166→   166→Each block should contain:
+   167→   167→
+   168→   168→* block index
+   169→   169→* timestamp
+   170→   170→* previousHash
+   171→   171→* hash
+   172→   172→* transaction data
+   173→   173→* nonce or equivalent proof field if appropriate
+   174→   174→
+   175→   175→Every new transaction should reference the previous block hash.
+   176→   176→
+   177→   177→Provide a blockchain explorer page where the user can inspect blocks.
+   178→   178→
+   179→   179→==================================================
+   180→   180→3. TECHNOLOGY STACK
+   181→   181→===================
+   182→   182→
+   183→   183→Use a modern, stable and easy-to-run stack.
+   184→   184→
+   185→   185→Preferred:
+   186→   186→
+   187→   187→Frontend:
+   188→   188→
+   189→   189→* React
+   190→   190→* TypeScript
+   191→   191→* Vite
+   192→   192→* Tailwind CSS
+   193→   193→* modern component architecture
+   194→   194→* Lucide icons or equivalent
+   195→   195→* Framer Motion for animations
+   196→   196→
+   197→   197→Backend:
+   198→   198→
+   199→   199→* Node.js
+   200→   200→* Express
+   201→   201→* TypeScript
+   202→   202→
+   203→   203→Database:
+   204→   204→
+   205→   205→* SQLite for easiest local setup
+   206→   206→  OR PostgreSQL if required by the generated architecture.
+   207→   207→
+   208→   208→ORM:
+   209→   209→
+   210→   210→* Prisma if using relational database.
+   211→   211→
+   212→   212→Blockchain:
+   213→   213→
+   214→   214→* Custom local blockchain adapter for DEMO MODE
+   215→   215→* Structure the code so Hyperledger Fabric can be connected later
+   216→   216→
+   217→   217→QR:
+   218→   218→
+   219→   219→* QR generation library
+   220→   220→* QR scanning library using browser camera
+   221→   221→
+   222→   222→Authentication:
+   223→   223→
+   224→   224→* JWT
+   225→   225→* bcrypt/password hashing
+   226→   226→
+   227→   227→Charts:
+   228→   228→
+   229→   229→* Recharts or equivalent
+   230→   230→
+   231→   231→Do not use unnecessary technologies.
+   232→   232→
+   233→   233→Everything must be installable with standard commands.
+   234→   234→
+   235→   235→==================================================
+   236→   236→4. VISUAL DESIGN
+   237→   237→================
+   238→   238→
+   239→   239→The frontend must look like a futuristic professional Web3/blockchain pharmaceutical platform.
+   240→   240→
+   241→   241→Do NOT create a generic hospital website.
+   242→   242→
+   243→   243→Design inspiration:
+   244→   244→
+   245→   245→* Web3 dashboard
+   246→   246→* cryptocurrency analytics dashboard
+   247→   247→* blockchain explorer
+   248→   248→* pharmaceutical technology
+   249→   249→* cybersecurity dashboard
+   250→   250→
+   251→   251→Visual style:
+   252→   252→
+   253→   253→Dark futuristic interface as the primary theme.
+   254→   254→
+   255→   255→Use:
+   256→   256→
+   257→   257→* deep black/charcoal background
+   258→   258→* glassmorphism cards
+   259→   259→* subtle gradients
+   260→   260→* glowing borders
+   261→   261→* cyan/blue/purple accent effects
+   262→   262→* green for verified/authentic
+   263→   263→* red for invalid/failed
+   264→   264→* amber for warning
+   265→   265→* white/light-gray typography
+   266→   266→
+   267→   267→Do not overuse neon colors.
+   268→   268→
+   269→   269→The interface must remain professional enough for a college project presentation.
+   270→   270→
+   271→   271→Add:
+   272→   272→
+   273→   273→* animated background particles
+   274→   274→* subtle grid pattern
+   275→   275→* glowing blockchain nodes
+   276→   276→* animated connection lines
+   277→   277→* smooth page transitions
+   278→   278→* card hover effects
+   279→   279→* animated counters
+   280→   280→* animated charts
+   281→   281→* blockchain block animations
+   282→   282→* QR scan animation
+   283→   283→* verification pulse animation
+   284→   284→
+   285→   285→Animations must remain smooth and not affect usability.
+   286→   286→
+   287→   287→Provide a responsive mobile/tablet/desktop layout.
+   288→   288→
+   289→   289→==================================================
+   290→   290→5. BRANDING
+   291→   291→===========
+   292→   292→
+   293→   293→Application name:
+   294→   294→
+   295→   295→PharmaTrace
+   296→   296→
+   297→   297→Tagline:
+   298→   298→
+   299→   299→“Blockchain-Powered Pharmaceutical Authentication & Supply Chain Transparency”
+   300→   300→
+   301→   301→Logo concept:
+   302→   302→
+   303→   303→A combination of:
+   304→   304→
+   305→   305→* pharmaceutical capsule
+   306→   306→* blockchain nodes
+   307→   307→* shield/checkmark
+   308→   308→* connected network
+   309→   309→
+   310→   310→Create the logo using SVG/CSS/icons instead of requiring external copyrighted assets.
+   311→   311→
+   312→   312→Top navigation should contain:
+   313→   313→
+   314→   314→PharmaTrace logo
+   315→   315→
+   316→   316→Dashboard
+   317→   317→Verify Drug
+   318→   318→Track Supply Chain
+   319→   319→Register Drug
+   320→   320→Blockchain
+   321→   321→Transactions
+   322→   322→Analytics
+   323→   323→About
+   324→   324→
+   325→   325→User profile / login control on the right.
+   326→   326→
+   327→   327→==================================================
+   328→   328→6. LANDING PAGE
+   329→   329→===============
+   330→   330→
+   331→   331→Create a premium landing page.
+   332→   332→
+   333→   333→Hero section:
+   334→   334→
+   335→   335→Heading:
+   336→   336→
+   337→   337→“Trust Every Dose.”
+   338→   338→
+   339→   339→Subheading:
+   340→   340→
+   341→   341→“Verify pharmaceutical authenticity and trace every drug batch through a transparent blockchain-powered supply chain.”
+   342→   342→
+   343→   343→Primary CTA:
+   344→   344→
+   345→   345→“Verify a Drug”
+   346→   346→
+   347→   347→Secondary CTA:
+   348→   348→
+   349→   349→“Explore Supply Chain”
+   350→   350→
+   351→   351→Add an animated pharmaceutical/blockchain visualization.
+   352→   352→
+   353→   353→Show a visual flow:
+   354→   354→
+   355→   355→MANUFACTURER
+   356→   356→↓
+   357→   357→DISTRIBUTOR
+   358→   358→↓
+   359→   359→WHOLESALER
+   360→   360→↓
+   361→   361→PHARMACY
+   362→   362→↓
+   363→   363→CUSTOMER
+   364→   364→
+   365→   365→Add animated blockchain nodes connecting these entities.
+   366→   366→
+   367→   367→Below hero, display statistics:
+   368→   368→
+   369→   369→* Registered Drugs
+   370→   370→* Verified Batches
+   371→   371→* Supply Chain Events
+   372→   372→* Blockchain Transactions
+   373→   373→
+   374→   374→Use realistic seeded demo values.
+   375→   375→
+   376→   376→Do not hardcode fake values in multiple places.
+   377→   377→
+   378→   378→These statistics should come from backend APIs.
+   379→   379→
+   380→   380→==================================================
+   381→   381→7. AUTHENTICATION
+   382→   382→=================
+   383→   383→
+   384→   384→Create:
+   385→   385→
+   386→   386→Login
+   387→   387→Register
+   388→   388→Forgot Password UI
+   389→   389→Logout
+   390→   390→Protected Routes
+   391→   391→
+   392→   392→Registration fields:
+   393→   393→
+   394→   394→* Full Name
+   395→   395→* Email
+   396→   396→* Password
+   397→   397→* Confirm Password
+   398→   398→* Role
+   399→   399→
+   400→   400→Roles:
+   401→   401→
+   402→   402→1. Manufacturer
+   403→   403→2. Distributor
+   404→   404→3. Wholesaler
+   405→   405→4. Pharmacy
+   406→   406→5. Admin
+   407→   407→6. Customer/Verifier
+   408→   408→
+   409→   409→Use JWT authentication.
+   410→   410→
+   411→   411→Passwords must never be stored in plain text.
+   412→   412→
+   413→   413→Use bcrypt hashing.
+   414→   414→
+   415→   415→Implement role-based authorization.
+   416→   416→
+   417→   417→Examples:
+   418→   418→
+   419→   419→Manufacturer:
+   420→   420→
+   421→   421→* register drugs
+   422→   422→* generate QR codes
+   423→   423→* view own batches
+   424→   424→* transfer drugs
+   425→   425→
+   426→   426→Distributor:
+   427→   427→
+   428→   428→* receive batches
+   429→   429→* transfer batches
+   430→   430→* view supply chain
+   431→   431→
+   432→   432→Wholesaler:
+   433→   433→
+   434→   434→* receive
+   435→   435→* transfer
+   436→   436→* track
+   437→   437→
+   438→   438→Pharmacy:
+   439→   439→
+   440→   440→* receive
+   441→   441→* verify
+   442→   442→* sell/dispense
+   443→   443→
+   444→   444→Customer:
+   445→   445→
+   446→   446→* verify drug
+   447→   447→* view authenticity
+   448→   448→* view public traceability information
+   449→   449→
+   450→   450→Admin:
+   451→   451→
+   452→   452→* manage users
+   453→   453→* view all drugs
+   454→   454→* view all transactions
+   455→   455→* inspect blockchain
+   456→   456→* monitor suspicious records
+   457→   457→
+   458→   458→==================================================
+   459→   459→8. DASHBOARD
+   460→   460→============
+   461→   461→
+   462→   462→After login, show role-specific dashboard.
+   463→   463→
+   464→   464→Dashboard cards:
+   465→   465→
+   466→   466→Total Drugs
+   467→   467→Verified Drugs
+   468→   468→Pending Transfers
+   469→   469→Expired Drugs
+   470→   470→Flagged Drugs
+   471→   471→Blockchain Transactions
+   472→   472→
+   473→   473→Add charts:
+   474→   474→
+   475→   475→* drug verification activity
+   476→   476→* supply-chain activity
+   477→   477→* verification success/failure
+   478→   478→* drugs by status
+   479→   479→* transactions over time
+   480→   480→
+   481→   481→Add recent activity.
+   482→   482→
+   483→   483→Example:
+   484→   484→
+   485→   485→“Batch PAR-2026-0001 verified successfully”
+   486→   486→
+   487→   487→“Batch PAR-2026-0002 transferred from Manufacturer to Distributor”
+   488→   488→
+   489→   489→“Batch PAR-2026-0003 flagged for verification”
+   490→   490→
+   491→   491→Every activity should have timestamp.
+   492→   492→
+   493→   493→==================================================
+   494→   494→9. DRUG REGISTRATION
+   495→   495→====================
+   496→   496→
+   497→   497→Create:
+   498→   498→
+   499→   499→“Register New Drug”
+   500→   500→
+   501→   501→Form fields:
+   502→   502→
+   503→   503→Drug Name
+   504→   504→Generic Name
+   505→   505→Manufacturer
+   506→   506→Batch Number
+   507→   507→Serial Number
+   508→   508→Manufacturing Date
+   509→   509→Expiry Date
+   510→   510→Quantity
+   511→   511→Drug Category
+   512→   512→Dosage/Form
+   513→   513→Storage Requirements
+   514→   514→Manufacturing Location
+   515→   515→Description
+   516→   516→
+   517→   517→Validation:
+   518→   518→
+   519→   519→* required fields
+   520→   520→* valid dates
+   521→   521→* expiry must be after manufacturing date
+   522→   522→* quantity must be positive
+   523→   523→* batch number must be unique
+   524→   524→* serial number must be unique
+   525→   525→
+   526→   526→On submission:
+   527→   527→
+   528→   528→1. Validate form
+   529→   529→2. Create drug record
+   530→   530→3. Generate unique drug ID
+   531→   531→4. Create blockchain transaction
+   532→   532→5. Add transaction to block
+   533→   533→6. Generate QR code
+   534→   534→7. Display success screen
+   535→   535→
+   536→   536→Success screen:
+   537→   537→
+   538→   538→“Drug Batch Registered Successfully”
+   539→   539→
+   540→   540→Show:
+   541→   541→
+   542→   542→Drug ID
+   543→   543→Batch Number
+   544→   544→Blockchain Transaction ID
+   545→   545→Block Number
+   546→   546→QR Code
+   547→   547→
+   548→   548→Provide:
+   549→   549→
+   550→   550→Download QR
+   551→   551→Print QR
+   552→   552→Copy Drug ID
+   553→   553→
+   554→   554→==================================================
+   555→   555→10. QR CODE SYSTEM
+   556→   556→==================
+   557→   557→
+   558→   558→Every registered drug batch must receive a unique QR code.
+   559→   559→
+   560→   560→QR content should contain a secure identifier.
+   561→   561→
+   562→   562→Example:
+   563→   563→
+   564→   564→PHARMA-DRUG-ID
+   565→   565→
+   566→   566→Do not store sensitive information directly inside QR code.
+   567→   567→
+   568→   568→QR should point to:
+   569→   569→
+   570→   570→/verify/<drugId>
+   571→   571→
+   572→   572→or contain a signed verification token.
+   573→   573→
+   574→   574→Create QR generation functionality.
+   575→   575→
+   576→   576→Create QR scanner functionality using browser camera.
+   577→   577→
+   578→   578→Also allow manual code entry.
+   579→   579→
+   580→   580→==================================================
+   581→   581→11. VERIFY DRUG PAGE
+   582→   582→====================
+   583→   583→
+   584→   584→This is the MOST IMPORTANT page.
+   585→   585→
+   586→   586→Design it as a premium verification interface.
+   587→   587→
+   588→   588→Heading:
+   589→   589→
+   590→   590→“Verify Pharmaceutical Drug”
+   591→   591→
+   592→   592→Three verification methods:
+   593→   593→
+   594→   594→1. Scan QR Code
+   595→   595→2. Enter Batch/Drug ID
+   596→   596→3. Upload QR image if supported
+   597→   597→
+   598→   598→Create a large scanning area.
+   599→   599→
+   600→   600→Camera scanning animation.
+   601→   601→
+   602→   602→After scanning:
+   603→   603→
+   604→   604→Show loading animation:
+   605→   605→
+   606→   606→“Querying blockchain…”
+   607→   607→
+   608→   608→Then:
+   609→   609→
+   610→   610→“Validating pharmaceutical record…”
+   611→   611→
+   612→   612→Then:
+   613→   613→
+   614→   614→“Checking supply-chain history…”
+   615→   615→
+   616→   616→Then:
+   617→   617→
+   618→   618→result.
+   619→   619→
+   620→   620→==================================================
+   621→   621→12. AUTHENTIC RESULT
+   622→   622→====================
+   623→   623→
+   624→   624→If valid:
+   625→   625→
+   626→   626→Large green verification indicator.
+   627→   627→
+   628→   628→Text:
+   629→   629→
+   630→   630→“AUTHENTIC DRUG”
+   631→   631→
+   632→   632→Show:
+   633→   633→
+   634→   634→✓ Blockchain record found
+   635→   635→✓ Manufacturer verified
+   636→   636→✓ Batch verified
+   637→   637→✓ Supply-chain history verified
+   638→   638→✓ Expiry status valid
+   639→   639→
+   640→   640→Drug details:
+   641→   641→
+   642→   642→Drug Name
+   643→   643→Generic Name
+   644→   644→Manufacturer
+   645→   645→Batch Number
+   646→   646→Manufacturing Date
+   647→   647→Expiry Date
+   648→   648→Quantity
+   649→   649→Current Location
+   650→   650→Current Owner
+   651→   651→Status
+   652→   652→
+   653→   653→Display:
+   654→   654→
+   655→   655→Blockchain Transaction ID
+   656→   656→Block Number
+   657→   657→Timestamp
+   658→   658→
+   659→   659→Add:
+   660→   660→
+   661→   661→“View Blockchain Record”
+   662→   662→
+   663→   663→button.
+   664→   664→
+   665→   665→==================================================
+   666→   666→13. INVALID RESULT
+   667→   667→==================
+   668→   668→
+   669→   669→If drug ID does not exist:
+   670→   670→
+   671→   671→Show red warning interface.
+   672→   672→
+   673→   673→Title:
+   674→   674→
+   675→   675→“DRUG NOT VERIFIED”
+   676→   676→
+   677→   677→Explain:
+   678→   678→
+   679→   679→“No matching blockchain record was found for this pharmaceutical identifier.”
+   680→   680→
+   681→   681→Do NOT expose unnecessary internal technical information.
+   682→   682→
+   683→   683→Buttons:
+   684→   684→
+   685→   685→Try Again
+   686→   686→Report Suspicious Drug
+   687→   687→
+   688→   688→==================================================
+   689→   689→14. EXPIRED DRUG
+   690→   690→================
+   691→   691→
+   692→   692→If expiry date has passed:
+   693→   693→
+   694→   694→Show amber/red warning.
+   695→   695→
+   696→   696→Title:
+   697→   697→
+   698→   698→“EXPIRED DRUG”
+   699→   699→
+   700→   700→Display:
+   701→   701→
+   702→   702→Expiry Date
+   703→   703→Current Date
+   704→   704→Batch Number
+   705→   705→Manufacturer
+   706→   706→
+   707→   707→Do not mark an expired but genuine batch as counterfeit.
+   708→   708→
+   709→   709→Distinguish:
+   710→   710→
+   711→   711→Authenticity
+   712→   712→from
+   713→   713→Expiry Status.
+   714→   714→
+   715→   715→==================================================
+   716→   716→15. SUPPLY CHAIN TRACKING
+   717→   717→=========================
+   718→   718→
+   719→   719→Create a visually impressive supply-chain tracking page.
+   720→   720→
+   721→   721→Display a horizontal/vertical timeline:
+   722→   722→
+   723→   723→Manufacturer
+   724→   724→↓
+   725→   725→Distributor
+   726→   726→↓
+   727→   727→Wholesaler
+   728→   728→↓
+   729→   729→Pharmacy
+   730→   730→↓
+   731→   731→Customer
+   732→   732→
+   733→   733→Each stage should show:
+   734→   734→
+   735→   735→* organization
+   736→   736→* location
+   737→   737→* timestamp
+   738→   738→* transaction ID
+   739→   739→* status
+   740→   740→* blockchain block
+   741→   741→
+   742→   742→Example:
+   743→   743→
+   744→   744→MANUFACTURER
+   745→   745→ABC Pharmaceuticals
+   746→   746→Mumbai, India
+   747→   747→Registered
+   748→   748→01 Oct 2026, 09:15 AM
+   749→   749→Block #102
+   750→   750→
+   751→   751→↓
+   752→   752→
+   753→   753→DISTRIBUTOR
+   754→   754→XYZ Distribution
+   755→   755→Pune, India
+   756→   756→Received
+   757→   757→02 Oct 2026, 03:40 PM
+   758→   758→Block #103
+   759→   759→
+   760→   760→↓
+   761→   761→
+   762→   762→PHARMACY
+   763→   763→HealthPlus Pharmacy
+   764→   764→Pune, India
+   765→   765→Received
+   766→   766→03 Oct 2026, 11:20 AM
+   767→   767→Block #104
+   768→   768→
+   769→   769→Use animated timeline.
+   770→   770→
+   771→   771→Allow the user to click each event and inspect transaction details.
+   772→   772→
+   773→   773→==================================================
+   774→   774→16. TRANSFER DRUG
+   775→   775→=================
+   776→   776→
+   777→   777→Create:
+   778→   778→
+   779→   779→“Transfer Drug Batch”
+   780→   780→
+   781→   781→Fields:
+   782→   782→
+   783→   783→Drug/Batch ID
+   784→   784→From
+   785→   785→To
+   786→   786→Destination
+   787→   787→Quantity
+   788→   788→Transfer Notes
+   789→   789→
+   790→   790→Before transfer:
+   791→   791→
+   792→   792→Check current ownership.
+   793→   793→
+   794→   794→Check available quantity.
+   795→   795→
+   796→   796→Check drug status.
+   797→   797→
+   798→   798→On transfer:
+   799→   799→
+   800→   800→1. Validate transfer
+   801→   801→2. Create supply-chain event
+   802→   802→3. Create blockchain transaction
+   803→   803→4. Generate new block
+   804→   804→5. Update current owner
+   805→   805→6. Update location
+   806→   806→7. Show transaction receipt
+   807→   807→
+   808→   808→Transaction receipt:
+   809→   809→
+   810→   810→Transfer Successful
+   811→   811→
+   812→   812→Transaction ID
+   813→   813→Block Number
+   814→   814→Previous Hash
+   815→   815→Current Hash
+   816→   816→Timestamp
+   817→   817→From
+   818→   818→To
+   819→   819→
+   820→   820→==================================================
+   821→   821→17. BLOCKCHAIN EXPLORER
+   822→   822→=======================
+   823→   823→
+   824→   824→Create a complete blockchain explorer.
+   825→   825→
+   826→   826→Page title:
+   827→   827→
+   828→   828→“Blockchain Ledger”
+   829→   829→
+   830→   830→Display:
+   831→   831→
+   832→   832→Total Blocks
+   833→   833→Latest Block
+   834→   834→Transactions
+   835→   835→Chain Integrity
+   836→   836→
+   837→   837→Show blocks as cards.
+   838→   838→
+   839→   839→Each block:
+   840→   840→
+   841→   841→Block #
+   842→   842→Timestamp
+   843→   843→Hash
+   844→   844→Previous Hash
+   845→   845→Transaction Count
+   846→   846→
+   847→   847→Click a block.
+   848→   848→
+   849→   849→Show:
+   850→   850→
+   851→   851→Block Details
+   852→   852→Transactions
+   853→   853→Hash
+   854→   854→Previous Hash
+   855→   855→Timestamp
+   856→   856→Nonce if implemented
+   857→   857→
+   858→   858→Create visual chain:
+   859→   859→
+   860→   860→Block 101
+   861→   861→↓
+   862→   862→Block 102
+   863→   863→↓
+   864→   864→Block 103
+   865→   865→↓
+   866→   866→Block 104
+   867→   867→
+   868→   868→Animate the connection between blocks.
+   869→   869→
+   870→   870→Provide a:
+   871→   871→
+   872→   872→“Verify Chain Integrity”
+   873→   873→
+   874→   874→button.
+   875→   875→
+   876→   876→The system should calculate whether hashes correctly link.
+   877→   877→
+   878→   878→If valid:
+   879→   879→
+   880→   880→“Blockchain Integrity Verified”
+   881→   881→
+   882→   882→If tampered:
+   883→   883→
+   884→   884→“Chain Integrity Error”
+   885→   885→
+   886→   886→==================================================
+   887→   887→18. TRANSACTION PAGE
+   888→   888→====================
+   889→   889→
+   890→   890→Create transaction history.
+   891→   891→
+   892→   892→Columns:
+   893→   893→
+   894→   894→Transaction ID
+   895→   895→Type
+   896→   896→Drug ID
+   897→   897→Batch Number
+   898→   898→From
+   899→   899→To
+   900→   900→Timestamp
+   901→   901→Block
+   902→   902→Status
+   903→   903→
+   904→   904→Transaction types:
+   905→   905→
+   906→   906→DRUG_REGISTERED
+   907→   907→DRUG_RECEIVED
+   908→   908→DRUG_TRANSFERRED
+   909→   909→DRUG_VERIFIED
+   910→   910→DRUG_FLAGGED
+   911→   911→DRUG_DISPENSED
+   912→   912→
+   913→   913→Add:
+   914→   914→
+   915→   915→search
+   916→   916→filter
+   917→   917→sort
+   918→   918→pagination
+   919→   919→
+   920→   920→Click transaction to view full details.
+   921→   921→
+   922→   922→==================================================
+   923→   923→19. ADMIN DASHBOARD
+   924→   924→===================
+   925→   925→
+   926→   926→Admin dashboard should show:
+   927→   927→
+   928→   928→Total users
+   929→   929→Total manufacturers
+   930→   930→Total distributors
+   931→   931→Total pharmacies
+   932→   932→Total registered drugs
+   933→   933→Total blockchain transactions
+   934→   934→Total verifications
+   935→   935→Flagged drugs
+   936→   936→Expired drugs
+   937→   937→
+   938→   938→Charts:
+   939→   939→
+   940→   940→Verification activity
+   941→   941→Supply-chain activity
+   942→   942→Users by role
+   943→   943→Drug status
+   944→   944→
+   945→   945→Admin can:
+   946→   946→
+   947→   947→View users
+   948→   948→View drugs
+   949→   949→View transactions
+   950→   950→View blockchain
+   951→   951→View flagged drugs
+   952→   952→
+   953→   953→==================================================
+   954→   954→20. ANALYTICS PAGE
+   955→   955→==================
+   956→   956→
+   957→   957→Create professional analytics dashboard.
+   958→   958→
+   959→   959→Charts:
+   960→   960→
+   961→   961→Drug registrations over time
+   962→   962→Verification attempts
+   963→   963→Successful verifications
+   964→   964→Failed verifications
+   965→   965→Expired drugs
+   966→   966→Supply-chain transfers
+   967→   967→Transactions per day
+   968→   968→
+   969→   969→Use Recharts.
+   970→   970→
+   971→   971→Charts must retrieve data from backend APIs.
+   972→   972→
+   973→   973→==================================================
+   974→   974→21. DATABASE DESIGN
+   975→   975→===================
+   976→   976→
+   977→   977→Create proper database models.
+   978→   978→
+   979→   979→Minimum models:
+   980→   980→
+   981→   981→User
+   982→   982→Drug
+   983→   983→DrugBatch
+   984→   984→SupplyChainEvent
+   985→   985→Transaction
+   986→   986→BlockchainBlock
+   987→   987→VerificationRecord
+   988→   988→Notification
+   989→   989→
+   990→   990→Suggested relationships:
+   991→   991→
+   992→   992→User
+   993→   993→has many DrugBatches
+   994→   994→
+   995→   995→DrugBatch
+   996→   996→has many SupplyChainEvents
+   997→   997→
+   998→   998→DrugBatch
+   999→   999→has many VerificationRecords
+  1000→  1000→
+  1001→  1001→DrugBatch
+  1002→  1002→has many Transactions
+  1003→  1003→
+  1004→  1004→BlockchainBlock
+  1005→  1005→has many Transactions
+  1006→  1006→
+  1007→  1007→Use unique constraints where appropriate.
+  1008→  1008→
+  1009→  1009→Important fields:
+  1010→  1010→
+  1011→  1011→USER:
+  1012→  1012→id
+  1013→  1013→name
+  1014→  1014→email
+  1015→  1015→passwordHash
+  1016→  1016→role
+  1017→  1017→organization
+  1018→  1018→location
+  1019→  1019→createdAt
+  1020→  1020→
+  1021→  1021→DRUG:
+  1022→  1022→id
+  1023→  1023→drugName
+  1024→  1024→genericName
+  1025→  1025→manufacturer
+  1026→  1026→batchNumber
+  1027→  1027→serialNumber
+  1028→  1028→manufacturingDate
+  1029→  1029→expiryDate
+  1030→  1030→quantity
+  1031→  1031→dosageForm
+  1032→  1032→storageRequirement
+  1033→  1033→manufacturingLocation
+  1034→  1034→status
+  1035→  1035→currentOwnerId
+  1036→  1036→currentLocation
+  1037→  1037→qrToken
+  1038→  1038→createdAt
+  1039→  1039→
+  1040→  1040→SUPPLY_CHAIN_EVENT:
+  1041→  1041→id
+  1042→  1042→drugId
+  1043→  1043→eventType
+  1044→  1044→fromUserId
+  1045→  1045→toUserId
+  1046→  1046→location
+  1047→  1047→quantity
+  1048→  1048→notes
+  1049→  1049→transactionId
+  1050→  1050→timestamp
+  1051→  1051→
+  1052→  1052→TRANSACTION:
+  1053→  1053→id
+  1054→  1054→transactionHash
+  1055→  1055→drugId
+  1056→  1056→type
+  1057→  1057→from
+  1058→  1058→to
+  1059→  1059→data
+  1060→  1060→blockNumber
+  1061→  1061→timestamp
+  1062→  1062→
+  1063→  1063→BLOCK:
+  1064→  1064→id
+  1065→  1065→blockNumber
+  1066→  1066→timestamp
+  1067→  1067→previousHash
+  1068→  1068→hash
+  1069→  1069→nonce
+  1070→  1070→transactions
+  1071→  1071→
+  1072→  1072→VERIFICATION:
+  1073→  1073→id
+  1074→  1074→drugId
+  1075→  1075→verificationMethod
+  1076→  1076→result
+  1077→  1077→ip/session information only if appropriate
+  1078→  1078→timestamp
+  1079→  1079→
+  1080→  1080→Do not store unnecessary personal data.
+  1081→  1081→
+  1082→  1082→==================================================
+  1083→  1083→22. API DESIGN
+  1084→  1084→==============
+  1085→  1085→
+  1086→  1086→Create REST APIs.
+  1087→  1087→
+  1088→  1088→Authentication:
+  1089→  1089→
+  1090→  1090→POST /api/auth/register
+  1091→  1091→POST /api/auth/login
+  1092→  1092→GET /api/auth/me
+  1093→  1093→
+  1094→  1094→Drugs:
+  1095→  1095→
+  1096→  1096→POST /api/drugs
+  1097→  1097→GET /api/drugs
+  1098→  1098→GET /api/drugs/:id
+  1099→  1099→PUT /api/drugs/:id
+  1100→  1100→
+  1101→  1101→Verification:
+  1102→  1102→
+  1103→  1103→GET /api/verify/:id
+  1104→  1104→POST /api/verify
+  1105→  1105→
+  1106→  1106→Supply chain:
+  1107→  1107→
+  1108→  1108→POST /api/supply-chain/transfer
+  1109→  1109→GET /api/supply-chain/:drugId
+  1110→  1110→
+  1111→  1111→Blockchain:
+  1112→  1112→
+  1113→  1113→GET /api/blockchain/blocks
+  1114→  1114→GET /api/blockchain/blocks/:number
+  1115→  1115→GET /api/blockchain/transactions
+  1116→  1116→GET /api/blockchain/verify-integrity
+  1117→  1117→
+  1118→  1118→Analytics:
+  1119→  1119→
+  1120→  1120→GET /api/analytics/dashboard
+  1121→  1121→GET /api/analytics/verifications
+  1122→  1122→GET /api/analytics/supply-chain
+  1123→  1123→
+  1124→  1124→Users:
+  1125→  1125→
+  1126→  1126→GET /api/users
+  1127→  1127→GET /api/users/:id
+  1128→  1128→
+  1129→  1129→Implement proper validation and error responses.
+  1130→  1130→
+  1131→  1131→==================================================
+  1132→  1132→23. BLOCKCHAIN LOGIC
+  1133→  1133→====================
+  1134→  1134→
+  1135→  1135→Implement a real educational blockchain simulation.
+  1136→  1136→
+  1137→  1137→Create:
+  1138→  1138→
+  1139→  1139→Block class
+  1140→  1140→Blockchain class
+  1141→  1141→Transaction class
+  1142→  1142→
+  1143→  1143→Block properties:
+  1144→  1144→
+  1145→  1145→index
+  1146→  1146→timestamp
+  1147→  1147→transactions
+  1148→  1148→previousHash
+  1149→  1149→hash
+  1150→  1150→nonce
+  1151→  1151→
+  1152→  1152→Use SHA-256 hashing.
+  1153→  1153→
+  1154→  1154→Hash should depend on:
+  1155→  1155→
+  1156→  1156→index
+  1157→  1157→timestamp
+  1158→  1158→transactions
+  1159→  1159→previousHash
+  1160→  1160→nonce
+  1161→  1161→
+  1162→  1162→Genesis block should be created automatically.
+  1163→  1163→
+  1164→  1164→Every transaction should be stored inside a block.
+  1165→  1165→
+  1166→  1166→When a new block is mined/created:
+  1167→  1167→
+  1168→  1168→previousHash = previous block hash
+  1169→  1169→
+  1170→  1170→currentHash = SHA256(block contents)
+  1171→  1171→
+  1172→  1172→Implement:
+  1173→  1173→
+  1174→  1174→addTransaction()
+  1175→  1175→createBlock()
+  1176→  1176→calculateHash()
+  1177→  1177→verifyChain()
+  1178→  1178→getBlock()
+  1179→  1179→getTransaction()
+  1180→  1180→
+  1181→  1181→The blockchain should persist to the database.
+  1182→  1182→
+  1183→  1183→Do NOT store blockchain only in browser memory.
+  1184→  1184→
+  1185→  1185→==================================================
+  1186→  1186→24. SMART CONTRACT / CHAINCODE ABSTRACTION
+  1187→  1187→==========================================
+  1188→  1188→
+  1189→  1189→Create a separate blockchain contract/service layer.
+  1190→  1190→
+  1191→  1191→Example functions:
+  1192→  1192→
+  1193→  1193→registerDrug()
+  1194→  1194→verifyDrug()
+  1195→  1195→transferDrug()
+  1196→  1196→receiveDrug()
+  1197→  1197→flagDrug()
+  1198→  1198→getDrugHistory()
+  1199→  1199→
+  1200→  1200→Business rules:
+  1201→  1201→
+  1202→  1202→A drug must be registered before transfer.
+  1203→  1203→
+  1204→  1204→Only the current owner can transfer a batch.
+  1205→  1205→
+  1206→  1206→Quantity cannot become negative.
+  1207→  1207→
+  1208→  1208→A drug cannot be transferred after expiry if business rules prohibit it.
+  1209→  1209→
+  1210→  1210→Verification must not modify the drug record.
+  1211→  1211→
+  1212→  1212→Every verification should generate an auditable verification transaction where appropriate.
+  1213→  1213→
+  1214→  1214→Use clear comments explaining how this corresponds to Hyperledger Fabric chaincode.
+  1215→  1215→
+  1216→  1216→If actual Fabric integration is included, isolate it under:
+  1217→  1217→
+  1218→  1218→/blockchain/fabric/
+  1219→  1219→
+  1220→  1220→If demo blockchain is used:
+  1221→  1221→
+  1222→  1222→/blockchain/local/
+  1223→  1223→
+  1224→  1224→Use an adapter interface:
+  1225→  1225→
+  1226→  1226→BlockchainAdapter
+  1227→  1227→
+  1228→  1228→Implement:
+  1229→  1229→
+  1230→  1230→LocalBlockchainAdapter
+  1231→  1231→
+  1232→  1232→Keep:
+  1233→  1233→
+  1234→  1234→FabricBlockchainAdapter
+  1235→  1235→
+  1236→  1236→as an extension point or clearly documented implementation if practical.
+  1237→  1237→
+  1238→  1238→==================================================
+  1239→  1239→25. SECURITY
+  1240→  1240→============
+  1241→  1241→
+  1242→  1242→Implement:
+  1243→  1243→
+  1244→  1244→JWT authentication
+  1245→  1245→bcrypt password hashing
+  1246→  1246→input validation
+  1247→  1247→rate limiting for verification endpoint
+  1248→  1248→CORS configuration
+  1249→  1249→helmet/security headers
+  1250→  1250→parameterized database queries/ORM
+  1251→  1251→server-side validation
+  1252→  1252→role-based authorization
+  1253→  1253→
+  1254→  1254→Never expose password hashes.
+  1255→  1255→
+  1256→  1256→Do not place secrets directly into source code.
+  1257→  1257→
+  1258→  1258→Use:
+  1259→  1259→
+  1260→  1260→.env
+  1261→  1261→
+  1262→  1262→Create:
+  1263→  1263→
+  1264→  1264→.env.example
+  1265→  1265→
+  1266→  1266→Example:
+  1267→  1267→
+  1268→  1268→DATABASE_URL=
+  1269→  1269→JWT_SECRET=
+  1270→  1270→PORT=
+  1271→  1271→BLOCKCHAIN_MODE=local
+  1272→  1272→
+  1273→  1273→==================================================
+  1274→  1274→26. ERROR HANDLING
+  1275→  1275→==================
+  1276→  1276→
+  1277→  1277→Create professional error states.
+  1278→  1278→
+  1279→  1279→Examples:
+  1280→  1280→
+  1281→  1281→Network error
+  1282→  1282→Server error
+  1283→  1283→Invalid QR
+  1284→  1284→Invalid batch number
+  1285→  1285→Drug not found
+  1286→  1286→Unauthorized
+  1287→  1287→Forbidden
+  1288→  1288→Expired drug
+  1289→  1289→Duplicate batch
+  1290→  1290→Invalid transfer
+  1291→  1291→Insufficient quantity
+  1292→  1292→Blockchain integrity failure
+  1293→  1293→
+  1294→  1294→Use toast notifications.
+  1295→  1295→
+  1296→  1296→Do not show raw stack traces to users.
+  1297→  1297→
+  1298→  1298→Log detailed errors only on server side.
+  1299→  1299→
+  1300→  1300→==================================================
+  1301→  1301→27. LOADING STATES
+  1302→  1302→==================
+  1303→  1303→
+  1304→  1304→Every asynchronous operation must have a loading state.
+  1305→  1305→
+  1306→  1306→Examples:
+  1307→  1307→
+  1308→  1308→“Connecting to blockchain…”
+  1309→  1309→“Fetching drug record…”
+  1310→  1310→“Validating batch…”
+  1311→  1311→“Creating blockchain transaction…”
+  1312→  1312→“Generating QR code…”
+  1313→  1313→
+  1314→  1314→Use skeleton loaders where appropriate.
+  1315→  1315→
+  1316→  1316→==================================================
+  1317→  1317→28. RESPONSIVE DESIGN
+  1318→  1318→=====================
+  1319→  1319→
+  1320→  1320→Desktop:
+  1321→  1321→
+  1322→  1322→Full sidebar/dashboard.
+  1323→  1323→
+  1324→  1324→Tablet:
+  1325→  1325→
+  1326→  1326→Collapsible sidebar.
+  1327→  1327→
+  1328→  1328→Mobile:
+  1329→  1329→
+  1330→  1330→Bottom navigation or compact menu.
+  1331→  1331→
+  1332→  1332→Verification page must be especially mobile-friendly because QR scanning may be done using mobile devices.
+  1333→  1333→
+  1334→  1334→==================================================
+  1335→  1335→29. ACCESSIBILITY
+  1336→  1336→=================
+  1337→  1337→
+  1338→  1338→Implement:
+  1339→  1339→
+  1340→  1340→semantic HTML
+  1341→  1341→keyboard navigation
+  1342→  1342→visible focus states
+  1343→  1343→proper labels
+  1344→  1344→ARIA where required
+  1345→  1345→sufficient contrast
+  1346→  1346→accessible buttons
+  1347→  1347→accessible forms
+  1348→  1348→
+  1349→  1349→Do not rely only on color to indicate verification status.
+  1350→  1350→
+  1351→  1351→==================================================
+  1352→  1352→30. DEMO DATA
+  1353→  1353→=============
+  1354→  1354→
+  1355→  1355→Seed realistic fictional pharmaceutical data.
+  1356→  1356→
+  1357→  1357→IMPORTANT:
+  1358→  1358→
+  1359→  1359→Use fictional companies and fictional pharmaceutical products.
+  1360→  1360→
+  1361→  1361→Do not present fictional companies as real companies.
+  1362→  1362→
+  1363→  1363→Example manufacturers:
+  1364→  1364→
+  1365→  1365→NovaCure Pharmaceuticals
+  1366→  1366→MediCore Labs
+  1367→  1367→AstraNova Healthcare
+  1368→  1368→
+  1369→  1369→Example drugs:
+  1370→  1370→
+  1371→  1371→Paracetamol 500mg
+  1372→  1372→Amoxicillin 500mg
+  1373→  1373→Azithromycin 250mg
+  1374→  1374→Vitamin D3 60000 IU
+  1375→  1375→
+  1376→  1376→Create at least:
+  1377→  1377→
+  1378→  1378→10 drug batches
+  1379→  1379→5 manufacturers/users
+  1380→  1380→5 distributors/users
+  1381→  1381→5 pharmacies/users
+  1382→  1382→20+ blockchain transactions
+  1383→  1383→multiple supply-chain events
+  1384→  1384→
+  1385→  1385→Create both:
+  1386→  1386→
+  1387→  1387→valid drugs
+  1388→  1388→expired drug
+  1389→  1389→flagged drug
+  1390→  1390→invalid verification scenario
+  1391→  1391→
+  1392→  1392→Make the demo visually rich.
+  1393→  1393→
+  1394→  1394→==================================================
+  1395→  1395→31. DEMO ACCOUNTS
+  1396→  1396→=================
+  1397→  1397→
+  1398→  1398→Create sample accounts.
+  1399→  1399→
+  1400→  1400→Example:
+  1401→  1401→
+  1402→  1402→[admin@pharmatrace.demo](mailto:admin@pharmatrace.demo)
+  1403→  1403→
+  1404→  1404→[manufacturer@pharmatrace.demo](mailto:manufacturer@pharmatrace.demo)
+  1405→  1405→
+  1406→  1406→[distributor@pharmatrace.demo](mailto:distributor@pharmatrace.demo)
+  1407→  1407→
+  1408→  1408→[pharmacy@pharmatrace.demo](mailto:pharmacy@pharmatrace.demo)
+  1409→  1409→
+  1410→  1410→[customer@pharmatrace.demo](mailto:customer@pharmatrace.demo)
+  1411→  1411→
+  1412→  1412→Use an obvious demo password documented in README.
+  1413→  1413→
+  1414→  1414→Clearly mark these as DEMO ACCOUNTS.
+  1415→  1415→
+  1416→  1416→==================================================
+  1417→  1417→32. NOTIFICATION SYSTEM
+  1418→  1418→=======================
+  1419→  1419→
+  1420→  1420→Create notification dropdown.
+  1421→  1421→
+  1422→  1422→Examples:
+  1423→  1423→
+  1424→  1424→Drug batch registered
+  1425→  1425→Drug transferred
+  1426→  1426→Drug received
+  1427→  1427→Verification successful
+  1428→  1428→Suspicious drug detected
+  1429→  1429→Drug expired
+  1430→  1430→
+  1431→  1431→Use timestamps.
+  1432→  1432→
+  1433→  1433→==================================================
+  1434→  1434→33. SEARCH
+  1435→  1435→==========
+  1436→  1436→
+  1437→  1437→Global search should support:
+  1438→  1438→
+  1439→  1439→Drug ID
+  1440→  1440→Batch number
+  1441→  1441→Drug name
+  1442→  1442→Transaction ID
+  1443→  1443→
+  1444→  1444→Show categorized results.
+  1445→  1445→
+  1446→  1446→==================================================
+  1447→  1447→34. DRUG DETAILS PAGE
+  1448→  1448→=====================
+  1449→  1449→
+  1450→  1450→Create:
+  1451→  1451→
+  1452→  1452→/drugs/:id
+  1453→  1453→
+  1454→  1454→Display:
+  1455→  1455→
+  1456→  1456→Drug overview
+  1457→  1457→Authenticity
+  1458→  1458→Batch information
+  1459→  1459→Manufacturer
+  1460→  1460→Current owner
+  1461→  1461→Current location
+  1462→  1462→Expiry status
+  1463→  1463→QR code
+  1464→  1464→Supply-chain history
+  1465→  1465→Blockchain history
+  1466→  1466→Verification history
+  1467→  1467→
+  1468→  1468→Use tabs:
+  1469→  1469→
+  1470→  1470→Overview
+  1471→  1471→Supply Chain
+  1472→  1472→Blockchain
+  1473→  1473→Verification History
+  1474→  1474→
+  1475→  1475→==================================================
+  1476→  1476→35. VERIFICATION HISTORY
+  1477→  1477→========================
+  1478→  1478→
+  1479→  1479→Show:
+  1480→  1480→
+  1481→  1481→Date
+  1482→  1482→Verification result
+  1483→  1483→Method
+  1484→  1484→Drug ID
+  1485→  1485→Transaction ID
+  1486→  1486→
+  1487→  1487→Example:
+  1488→  1488→
+  1489→  1489→02 Oct 2026
+  1490→  1490→QR Scan
+  1491→  1491→AUTHENTIC
+  1492→  1492→Transaction #TX1029
+  1493→  1493→
+  1494→  1494→==================================================
+  1495→  1495→36. QR SCANNER UX
+  1496→  1496→=================
+  1497→  1497→
+  1498→  1498→Scanner screen should contain:
+  1499→  1499→
+  1500→  1500→Camera frame
+  1501→  1501→corner brackets
+  1502→  1502→animated scanning line
+  1503→  1503→permission state
+  1504→  1504→camera unavailable state
+  1505→  1505→manual input fallback
+  1506→  1506→
+  1507→  1507→If camera permission is denied:
+  1508→  1508→
+  1509→  1509→Show:
+  1510→  1510→
+  1511→  1511→“Camera access unavailable. Enter the drug ID manually.”
+  1512→  1512→
+  1513→  1513→Never make camera access mandatory.
+  1514→  1514→
+  1515→  1515→==================================================
+  1516→  1516→37. PUBLIC VERIFICATION
+  1517→  1517→=======================
+  1518→  1518→
+  1519→  1519→Create a public verification route:
+  1520→  1520→
+  1521→  1521→/verify/:drugId
+  1522→  1522→
+  1523→  1523→A person should be able to scan the QR and view verification without logging in.
+  1524→  1524→
+  1525→  1525→Public page should show only safe information:
+  1526→  1526→
+  1527→  1527→Drug name
+  1528→  1528→Batch
+  1529→  1529→Manufacturer
+  1530→  1530→Manufacturing date
+  1531→  1531→Expiry
+  1532→  1532→Authenticity
+  1533→  1533→Current supply-chain stage
+  1534→  1534→verification timestamp
+  1535→  1535→
+  1536→  1536→Do not expose private user information.
+  1537→  1537→
+  1538→  1538→==================================================
+  1539→  1539→38. API SECURITY
+  1540→  1540→================
+  1541→  1541→
+  1542→  1542→Public verification endpoint should have:
+  1543→  1543→
+  1544→  1544→rate limiting
+  1545→  1545→input validation
+  1546→  1546→safe response structure
+  1547→  1547→
+  1548→  1548→Do not allow public users to modify anything.
+  1549→  1549→
+  1550→  1550→Only authenticated authorized roles can:
+  1551→  1551→
+  1552→  1552→register
+  1553→  1553→transfer
+  1554→  1554→receive
+  1555→  1555→flag
+  1556→  1556→manage records
+  1557→  1557→
+  1558→  1558→==================================================
+  1559→  1559→39. UI COMPONENTS
+  1560→  1560→=================
+  1561→  1561→
+  1562→  1562→Create reusable components:
+  1563→  1563→
+  1564→  1564→Navbar
+  1565→  1565→Sidebar
+  1566→  1566→Footer
+  1567→  1567→GlassCard
+  1568→  1568→StatCard
+  1569→  1569→StatusBadge
+  1570→  1570→VerificationCard
+  1571→  1571→BlockchainBlock
+  1572→  1572→TransactionRow
+  1573→  1573→Timeline
+  1574→  1574→QRCodeCard
+  1575→  1575→QRScanner
+  1576→  1576→DrugForm
+  1577→  1577→TransferForm
+  1578→  1578→Modal
+  1579→  1579→Toast
+  1580→  1580→LoadingSpinner
+  1581→  1581→Skeleton
+  1582→  1582→DataTable
+  1583→  1583→ChartCard
+  1584→  1584→EmptyState
+  1585→  1585→ErrorState
+  1586→  1586→ConfirmDialog
+  1587→  1587→
+  1588→  1588→==================================================
+  1589→  1589→40. ROUTES
+  1590→  1590→==========
+  1591→  1591→
+  1592→  1592→Create these routes:
+  1593→  1593→
+  1594→  1594→/
+  1595→  1595→/login
+  1596→  1596→/register
+  1597→  1597→/dashboard
+  1598→  1598→/verify
+  1599→  1599→/verify/:drugId
+  1600→  1600→/drugs
+  1601→  1601→/drugs/register
+  1602→  1602→/drugs/:id
+  1603→  1603→/supply-chain
+  1604→  1604→/blockchain
+  1605→  1605→/blockchain/:blockNumber
+  1606→  1606→/transactions
+  1607→  1607→/analytics
+  1608→  1608→/users
+  1609→  1609→/profile
+  1610→  1610→/about
+  1611→  1611→
+  1612→  1612→Protect routes according to roles.
+  1613→  1613→
+  1614→  1614→==================================================
+  1615→  1615→41. ABOUT PAGE
+  1616→  1616→==============
+  1617→  1617→
+  1618→  1618→Explain the academic project.
+  1619→  1619→
+  1620→  1620→Sections:
+  1621→  1621→
+  1622→  1622→Problem
+  1623→  1623→Solution
+  1624→  1624→Blockchain Role
+  1625→  1625→QR Authentication
+  1626→  1626→Supply Chain Tracking
+  1627→  1627→Smart Contracts
+  1628→  1628→Technology Stack
+  1629→  1629→Future Scope
+  1630→  1630→
+  1631→  1631→Mention that this is an academic prototype and not a production pharmaceutical regulatory system.
+  1632→  1632→
+  1633→  1633→==================================================
+  1634→  1634→42. FUTURE SCOPE
+  1635→  1635→================
+  1636→  1636→
+  1637→  1637→Include:
+  1638→  1638→
+  1639→  1639→Hyperledger Fabric deployment
+  1640→  1640→IoT sensor integration
+  1641→  1641→temperature monitoring
+  1642→  1642→cold-chain tracking
+  1643→  1643→real pharmaceutical database APIs
+  1644→  1644→mobile application
+  1645→  1645→NFC integration
+  1646→  1646→advanced anomaly detection
+  1647→  1647→regulatory integration
+  1648→  1648→multi-organization permissioned blockchain
+  1649→  1649→
+  1650→  1650→Do not claim these features are currently implemented unless they actually are.
+  1651→  1651→
+  1652→  1652→==================================================
+  1653→  1653→43. BLOCKCHAIN VISUALIZATION
+  1654→  1654→============================
+  1655→  1655→
+  1656→  1656→Create a futuristic blockchain visualization on dashboard.
+  1657→  1657→
+  1658→  1658→Example:
+  1659→  1659→
+  1660→  1660→[Manufacturer]
+  1661→  1661→|
+  1662→  1662→↓
+  1663→  1663→[Block #101]
+  1664→  1664→|
+  1665→  1665→↓
+  1666→  1666→[Block #102]
+  1667→  1667→|
+  1668→  1668→↓
+  1669→  1669→[Block #103]
+  1670→  1670→|
+  1671→  1671→↓
+  1672→  1672→[Block #104]
+  1673→  1673→|
+  1674→  1674→↓
+  1675→  1675→[Pharmacy]
+  1676→  1676→
+  1677→  1677→Each block should visually display:
+  1678→  1678→
+  1679→  1679→Block number
+  1680→  1680→Hash
+  1681→  1681→Timestamp
+  1682→  1682→Transaction count
+  1683→  1683→
+  1684→  1684→Add subtle animated data flow.
+  1685→  1685→
+  1686→  1686→==================================================
+  1687→  1687→44. VERIFICATION ANIMATION
+  1688→  1688→==========================
+  1689→  1689→
+  1690→  1690→When verifying:
+  1691→  1691→
+  1692→  1692→Step 1:
+  1693→  1693→
+  1694→  1694→Scanning QR…
+  1695→  1695→
+  1696→  1696→Step 2:
+  1697→  1697→
+  1698→  1698→Retrieving blockchain record…
+  1699→  1699→
+  1700→  1700→Step 3:
+  1701→  1701→
+  1702→  1702→Validating hash…
+  1703→  1703→
+  1704→  1704→Step 4:
+  1705→  1705→
+  1706→  1706→Checking manufacturer…
+  1707→  1707→
+  1708→  1708→Step 5:
+  1709→  1709→
+  1710→  1710→Checking batch…
+  1711→  1711→
+  1712→  1712→Step 6:
+  1713→  1713→
+  1714→  1714→Checking expiry…
+  1715→  1715→
+  1716→  1716→Step 7:
+  1717→  1717→
+  1718→  1718→Checking supply-chain history…
+  1719→  1719→
+  1720→  1720→Then reveal final result.
+  1721→  1721→
+  1722→  1722→This should make the project impressive during college presentation.
+  1723→  1723→
+  1724→  1724→==================================================
+  1725→  1725→45. DASHBOARD EXPERIENCE
+  1726→  1726→========================
+  1727→  1727→
+  1728→  1728→The dashboard should immediately communicate:
+  1729→  1729→
+  1730→  1730→“Your pharmaceutical supply chain is being monitored.”
+  1731→  1731→
+  1732→  1732→Include:
+  1733→  1733→
+  1734→  1734→Blockchain status:
+  1735→  1735→CONNECTED
+  1736→  1736→
+  1737→  1737→Chain integrity:
+  1738→  1738→VERIFIED
+  1739→  1739→
+  1740→  1740→Last block:
+  1741→  1741→#XXXX
+  1742→  1742→
+  1743→  1743→Network status:
+  1744→  1744→ONLINE
+  1745→  1745→
+  1746→  1746→Verification status:
+  1747→  1747→ACTIVE
+  1748→  1748→
+  1749→  1749→These values should come from the backend.
+  1750→  1750→
+  1751→  1751→==================================================
+  1752→  1752→46. PROJECT STRUCTURE
+  1753→  1753→=====================
+  1754→  1754→
+  1755→  1755→Create a clean monorepo structure similar to:
+  1756→  1756→
+  1757→  1757→pharmatrace/
+  1758→  1758→│
+  1759→  1759→├── frontend/
+  1760→  1760→│   ├── src/
+  1761→  1761→│   ├── components/
+  1762→  1762→│   ├── pages/
+  1763→  1763→│   ├── hooks/
+  1764→  1764→│   ├── services/
+  1765→  1765→│   ├── types/
+  1766→  1766→│   └── ...
+  1767→  1767→│
+  1768→  1768→├── backend/
+  1769→  1769→│   ├── src/
+  1770→  1770→│   ├── controllers/
+  1771→  1771→│   ├── routes/
+  1772→  1772→│   ├── services/
+  1773→  1773→│   ├── middleware/
+  1774→  1774→│   ├── models/
+  1775→  1775→│   └── ...
+  1776→  1776→│
+  1777→  1777→├── blockchain/
+  1778→  1778→│   ├── local/
+  1779→  1779→│   ├── fabric/
+  1780→  1780→│   └── interfaces/
+  1781→  1781→│
+  1782→  1782→├── prisma/
+  1783→  1783→│   ├── schema.prisma
+  1784→  1784→│   └── seed.ts
+  1785→  1785→│
+  1786→  1786→├── docs/
+  1787→  1787→│
+  1788→  1788→├── .env.example
+  1789→  1789→├── README.md
+  1790→  1790→└── package.json
+  1791→  1791→
+  1792→  1792→Adapt the structure if the chosen stack requires a better organization.
+  1793→  1793→
+  1794→  1794→==================================================
+  1795→  1795→47. README
+  1796→  1796→==========
+  1797→  1797→
+  1798→  1798→Generate a detailed README containing:
+  1799→  1799→
+  1800→  1800→Project overview
+  1801→  1801→Features
+  1802→  1802→Architecture
+  1803→  1803→Technology stack
+  1804→  1804→Folder structure
+  1805→  1805→Prerequisites
+  1806→  1806→Installation
+  1807→  1807→Environment variables
+  1808→  1808→Database setup
+  1809→  1809→Migration
+  1810→  1810→Seed data
+  1811→  1811→Running frontend
+  1812→  1812→Running backend
+  1813→  1813→Running demo blockchain
+  1814→  1814→Demo accounts
+  1815→  1815→Testing
+  1816→  1816→API documentation
+  1817→  1817→Blockchain explanation
+  1818→  1818→QR verification explanation
+  1819→  1819→Troubleshooting
+  1820→  1820→Future scope
+  1821→  1821→
+  1822→  1822→Commands should be exact and copy-pasteable.
+  1823→  1823→
+  1824→  1824→==================================================
+  1825→  1825→48. SETUP EXPERIENCE
+  1826→  1826→====================
+  1827→  1827→
+  1828→  1828→The project must be runnable using something similar to:
+  1829→  1829→
+  1830→  1830→npm install
+  1831→  1831→
+  1832→  1832→npm run setup
+  1833→  1833→
+  1834→  1834→npm run dev
+  1835→  1835→
+  1836→  1836→If separate frontend/backend commands are required, clearly document them.
+  1837→  1837→
+  1838→  1838→Do not require obscure tools unless absolutely necessary.
+  1839→  1839→
+  1840→  1840→==================================================
+  1841→  1841→49. TESTING
+  1842→  1842→===========
+  1843→  1843→
+  1844→  1844→Create basic tests for:
+  1845→  1845→
+  1846→  1846→User registration
+  1847→  1847→Login
+  1848→  1848→Drug registration
+  1849→  1849→Duplicate batch prevention
+  1850→  1850→Drug verification
+  1851→  1851→Invalid drug
+  1852→  1852→Expired drug
+  1853→  1853→Drug transfer
+  1854→  1854→Quantity validation
+  1855→  1855→Blockchain hash validation
+  1856→  1856→Blockchain integrity
+  1857→  1857→Unauthorized transfer
+  1858→  1858→
+  1859→  1859→Create at least basic backend API tests.
+  1860→  1860→
+  1861→  1861→==================================================
+  1862→  1862→50. DATA CONSISTENCY
+  1863→  1863→====================
+  1864→  1864→
+  1865→  1865→Very important:
+  1866→  1866→
+  1867→  1867→Do not hardcode different drug information in different pages.
+  1868→  1868→
+  1869→  1869→There must be one source of truth.
+  1870→  1870→
+  1871→  1871→If a drug is transferred:
+  1872→  1872→
+  1873→  1873→Dashboard
+  1874→  1874→Drug details
+  1875→  1875→Supply-chain page
+  1876→  1876→Blockchain
+  1877→  1877→Transaction page
+  1878→  1878→Verification page
+  1879→  1879→
+  1880→  1880→must all reflect the updated state.
+  1881→  1881→
+  1882→  1882→If a blockchain block is created:
+  1883→  1883→
+  1884→  1884→The transaction must appear consistently across the relevant pages.
+  1885→  1885→
+  1886→  1886→==================================================
+  1887→  1887→51. NO FAKE UI FUNCTIONALITY
+  1888→  1888→============================
+  1889→  1889→
+  1890→  1890→Do NOT create buttons that do nothing.
+  1891→  1891→
+  1892→  1892→Every button must either:
+  1893→  1893→
+  1894→  1894→* perform an action
+  1895→  1895→* navigate to a working page
+  1896→  1896→* open a working modal
+  1897→  1897→* display a meaningful explanation
+  1898→  1898→
+  1899→  1899→Do not create fake “AI” buttons.
+  1900→  1900→
+  1901→  1901→Do not display fake blockchain transactions that are not stored.
+  1902→  1902→
+  1903→  1903→Do not show fake real-time data.
+  1904→  1904→
+  1905→  1905→Use seeded demo data for demonstration, but clearly distinguish demo data from live data.
+  1906→  1906→
+  1907→  1907→==================================================
+  1908→  1908→52. IMPORTANT BLOCKCHAIN EDUCATIONAL EXPLANATION
+  1909→  1909→================================================
+  1910→  1910→
+  1911→  1911→Inside the application, include a small educational explanation:
+  1912→  1912→
+  1913→  1913→“Why Blockchain?”
+  1914→  1914→
+  1915→  1915→Explain:
+  1916→  1916→
+  1917→  1917→Traditional database:
+  1918→  1918→records can be changed by authorized administrators.
+  1919→  1919→
+  1920→  1920→Blockchain:
+  1921→  1921→records are linked through cryptographic hashes and designed to provide tamper-evident history.
+  1922→  1922→
+  1923→  1923→Explain that the prototype uses a local educational blockchain adapter and that a permissioned Hyperledger Fabric deployment can be used for a production-oriented architecture.
+  1924→  1924→
+  1925→  1925→Do not claim that blockchain alone guarantees pharmaceutical authenticity.
+  1926→  1926→
+  1927→  1927→Explain that authenticity depends on trustworthy data entered by authorized participants.
+  1928→  1928→
+  1929→  1929→==================================================
+  1930→  1930→53. RESEARCH PAPER ALIGNMENT
+  1931→  1931→============================
+  1932→  1932→
+  1933→  1933→Align the implementation conceptually with the provided research paper.
+  1934→  1934→
+  1935→  1935→The paper describes:
+  1936→  1936→
+  1937→  1937→User Account Management
+  1938→  1938→Code Submission and Input Validation
+  1939→  1939→Backend and Blockchain Integration
+  1940→  1940→Smart Contracts and Validation
+  1941→  1941→
+  1942→  1942→Implement these as core modules.
+  1943→  1943→
+  1944→  1944→The paper also discusses:
+  1945→  1945→
+  1946→  1946→QR codes
+  1947→  1947→batch numbers
+  1948→  1948→manufacturing dates
+  1949→  1949→expiry dates
+  1950→  1950→blockchain records
+  1951→  1951→smart contracts
+  1952→  1952→Hyperledger Fabric
+  1953→  1953→audit trails
+  1954→  1954→pharmaceutical database integration
+  1955→  1955→
+  1956→  1956→Represent these concepts appropriately in the application.
+  1957→  1957→
+  1958→  1958→However, clearly label any features that are prototype extensions rather than features directly implemented in the paper.
+  1959→  1959→
+  1960→  1960→==================================================
+  1961→  1961→54. IMPORTANT ACADEMIC PRESENTATION FEATURES
+  1962→  1962→============================================
+  1963→  1963→
+  1964→  1964→Add a dedicated:
+  1965→  1965→
+  1966→  1966→“System Architecture”
+  1967→  1967→
+  1968→  1968→page or section.
+  1969→  1969→
+  1970→  1970→Show:
+  1971→  1971→
+  1972→  1972→User
+  1973→  1973→↓
+  1974→  1974→Frontend
+  1975→  1975→↓
+  1976→  1976→Backend API
+  1977→  1977→↓
+  1978→  1978→Authentication
+  1979→  1979→↓
+  1980→  1980→Drug Database
+  1981→  1981→↓
+  1982→  1982→Blockchain Service
+  1983→  1983→↓
+  1984→  1984→Smart Contract / Chaincode
+  1985→  1985→↓
+  1986→  1986→Blockchain Ledger
+  1987→  1987→
+  1988→  1988→Also show:
+  1989→  1989→
+  1990→  1990→Manufacturer
+  1991→  1991→↓
+  1992→  1992→Distributor
+  1993→  1993→↓
+  1994→  1994→Wholesaler
+  1995→  1995→↓
+  1996→  1996→Pharmacy
+  1997→  1997→↓
+  1998→  1998→Customer
+  1999→  1999→
+  2000→  2000→Create a visually impressive architecture diagram using HTML/SVG/CSS.
+
+[showing lines 1-2000 of 2002; use offset=2001 with limit to continue reading]

@@ -55,3 +55,76 @@ Unresolved / next-phase recommendations:
 - Real Hyperledger Fabric adapter is stubbed as a documented extension point (not wired up) — out of scope for college demo.
 - QR scanner uses jsQR + getUserMedia; works in Chrome/Edge/Firefox. Camera permissions may be denied in some sandboxed preview environments — manual entry is the documented fallback.
 - Public `/verify/:drugId` route is implemented as the SPA `verify` view; the backend `GET /api/verify/:drugId` endpoint is public (no login required).
+
+---
+Task ID: CRON-1 (first 15-min web dev review)
+Agent: Z.ai Code (cron-triggered webDevReview)
+Task: Assess current project status, perform QA via agent-browser, fix bugs, add new features and styling polish.
+
+Work Log:
+- Reviewed previous worklog — PharmaTrace was complete and runnable from the initial build.
+- Performed comprehensive QA via agent-browser:
+  - Logged in as admin and pharmacy roles, exercised Dashboard, Drugs, Drug Detail, Transactions, Blockchain, Block Detail, Verify, Analytics views.
+  - Tested all 4 verification states: AUTHENTIC (real drug ID), NOT_FOUND (fake ID), EXPIRED (Ranitidine batch BAT-7AC5046), FLAGGED (Omeprazole batch BAT-CFFB2EB). All work correctly.
+  - Verified blockchain integrity: "VERIFIED" with 57 blocks (genesis + 56 mined) after a new dispense operation.
+- Found and fixed 1 bug:
+  - **Bug**: Clicking a transaction row in DrugDetailView's "Blockchain Transactions" tab navigated to `blockchain-detail` with `number: ''` (empty string) when `tx.block` was null, causing `/api/blockchain/blocks/undefined` 400 errors.
+  - **Fix 1**: DrugDetailView tx onClick — added null check `if (tx.block?.blockNumber != null)` before navigating.
+  - **Fix 2**: BlockDetailView.load() — added defensive guard: if `num` is null/empty/'undefined', short-circuit with an error state instead of firing the bad API call.
+  - **Fix 3**: DrugDetailView.load() — same defensive guard for `id` param.
+  - Verified via agent-browser: clicking the no-drug transaction row (block #52) no longer produces any 400/404 errors in the dev log.
+
+- Added 4 NEW FEATURES:
+  1. **Global Command Palette (Cmd+K)** — `src/components/pharmatrace/CommandPalette.tsx`
+     - Triggered by Cmd+K / Ctrl+K globally, or by clicking the "Search… ⌘K" button in the Navbar.
+     - Searches across: page navigation (Dashboard, Verify, Register Drug, Supply Chain, Blockchain, Transactions, Analytics, Drugs, About, Admin), drugs (by name/batch/drugId), transactions (by hash/drug/batch), and blocks (by number/hash).
+     - Full keyboard nav: ↑/ArrownDown to move, Enter to select, Esc to close.
+     - Live "Updated" pulse indicator when results refresh.
+     - Auto-preloads data on open; filters instantly as user types.
+
+  2. **Dispense Receipt Modal** — added to `DrugDetailView.tsx`
+     - New "Dispense" action button on drug detail (visible to PHARMACY/ADMIN role when they own the batch and status ≠ DISPENSED).
+     - Two-step flow: confirm dialog (with notes field + warning) → receipt screen.
+     - Receipt shows: Drug, Batch, Drug ID, Pharmacy, Pharmacist, Tx Hash, Block #, Time, Notes.
+     - "Print" button triggers `window.print()` for a physical receipt.
+     - Confirms via agent-browser: dispensed Metformin 500mg → receipt showed with block #56 → status changed to "Dispensed" → supply chain timeline updated with DISPENSED event.
+
+  3. **Live Activity Feed** — `src/components/pharmatrace/ActivityFeed.tsx`
+     - Replaces the static "Recent Transactions" card on the dashboard.
+     - Auto-refreshes every 15 seconds (configurable).
+     - Merges transactions + verifications, sorted by timestamp.
+     - Animated entry/exit via framer-motion AnimatePresence + layout animations.
+     - Pulsing timeline line + "Live/Updated" status indicator.
+     - Click any item to navigate to the related drug or block.
+
+  4. **Public Verify auto-run** — enhanced `VerifyView.tsx`
+     - When navigated to the verify page with an `id` param (e.g. from drug detail's "Open Public Verify" button), automatically runs the verification.
+     - New "Open Public Verify" button on drug detail QR card — opens the verify page with the qrToken pre-loaded and auto-verifies.
+     - New "Copy Token" button copies the qrToken so it can be pasted into the verify page on another device.
+     - "Load a demo drug ID" link on the manual entry tab now fetches a real drug ID from the API instead of inserting a placeholder.
+
+- Styling polish:
+  - **StatCard redesign**: added top accent bar, subtle hover gradient overlay (mix-blend-mode: overlay), icon scale on hover (group-hover:scale-110), whileHover lift animation.
+  - **EmptyState redesign**: larger icon container with gradient background + grid pattern overlay, fade-in animation, balanced text wrapping.
+  - **Drug detail QR card**: reorganized into a 2-column grid with Download QR (full-width), Copy ID, Copy Token, and Open Public Verify buttons.
+
+- Verification:
+  - `bun run lint` — clean (0 errors, 0 warnings).
+  - agent-browser end-to-end: all 16 views render without console errors or hydration warnings.
+  - No `/api/...undefined` 400/404 errors in dev log after the fix.
+  - Blockchain integrity still VERIFIED after new dispense tx (57 blocks total).
+
+Stage Summary:
+- PharmaTrace is now MORE feature-rich and polished than the initial build.
+- 1 bug fixed (undefined API calls from DrugDetailView tx clicks).
+- 4 new features added (Command Palette, Dispense Receipt, Live Activity Feed, Public Verify auto-run).
+- Styling polish on StatCard, EmptyState, and Drug Detail QR card.
+- All demo flows continue to work end-to-end. Lint clean. No runtime errors.
+- The cron-triggered QA process is functioning correctly.
+
+Unresolved / next-phase recommendations:
+- Consider adding a "Blockchain Tamper Demo" — admin-only button that intentionally modifies a block's hash to demonstrate the integrity check failing (educational value).
+- Consider adding a "Drug Stats Widget" on the drug detail page showing verification count, transfer count, days since manufacture.
+- Consider adding CSV export for transactions and drug lists.
+- Consider adding a dark/light theme toggle (currently dark-only).
+- Mobile camera permission flow could be improved with a clearer permission request UI.

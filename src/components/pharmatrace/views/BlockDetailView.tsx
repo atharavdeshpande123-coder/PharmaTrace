@@ -31,6 +31,9 @@ export function BlockDetailView() {
   const [error, setError] = useState<string | null>(null)
 
   const load = async () => {
+    if (num == null || num === '' || num === 'undefined') {
+      setError('No block number provided'); setLoading(false); return
+    }
     setLoading(true); setError(null)
     try {
       const res = await apiGet<BlockDetail>(`/api/blockchain/blocks/${num}`)

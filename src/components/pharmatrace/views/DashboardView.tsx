@@ -14,6 +14,7 @@ import {
 } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
+import { ActivityFeed } from '../ActivityFeed'
 
 interface DashboardData {
   stats: {
@@ -141,38 +142,9 @@ export function DashboardView() {
 
       {/* Recent activity */}
       <div className="grid gap-4 lg:grid-cols-3">
-        <GlassCard className="lg:col-span-2">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="font-semibold">Recent Transactions</h3>
-            <button onClick={() => navigate('transactions')} className="text-xs text-primary hover:underline inline-flex items-center">
-              View all <ArrowRight className="h-3 w-3 ml-1" />
-            </button>
-          </div>
-          <div className="space-y-2 max-h-96 overflow-y-auto scrollbar-thin">
-            {recentTransactions.length === 0 ? (
-              <p className="text-sm text-muted-foreground py-6 text-center">No transactions yet.</p>
-            ) : recentTransactions.map((tx) => (
-              <button
-                key={tx.id}
-                onClick={() => {
-                  if (tx.drug?.drugId) navigate('drug-detail', { id: tx.drug.drugId })
-                  else if (tx.block?.blockNumber) navigate('blockchain-detail', { number: String(tx.block.blockNumber) })
-                }}
-                className="w-full flex items-center justify-between rounded-lg border border-border/50 bg-muted/30 px-3 py-2 text-left hover:bg-muted/60 transition-colors"
-              >
-                <div className="flex items-center gap-2 min-w-0">
-                  <TxTypeBadge type={tx.type} />
-                  <span className="text-sm truncate">{tx.drug?.drugName ?? '—'}</span>
-                  <span className="text-xs text-muted-foreground font-mono">{tx.drug?.batchNumber}</span>
-                </div>
-                <div className="text-right shrink-0">
-                  <div className="text-xs text-muted-foreground font-mono">#{tx.block?.blockNumber ?? '—'}</div>
-                  <div className="text-[10px] text-muted-foreground">{fmtRelative(tx.timestamp)}</div>
-                </div>
-              </button>
-            ))}
-          </div>
-        </GlassCard>
+        <div className="lg:col-span-2">
+          <ActivityFeed />
+        </div>
 
         <GlassCard>
           <div className="flex items-center justify-between mb-3">

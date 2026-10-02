@@ -36,7 +36,7 @@ const STEPS = [
 ]
 
 export function VerifyView() {
-  const { navigate } = useRouter()
+  const { navigate, params } = useRouter()
   const { user } = useAuth()
   const [tab, setTab] = useState('scan')
   const [manual, setManual] = useState('')
@@ -52,6 +52,15 @@ export function VerifyView() {
 
   // Stop camera on unmount
   useEffect(() => () => stopCamera(), [])
+
+  // Auto-verify when navigated with an `id` param (e.g. from drug detail "Open Public Verify")
+  useEffect(() => {
+    if (params.id && !result && !loading) {
+      setManual(params.id)
+      setTab('manual')
+      runVerification(params.id, 'PUBLIC_LINK')
+    }
+  }, [params.id])
 
   const startCamera = async () => {
     setCameraError(null)
@@ -224,7 +233,20 @@ export function VerifyView() {
                   Verify Now
                 </Button>
                 <p className="text-xs text-muted-foreground text-center">
-                  Try: <button className="text-primary hover:underline" onClick={() => setManual('PHARMA-')}>load a sample</button> — or visit the Drugs page to copy a demo drug ID.
+                  Need a sample?{' '}
+                  <button
+                    className="text-primary hover:underline"
+                    onClick={async () => {
+                      try {
+                        const res = await fetch('/api/drugs?limit=1')
+                        const data = await res.json()
+                        if (data.drugs?.[0]?.drugId) setManual(data.drugs[0].drugId)
+                      } catch { /* ignore */ }
+                    }}
+                  >
+                    Load a demo drug ID
+                  </button>{' '}
+                  — or visit the Drugs page to copy any batch.
                 </p>
               </div>
             </TabsContent>

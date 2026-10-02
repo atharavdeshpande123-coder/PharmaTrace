@@ -16,7 +16,7 @@ import { toast } from 'sonner'
 import { fmtDate, fmtRelative, shortHash, copyToClipboard, isExpired } from '@/lib/client/format'
 import {
   Boxes, Truck, Network, ShieldCheck, ArrowRight, ArrowLeft, Copy,
-  QrCode, Download, Flag, CheckCircle2, Package, MapPin, Clock, Cpu, Send,
+  QrCode, Download, Flag, CheckCircle2, Package, MapPin, Clock, Cpu, Send, Printer, Loader2,
 } from 'lucide-react'
 import { motion } from 'framer-motion'
 
@@ -46,9 +46,16 @@ export function DrugDetailView() {
   const [flagDialog, setFlagDialog] = useState(false)
   const [flagReason, setFlagReason] = useState('')
   const [transferOpen, setTransferOpen] = useState(false)
+  const [dispenseOpen, setDispenseOpen] = useState(false)
+  const [dispenseReceipt, setDispenseReceipt] = useState<any>(null)
+  const [dispenseNotes, setDispenseNotes] = useState('')
+  const [dispenseLoading, setDispenseLoading] = useState(false)
   const [users, setUsers] = useState<{ id: string; name: string; organization: string | null; role: string }[]>([])
 
   const load = async () => {
+    if (!id || id === 'undefined') {
+      setError('No drug ID provided'); setLoading(false); return
+    }
     setLoading(true); setError(null)
     try {
       const res = await apiGet<{ drug: DrugDetail }>(`/api/drugs/${id}`)
@@ -72,6 +79,27 @@ export function DrugDetailView() {
       setTransferOpen(true)
     } catch {
       toast.error('Could not load transfer recipients')
+    }
+  }
+
+  const openDispense = () => {
+    setDispenseNotes('')
+    setDispenseReceipt(null)
+    setDispenseOpen(true)
+  }
+
+  const confirmDispense = async () => {
+    if (!drug) return
+    setDispenseLoading(true)
+    try {
+      const res = await apiPost<{ drug: any; transaction: any }>(`/api/drugs/${drug.drugId}/dispense`, { notes: dispenseNotes })
+      setDispenseReceipt({ drug: res.drug, transaction: res.transaction, pharmacy: user, notes: dispenseNotes, timestamp: new Date().toISOString() })
+      toast.success('Drug dispensed — receipt generated')
+      load()
+    } catch (e) {
+      toast.error((e as Error).message)
+    } finally {
+      setDispenseLoading(false)
     }
   }
 
@@ -103,8 +131,11 @@ export function DrugDetailView() {
         actions={
           <div className="flex gap-2 flex-wrap">
             <Button variant="outline" size="sm" onClick={() => navigate('verify', { id: drug.drugId })}><ShieldCheck className="h-4 w-4 mr-1" /> Verify</Button>
-            {user?.id === drug.currentOwner.id && (
+            {user?.id === drug.currentOwner.id && drug.status !== 'DISPENSED' && (
               <Button size="sm" onClick={openTransfer}><Send className="h-4 w-4 mr-1" /> Transfer</Button>
+            )}
+            {(user?.role === 'PHARMACY' || user?.role === 'ADMIN') && user?.id === drug.currentOwner.id && drug.status !== 'DISPENSED' && (
+              <Button size="sm" variant="secondary" onClick={openDispense}><Package className="h-4 w-4 mr-1" /> Dispense</Button>
             )}
             {user?.role === 'ADMIN' && (
               <Button size="sm" variant="outline" onClick={() => setFlagDialog(true)}><Flag className="h-4 w-4 mr-1" /> Flag</Button>
@@ -157,13 +188,17 @@ export function DrugDetailView() {
               {qr ? <img src={qr} alt="QR" className="h-40 w-40" /> : <div className="h-40 w-40 flex items-center justify-center text-muted-foreground text-xs">Loading…</div>}
             </div>
             <div className="mt-2 text-xs text-muted-foreground break-all font-mono">{drug.qrToken}</div>
-            <div className="mt-3 flex justify-center gap-2">
+            <div className="mt-3 grid grid-cols-2 gap-2">
               {qr && (
-                <a href={qr} download={`qr-${drug.drugId}.png`}>
-                  <Button variant="outline" size="sm"><Download className="h-3.5 w-3.5 mr-1" /> Download</Button>
+                <a href={qr} download={`qr-${drug.drugId}.png`} className="col-span-2">
+                  <Button variant="outline" size="sm" className="w-full"><Download className="h-3.5 w-3.5 mr-1" /> Download QR</Button>
                 </a>
               )}
-              <Button variant="outline" size="sm" onClick={() => copyToClipboard(drug.drugId)}><Copy className="h-3.5 w-3.5 mr-1" /> Copy ID</Button>
+              <Button variant="outline" size="sm" onClick={() => { copyToClipboard(drug.drugId); toast.success('Drug ID copied') }}><Copy className="h-3.5 w-3.5 mr-1" /> Copy ID</Button>
+              <Button variant="outline" size="sm" onClick={() => { copyToClipboard(drug.qrToken); toast.success('QR token copied — paste into Verify page') }}><QrCode className="h-3.5 w-3.5 mr-1" /> Copy Token</Button>
+              <Button variant="secondary" size="sm" className="col-span-2" onClick={() => navigate('verify', { id: drug.qrToken })}>
+                <ShieldCheck className="h-3.5 w-3.5 mr-1" /> Open Public Verify
+              </Button>
             </div>
           </div>
         </GlassCard>
@@ -189,7 +224,9 @@ export function DrugDetailView() {
               {drug.transactions.map((tx) => (
                 <button
                   key={tx.id}
-                  onClick={() => navigate('blockchain-detail', { number: String(tx.block?.blockNumber ?? '') })}
+                  onClick={() => {
+                    if (tx.block?.blockNumber != null) navigate('blockchain-detail', { number: String(tx.block.blockNumber) })
+                  }}
                   className="w-full flex items-center justify-between rounded-lg border border-border/50 bg-muted/30 px-3 py-2 hover:bg-muted/60 transition-colors"
                 >
                   <div className="flex items-center gap-2 min-w-0">
@@ -261,6 +298,19 @@ export function DrugDetailView() {
       {/* Transfer dialog */}
       {transferOpen && (
         <TransferDialog drug={drug} users={users} onClose={() => setTransferOpen(false)} onDone={() => { setTransferOpen(false); load() }} />
+      )}
+
+      {/* Dispense dialog / receipt */}
+      {dispenseOpen && (
+        <DispenseDialog
+          drug={drug}
+          notes={dispenseNotes}
+          setNotes={setDispenseNotes}
+          loading={dispenseLoading}
+          receipt={dispenseReceipt}
+          onConfirm={confirmDispense}
+          onClose={() => setDispenseOpen(false)}
+        />
       )}
     </div>
   )
@@ -396,5 +446,85 @@ function CopyBtn({ text }: { text: string }) {
     <button onClick={() => { copyToClipboard(text); toast.success('Copied') }} className="text-muted-foreground hover:text-foreground">
       <Copy className="h-3 w-3" />
     </button>
+  )
+}
+
+function DispenseDialog({ drug, notes, setNotes, loading, receipt, onConfirm, onClose }: {
+  drug: DrugDetail
+  notes: string
+  setNotes: (v: string) => void
+  loading: boolean
+  receipt: any
+  onConfirm: () => void
+  onClose: () => void
+}) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4" onClick={onClose}>
+      <div className="glass-strong rounded-xl p-6 w-full max-w-md" onClick={(e) => e.stopPropagation()}>
+        {receipt ? (
+          // ===== Receipt view =====
+          <div>
+            <div className="text-center mb-4">
+              <div className="inline-flex rounded-full bg-emerald-500/15 p-3 ring-1 ring-emerald-500/30 mb-2">
+                <CheckCircle2 className="h-7 w-7 text-emerald-400" />
+              </div>
+              <h3 className="text-lg font-semibold">Dispense Receipt</h3>
+              <p className="text-xs text-muted-foreground">Batch successfully dispensed to customer</p>
+            </div>
+            <div className="rounded-lg border border-dashed border-border/60 bg-background/40 p-4 space-y-1.5 text-sm">
+              <ReceiptRow label="Drug" value={receipt.drug.drugName} />
+              <ReceiptRow label="Batch" value={receipt.drug.batchNumber} mono />
+              <ReceiptRow label="Drug ID" value={receipt.drug.drugId} mono />
+              <ReceiptRow label="Pharmacy" value={receipt.pharmacy?.organization ?? receipt.pharmacy?.name ?? '—'} />
+              <ReceiptRow label="Pharmacist" value={receipt.pharmacy?.name ?? '—'} />
+              <ReceiptRow label="Tx Hash" value={shortHash(receipt.transaction.transactionHash, 12, 8)} mono />
+              <ReceiptRow label="Block #" value={`#${receipt.transaction.blockNumber}`} mono />
+              <ReceiptRow label="Time" value={fmtDate(receipt.timestamp, true)} />
+              {receipt.notes && <ReceiptRow label="Notes" value={receipt.notes} />}
+            </div>
+            <div className="mt-3 text-[10px] text-center text-muted-foreground font-mono">
+              🔒 Immutable record on PharmaTrace blockchain · Verified by SHA-256
+            </div>
+            <div className="mt-4 flex justify-end gap-2">
+              <Button variant="outline" onClick={() => window.print()}><Printer className="h-4 w-4 mr-1.5" /> Print</Button>
+              <Button onClick={onClose}>Close</Button>
+            </div>
+          </div>
+        ) : (
+          // ===== Confirm dispense form =====
+          <div>
+            <h3 className="text-lg font-semibold">Dispense Drug Batch</h3>
+            <p className="mt-1 text-sm text-muted-foreground">
+              You are about to mark <span className="font-medium text-foreground">{drug.drugName}</span> ({drug.batchNumber}) as dispensed to a customer. This action is irreversible and will be recorded on the blockchain.
+            </p>
+            <div className="mt-4 space-y-3">
+              <div className="space-y-1.5">
+                <Label htmlFor="disp-notes">Dispense Notes (optional)</Label>
+                <Textarea id="disp-notes" value={notes} onChange={(e) => setNotes(e.target.value)} rows={3} placeholder="e.g. Dispensed to walk-in customer, prescription verified" />
+              </div>
+              <div className="rounded-md bg-amber-500/10 border border-amber-500/30 px-3 py-2 text-xs text-amber-200">
+                ⚠️ Once dispensed, this batch cannot be transferred again. The customer can still verify its authenticity via the QR code.
+              </div>
+            </div>
+            <div className="mt-4 flex justify-end gap-2">
+              <Button variant="outline" onClick={onClose}>Cancel</Button>
+              <Button onClick={onConfirm} disabled={loading}>
+                {loading ? <Loader2 className="h-4 w-4 mr-1.5 animate-spin" /> : <Package className="h-4 w-4 mr-1.5" />}
+                Confirm Dispense
+              </Button>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function ReceiptRow({ label, value, mono }: { label: string; value: string; mono?: boolean }) {
+  return (
+    <div className="flex items-start justify-between gap-2">
+      <span className="text-muted-foreground text-xs shrink-0">{label}</span>
+      <span className={`text-right ${mono ? 'font-mono text-xs' : 'text-sm'}`}>{value}</span>
+    </div>
   )
 }

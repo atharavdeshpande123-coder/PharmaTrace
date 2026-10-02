@@ -21,6 +21,7 @@ import {
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { NotificationBell } from './NotificationBell'
+import { CommandPalette } from './CommandPalette'
 
 interface NavItem {
   route: RouteName
@@ -81,6 +82,7 @@ export function Navbar() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <CommandPalette />
           {user && <NotificationBell />}
           {user ? (
             <DropdownMenu>

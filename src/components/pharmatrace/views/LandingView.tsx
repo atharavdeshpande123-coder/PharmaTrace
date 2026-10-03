@@ -12,6 +12,7 @@ import {
 } from 'lucide-react'
 import { apiGet } from '@/lib/client/api'
 import { LandingActivityWidget } from '../LandingActivityWidget'
+import { VerificationCore } from '../VerificationCore'
 
 interface Stats {
   registeredDrugs: number
@@ -66,8 +67,8 @@ export function LandingView() {
           </motion.div>
 
           {/* Animated Blockchain Network */}
-          <div className="mt-12">
-            <BlockchainNetworkViz />
+          <div className="mt-12 flex justify-center">
+            <VerificationCore size={180} />
           </div>
 
           {/* Stats */}

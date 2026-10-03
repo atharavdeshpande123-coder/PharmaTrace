@@ -17,6 +17,8 @@ import {
   ShieldCheck, CheckCircle2, XCircle, AlertTriangle, Loader2, ArrowRight, Copy, Flag,
 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { VerificationSequence } from '../VerificationSequence'
+import { VerificationCore } from '../VerificationCore'
 import { fmtDate, fmtRelative, shortHash, copyToClipboard } from '@/lib/client/format'
 
 interface VerifyResult {
@@ -27,13 +29,12 @@ interface VerifyResult {
 }
 
 const STEPS = [
-  'Scanning QR…',
-  'Retrieving blockchain record…',
-  'Validating hash…',
-  'Checking manufacturer…',
-  'Checking batch…',
-  'Checking expiry…',
-  'Checking supply-chain history…',
+  'QR CODE DETECTED',
+  'DIGITAL ID EXTRACTED',
+  'CHECKING PHARMACEUTICAL RECORD',
+  'SMART CONTRACT VALIDATION',
+  'BLOCKCHAIN RECORD MATCH',
+  'VERIFICATION COMPLETE',
 ]
 
 export function VerifyView() {
@@ -277,24 +278,16 @@ export function VerifyView() {
         <GlassCard>
           <AnimatePresence mode="wait">
             {loading && (
-              <motion.div key="loading" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="py-10">
-                <h3 className="text-center text-lg font-semibold mb-4">Querying blockchain…</h3>
-                <div className="space-y-2 max-w-sm mx-auto">
-                  {STEPS.map((s, i) => (
-                    <div key={s} className={`flex items-center gap-2 text-sm transition-colors ${i < step ? 'text-emerald-300' : i === step ? 'text-foreground' : 'text-muted-foreground/50'}`}>
-                      {i < step ? <CheckCircle2 className="h-4 w-4" /> :
-                        i === step ? <Loader2 className="h-4 w-4 animate-spin" /> :
-                        <div className="h-4 w-4 rounded-full border border-current" />}
-                      {s}
-                    </div>
-                  ))}
-                </div>
+              <motion.div key="loading" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                <VerificationSequence currentStep={step} result={null} />
               </motion.div>
             )}
             {!loading && !result && (
-              <motion.div key="idle" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="py-16 text-center">
-                <ShieldCheck className="h-12 w-12 text-muted-foreground/60 mx-auto mb-3" />
-                <h3 className="text-lg font-medium">Awaiting verification</h3>
+              <motion.div key="idle" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="py-8 text-center">
+                <div className="flex justify-center mb-4">
+                  <VerificationCore size={120} />
+                </div>
+                <h3 className="text-lg font-medium">Awaiting Verification</h3>
                 <p className="mt-1 text-sm text-muted-foreground">Scan or enter a code to begin blockchain verification.</p>
               </motion.div>
             )}
@@ -311,13 +304,44 @@ export function VerifyView() {
 }
 
 function CornerBrackets() {
-  const base = 'absolute h-8 w-8 border-cyan-400/80'
+  const base = 'absolute h-10 w-10 border-cyan-400/80'
   return (
     <>
-      <div className={`${base} top-3 left-3 border-t-2 border-l-2 rounded-tl-lg`} />
-      <div className={`${base} top-3 right-3 border-t-2 border-r-2 rounded-tr-lg`} />
-      <div className={`${base} bottom-3 left-3 border-b-2 border-l-2 rounded-bl-lg`} />
-      <div className={`${base} bottom-3 right-3 border-b-2 border-r-2 rounded-br-lg`} />
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className={`${base} top-3 left-3 border-t-2 border-l-2 rounded-tl-lg`}
+        style={{ boxShadow: '0 0 12px rgba(34,211,238,0.2)' }}
+      />
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.1 }}
+        className={`${base} top-3 right-3 border-t-2 border-r-2 rounded-tr-lg`}
+        style={{ boxShadow: '0 0 12px rgba(34,211,238,0.2)' }}
+      />
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.2 }}
+        className={`${base} bottom-3 left-3 border-b-2 border-l-2 rounded-bl-lg`}
+        style={{ boxShadow: '0 0 12px rgba(34,211,238,0.2)' }}
+      />
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.3 }}
+        className={`${base} bottom-3 right-3 border-b-2 border-r-2 rounded-br-lg`}
+        style={{ boxShadow: '0 0 12px rgba(34,211,238,0.2)' }}
+      />
+      {/* Digital scan grid overlay */}
+      <div
+        className="absolute inset-0 opacity-20 pointer-events-none"
+        style={{
+          backgroundImage: 'linear-gradient(rgba(34,211,238,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,0.15) 1px, transparent 1px)',
+          backgroundSize: '20px 20px',
+        }}
+      />
     </>
   )
 }

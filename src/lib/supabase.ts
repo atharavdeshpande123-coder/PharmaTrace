@@ -51,9 +51,9 @@ export function createBrowserSupabase() {
  */
 export async function createServerSupabase() {
   if (!isSupabaseConfigured) return null
-  // Lazy import to keep this server-only code out of the browser bundle.
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const { cookies } = require('next/headers') as typeof import('next/headers')
+  // Dynamic import keeps `next/headers` out of the browser bundle (it is
+  // server-only). Awaited because Next.js 16 cookies() may be async.
+  const { cookies } = await import('next/headers')
   const store = await cookies()
   return createBrowserClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
     cookies: {

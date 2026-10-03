@@ -10,7 +10,7 @@ import { ok, withHandler } from '@/lib/api'
 export const POST = withHandler(async () => {
   if (isSupabaseConfigured) {
     const { createServerSupabase } = await import('@/lib/supabase')
-    const supabase = createServerSupabase()
+    const supabase = await createServerSupabase()
     if (supabase) {
       await supabase.auth.signOut()
     }

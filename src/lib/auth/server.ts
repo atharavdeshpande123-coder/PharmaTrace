@@ -102,7 +102,7 @@ export async function getAuthToken(): Promise<string | undefined> {
 export async function getCurrentUser() {
   // 1) Supabase session (production / Vercel)
   if (isSupabaseConfigured) {
-    const supabase = createServerSupabase()
+    const supabase = await createServerSupabase()
     if (supabase) {
       const {
         data: { user: sbUser },

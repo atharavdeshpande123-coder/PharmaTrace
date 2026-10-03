@@ -81,9 +81,20 @@ export const POST = withHandler(async (req: NextRequest) => {
       return fail(error.message || 'Supabase sign-up failed', 400)
     }
     const sbUser = data.user
-    // Create the PharmaTrace profile row linked by supabaseUid.
-    const user = await db.user.create({
-      data: {
+    // The Supabase auth trigger (`on_auth_user_created`) may have already
+    // inserted a profile row. Use upsert so we set the chosen role / org
+    // instead of conflicting on the unique email constraint.
+    const user = await db.user.upsert({
+      where: { email: lowerEmail },
+      update: {
+        name,
+        supabaseUid: sbUser?.id ?? undefined,
+        role: userRole,
+        organization: organization ?? null,
+        location: location ?? null,
+        avatarColor,
+      },
+      create: {
         name,
         email: lowerEmail,
         passwordHash: '',

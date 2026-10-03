@@ -43,40 +43,55 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-/* PharmaTrace Web3 pharmaceutical theme — light (default) */
+/* PharmaTrace Light Mode — Premium Pharmaceutical Technology Theme */
 :root {
   --radius: 0.75rem;
-  --background: oklch(0.98 0.005 240);
-  --foreground: oklch(0.15 0.02 265);
+  /* Background: #F7FAFC — premium light blue-gray */
+  --background: oklch(0.976 0.006 230);
+  /* Foreground: #102A43 — deep navy for headings */
+  --foreground: oklch(0.255 0.035 250);
+  /* Card: #FFFFFF — pure white cards */
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.15 0.02 265);
+  --card-foreground: oklch(0.255 0.035 250);
+  /* Popover: #FFFFFF */
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.15 0.02 265);
-  --primary: oklch(0.55 0.18 195);
+  --popover-foreground: oklch(0.255 0.035 250);
+  /* Primary: #1769AA — pharmaceutical brand blue */
+  --primary: oklch(0.47 0.09 250);
   --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.95 0.01 240);
-  --secondary-foreground: oklch(0.15 0.02 265);
-  --muted: oklch(0.96 0.005 240);
-  --muted-foreground: oklch(0.45 0.02 265);
-  --accent: oklch(0.55 0.2 290);
+  /* Secondary: #F1F6FA — light blue-gray surface */
+  --secondary: oklch(0.956 0.008 230);
+  --secondary-foreground: oklch(0.255 0.035 250);
+  /* Muted: #F1F6FA */
+  --muted: oklch(0.956 0.008 230);
+  /* Muted foreground: #7B8FA3 — soft blue-gray text */
+  --muted-foreground: oklch(0.62 0.018 230);
+  /* Accent: #2F80ED — secondary blue */
+  --accent: oklch(0.58 0.16 260);
   --accent-foreground: oklch(0.99 0 0);
+  /* Destructive: #DC2626 */
   --destructive: oklch(0.55 0.22 25);
-  --border: oklch(0.9 0.01 240 / 80%);
-  --input: oklch(0.95 0.005 240);
-  --ring: oklch(0.55 0.18 195);
-  --chart-1: oklch(0.55 0.18 195);
-  --chart-2: oklch(0.55 0.2 290);
-  --chart-3: oklch(0.6 0.18 155);
-  --chart-4: oklch(0.7 0.18 80);
-  --chart-5: oklch(0.55 0.22 25);
-  --sidebar: oklch(0.97 0.005 240);
-  --sidebar-foreground: oklch(0.15 0.02 265);
-  --sidebar-primary: oklch(0.55 0.18 195);
+  /* Border: #DCE6F0 — subtle blue-gray borders */
+  --border: oklch(0.905 0.008 230);
+  /* Input: #F1F6FA */
+  --input: oklch(0.956 0.008 230);
+  /* Ring: #1769AA */
+  --ring: oklch(0.47 0.09 250);
+  /* Charts — pharmaceutical palette */
+  --chart-1: oklch(0.47 0.09 250);   /* #1769AA primary blue */
+  --chart-2: oklch(0.58 0.16 260);   /* #2F80ED secondary blue */
+  --chart-3: oklch(0.62 0.13 180);   /* #18A999 medical teal */
+  --chart-4: oklch(0.7 0.18 80);     /* #D97706 warning amber */
+  --chart-5: oklch(0.55 0.22 25);    /* #DC2626 error red */
+  /* Sidebar */
+  --sidebar: oklch(0.968 0.006 230);
+  --sidebar-foreground: oklch(0.255 0.035 250);
+  --sidebar-primary: oklch(0.47 0.09 250);
   --sidebar-primary-foreground: oklch(0.99 0 0);
-  --sidebar-accent: oklch(0.95 0.005 240);
-  --sidebar-accent-foreground: oklch(0.15 0.02 265);
-  --sidebar-border: oklch(0.9 0.01 240 / 80%);
-  --sidebar-ring: oklch(0.55 0.18 195);
+  --sidebar-accent: oklch(0.956 0.008 230);
+  --sidebar-accent-foreground: oklch(0.255 0.035 250);
+  --sidebar-border: oklch(0.905 0.008 230);
+  --sidebar-ring: oklch(0.47 0.09 250);
 }
 
 /* PharmaTrace Web3 pharmaceutical theme — dark (futuristic, default for app) */
@@ -130,12 +145,16 @@
       radial-gradient(900px circle at 50% 110%, oklch(0.22 0.16 260 / 14%), transparent 50%);
     background-attachment: fixed;
   }
-  /* Light theme: softer background glows */
+  /* Light theme: premium pharmaceutical atmosphere — soft blue gradients */
   :root:not(.dark) body {
     background-image:
-      radial-gradient(900px circle at 12% 10%, oklch(0.85 0.08 290 / 25%), transparent 45%),
-      radial-gradient(800px circle at 90% 8%, oklch(0.85 0.08 195 / 25%), transparent 45%),
-      radial-gradient(900px circle at 50% 110%, oklch(0.85 0.08 260 / 18%), transparent 50%);
+      radial-gradient(900px circle at 12% 10%, oklch(0.58 0.16 260 / 8%), transparent 45%),
+      radial-gradient(800px circle at 90% 8%, oklch(0.47 0.09 250 / 8%), transparent 45%),
+      radial-gradient(900px circle at 50% 110%, oklch(0.62 0.13 180 / 6%), transparent 50%);
+  }
+  /* Smooth theme transition */
+  :root:not(.dark) * {
+    transition: background-color 250ms ease, border-color 250ms ease, box-shadow 250ms ease, color 250ms ease;
   }
 }
 
@@ -160,20 +179,20 @@
     box-shadow: 0 8px 40px oklch(0 0 0 / 40%), inset 0 1px 0 oklch(1 0 0 / 6%);
   }
 
-  /* Glass card — light mode override: use solid white with subtle tint */
+  /* Glass card — light mode: premium white glass with blue tint */
   :root:not(.dark) .glass {
-    background: linear-gradient(135deg, oklch(1 0 0 / 92%), oklch(0.98 0.005 240 / 88%));
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid oklch(0.85 0.01 240 / 80%);
-    box-shadow: 0 4px 20px oklch(0 0 0 / 8%), inset 0 1px 0 oklch(1 0 0 / 80%);
-  }
-  :root:not(.dark) .glass-strong {
-    background: linear-gradient(135deg, oklch(1 0 0 / 96%), oklch(0.98 0.005 240 / 92%));
+    background: linear-gradient(135deg, rgba(255,255,255,0.78), rgba(247,250,252,0.72));
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid oklch(0.82 0.01 240 / 80%);
-    box-shadow: 0 8px 30px oklch(0 0 0 / 12%), inset 0 1px 0 oklch(1 0 0 / 90%);
+    border: 1px solid rgba(220,230,240,0.85);
+    box-shadow: 0 4px 24px rgba(16,42,67,0.06), inset 0 1px 0 rgba(255,255,255,0.9);
+  }
+  :root:not(.dark) .glass-strong {
+    background: linear-gradient(135deg, rgba(255,255,255,0.92), rgba(247,250,252,0.88));
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(220,230,240,0.9);
+    box-shadow: 0 8px 40px rgba(16,42,67,0.08), inset 0 1px 0 rgba(255,255,255,0.95);
   }
 
   /* Glowing border variants — dark mode */
@@ -193,21 +212,21 @@
     box-shadow: 0 0 0 1px oklch(0.65 0.22 25 / 30%), 0 0 30px oklch(0.65 0.22 25 / 25%);
   }
 
-  /* Light mode: reduce glow intensity for better readability */
+  /* Light mode: subtle pharmaceutical blue glows */
   :root:not(.dark) .glow-cyan {
-    box-shadow: 0 0 0 1px oklch(0.55 0.18 195 / 40%), 0 0 20px oklch(0.55 0.18 195 / 12%);
+    box-shadow: 0 0 0 1px rgba(47,128,237,0.35), 0 0 24px rgba(47,128,237,0.12);
   }
   :root:not(.dark) .glow-violet {
-    box-shadow: 0 0 0 1px oklch(0.55 0.2 290 / 40%), 0 0 20px oklch(0.55 0.2 290 / 12%);
+    box-shadow: 0 0 0 1px rgba(47,128,237,0.35), 0 0 24px rgba(47,128,237,0.12);
   }
   :root:not(.dark) .glow-emerald {
-    box-shadow: 0 0 0 1px oklch(0.6 0.18 155 / 40%), 0 0 20px oklch(0.6 0.18 155 / 12%);
+    box-shadow: 0 0 0 1px rgba(22,163,74,0.35), 0 0 24px rgba(22,163,74,0.1);
   }
   :root:not(.dark) .glow-amber {
-    box-shadow: 0 0 0 1px oklch(0.7 0.18 80 / 40%), 0 0 20px oklch(0.7 0.18 80 / 12%);
+    box-shadow: 0 0 0 1px rgba(217,119,6,0.35), 0 0 24px rgba(217,119,6,0.1);
   }
   :root:not(.dark) .glow-rose {
-    box-shadow: 0 0 0 1px oklch(0.55 0.22 25 / 40%), 0 0 20px oklch(0.55 0.22 25 / 12%);
+    box-shadow: 0 0 0 1px rgba(220,38,38,0.35), 0 0 24px rgba(220,38,38,0.1);
   }
 
   /* Animated gradient text — dark mode (bright colors) */
@@ -219,9 +238,9 @@
     color: transparent;
     animation: gradient-pan 6s ease infinite;
   }
-  /* Light mode: use deeper saturated colors for contrast on white */
+  /* Light mode: pharmaceutical blue gradient text */
   :root:not(.dark) .gradient-text {
-    background: linear-gradient(120deg, oklch(0.5 0.18 195), oklch(0.5 0.2 290), oklch(0.5 0.18 155));
+    background: linear-gradient(120deg, #1769AA, #2F80ED, #18A999);
     background-size: 200% 200%;
     -webkit-background-clip: text;
     background-clip: text;
@@ -238,8 +257,8 @@
   }
   :root:not(.dark) .bg-grid {
     background-image:
-      linear-gradient(oklch(0.5 0.02 265 / 8%) 1px, transparent 1px),
-      linear-gradient(90deg, oklch(0.5 0.02 265 / 8%) 1px, transparent 1px);
+      linear-gradient(rgba(47,128,237,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(47,128,237,0.06) 1px, transparent 1px);
   }
 
   /* Hex pattern */
@@ -248,7 +267,7 @@
     background-size: 24px 24px;
   }
   :root:not(.dark) .bg-dots {
-    background-image: radial-gradient(oklch(0.5 0.02 265 / 12%) 1px, transparent 1px);
+    background-image: radial-gradient(rgba(47,128,237,0.1) 1px, transparent 1px);
   }
 
   /* Scrollbar */
@@ -406,86 +425,97 @@
 }
 
 /* =====================================================
-   Light mode: darken accent text colors for readability
-   Tailwind's -300 colors are designed for dark backgrounds.
-   In light mode we override them to -600/-700 equivalents
-   so text stays crisp and legible on white.
+   Light mode: Premium Pharmaceutical accent color overrides
+   Maps Tailwind's dark-optimized accent colors to the
+   premium pharmaceutical palette.
    ===================================================== */
 :root:not(.dark) {
-  /* Cyan accents */
-  --tw-text-cyan-300: oklch(0.5 0.18 195);
-  /* Violet accents */
-  --tw-text-violet-300: oklch(0.5 0.2 290);
-  /* Emerald accents */
-  --tw-text-emerald-300: oklch(0.5 0.18 155);
-  /* Amber accents */
-  --tw-text-amber-300: oklch(0.6 0.18 80);
-  /* Rose accents */
-  --tw-text-rose-300: oklch(0.5 0.22 25);
-  /* Sky accents */
-  --tw-text-sky-300: oklch(0.5 0.18 240);
+  --tw-text-cyan-300: #1769AA;
+  --tw-text-violet-300: #2F80ED;
+  --tw-text-emerald-300: #16A34A;
+  --tw-text-amber-300: #D97706;
+  --tw-text-rose-300: #DC2626;
+  --tw-text-sky-300: #2F80ED;
 }
 
 /* Override Tailwind utility text colors in light mode */
-:root:not(.dark) .text-cyan-300 { color: oklch(0.5 0.18 195) !important; }
-:root:not(.dark) .text-cyan-400 { color: oklch(0.45 0.18 195) !important; }
-:root:not(.dark) .text-violet-300 { color: oklch(0.5 0.2 290) !important; }
-:root:not(.dark) .text-violet-400 { color: oklch(0.45 0.2 290) !important; }
-:root:not(.dark) .text-emerald-300 { color: oklch(0.5 0.18 155) !important; }
-:root:not(.dark) .text-emerald-400 { color: oklch(0.45 0.18 155) !important; }
-:root:not(.dark) .text-amber-300 { color: oklch(0.6 0.18 80) !important; }
-:root:not(.dark) .text-amber-400 { color: oklch(0.55 0.18 80) !important; }
-:root:not(.dark) .text-rose-300 { color: oklch(0.5 0.22 25) !important; }
-:root:not(.dark) .text-rose-400 { color: oklch(0.45 0.22 25) !important; }
-:root:not(.dark) .text-sky-300 { color: oklch(0.5 0.18 240) !important; }
-:root:not(.dark) .text-sky-400 { color: oklch(0.45 0.18 240) !important; }
+:root:not(.dark) .text-cyan-300 { color: #1769AA !important; }
+:root:not(.dark) .text-cyan-400 { color: #145A91 !important; }
+:root:not(.dark) .text-violet-300 { color: #2F80ED !important; }
+:root:not(.dark) .text-violet-400 { color: #2563EB !important; }
+:root:not(.dark) .text-emerald-300 { color: #16A34A !important; }
+:root:not(.dark) .text-emerald-400 { color: #15803D !important; }
+:root:not(.dark) .text-amber-300 { color: #D97706 !important; }
+:root:not(.dark) .text-amber-400 { color: #B45309 !important; }
+:root:not(.dark) .text-rose-300 { color: #DC2626 !important; }
+:root:not(.dark) .text-rose-400 { color: #B91C1C !important; }
+:root:not(.dark) .text-sky-300 { color: #2F80ED !important; }
+:root:not(.dark) .text-sky-400 { color: #2563EB !important; }
 
-/* Light mode: darken background accent tints (bg-*-500/15 etc.) */
-:root:not(.dark) .bg-cyan-500\/15 { background-color: oklch(0.55 0.18 195 / 12%) !important; }
-:root:not(.dark) .bg-cyan-500\/10 { background-color: oklch(0.55 0.18 195 / 10%) !important; }
-:root:not(.dark) .bg-violet-500\/15 { background-color: oklch(0.55 0.2 290 / 12%) !important; }
-:root:not(.dark) .bg-violet-500\/10 { background-color: oklch(0.55 0.2 290 / 10%) !important; }
-:root:not(.dark) .bg-emerald-500\/15 { background-color: oklch(0.6 0.18 155 / 12%) !important; }
-:root:not(.dark) .bg-emerald-500\/10 { background-color: oklch(0.6 0.18 155 / 10%) !important; }
-:root:not(.dark) .bg-amber-500\/15 { background-color: oklch(0.7 0.18 80 / 12%) !important; }
-:root:not(.dark) .bg-amber-500\/10 { background-color: oklch(0.7 0.18 80 / 10%) !important; }
-:root:not(.dark) .bg-rose-500\/15 { background-color: oklch(0.55 0.22 25 / 12%) !important; }
-:root:not(.dark) .bg-rose-500\/10 { background-color: oklch(0.55 0.22 25 / 10%) !important; }
-:root:not(.dark) .bg-sky-500\/15 { background-color: oklch(0.55 0.18 240 / 12%) !important; }
-:root:not(.dark) .bg-sky-500\/10 { background-color: oklch(0.55 0.18 240 / 10%) !important; }
+/* Light mode: background accent tints — soft pharmaceutical */
+:root:not(.dark) .bg-cyan-500\/15 { background-color: rgba(23,105,170,0.1) !important; }
+:root:not(.dark) .bg-cyan-500\/10 { background-color: rgba(23,105,170,0.08) !important; }
+:root:not(.dark) .bg-violet-500\/15 { background-color: rgba(47,128,237,0.1) !important; }
+:root:not(.dark) .bg-violet-500\/10 { background-color: rgba(47,128,237,0.08) !important; }
+:root:not(.dark) .bg-emerald-500\/15 { background-color: rgba(22,163,74,0.1) !important; }
+:root:not(.dark) .bg-emerald-500\/10 { background-color: rgba(22,163,74,0.08) !important; }
+:root:not(.dark) .bg-amber-500\/15 { background-color: rgba(217,119,6,0.1) !important; }
+:root:not(.dark) .bg-amber-500\/10 { background-color: rgba(217,119,6,0.08) !important; }
+:root:not(.dark) .bg-rose-500\/15 { background-color: rgba(220,38,38,0.1) !important; }
+:root:not(.dark) .bg-rose-500\/10 { background-color: rgba(220,38,38,0.08) !important; }
+:root:not(.dark) .bg-sky-500\/15 { background-color: rgba(47,128,237,0.1) !important; }
+:root:not(.dark) .bg-sky-500\/10 { background-color: rgba(47,128,237,0.08) !important; }
 
-/* Light mode: darken border accent colors */
-:root:not(.dark) .border-cyan-500\/30 { border-color: oklch(0.55 0.18 195 / 40%) !important; }
-:root:not(.dark) .border-cyan-500\/40 { border-color: oklch(0.55 0.18 195 / 50%) !important; }
-:root:not(.dark) .border-violet-500\/30 { border-color: oklch(0.55 0.2 290 / 40%) !important; }
-:root:not(.dark) .border-violet-500\/40 { border-color: oklch(0.55 0.2 290 / 50%) !important; }
-:root:not(.dark) .border-emerald-500\/30 { border-color: oklch(0.6 0.18 155 / 40%) !important; }
-:root:not(.dark) .border-emerald-500\/40 { border-color: oklch(0.6 0.18 155 / 50%) !important; }
-:root:not(.dark) .border-amber-500\/30 { border-color: oklch(0.7 0.18 80 / 40%) !important; }
-:root:not(.dark) .border-amber-500\/40 { border-color: oklch(0.7 0.18 80 / 50%) !important; }
-:root:not(.dark) .border-rose-500\/30 { border-color: oklch(0.55 0.22 25 / 40%) !important; }
-:root:not(.dark) .border-rose-500\/40 { border-color: oklch(0.55 0.22 25 / 50%) !important; }
-:root:not(.dark) .border-rose-500\/50 { border-color: oklch(0.55 0.22 25 / 60%) !important; }
+/* Light mode: borders — subtle blue-gray */
+:root:not(.dark) .border-cyan-500\/30 { border-color: rgba(23,105,170,0.3) !important; }
+:root:not(.dark) .border-cyan-500\/40 { border-color: rgba(23,105,170,0.4) !important; }
+:root:not(.dark) .border-violet-500\/30 { border-color: rgba(47,128,237,0.3) !important; }
+:root:not(.dark) .border-violet-500\/40 { border-color: rgba(47,128,237,0.4) !important; }
+:root:not(.dark) .border-emerald-500\/30 { border-color: rgba(22,163,74,0.3) !important; }
+:root:not(.dark) .border-emerald-500\/40 { border-color: rgba(22,163,74,0.4) !important; }
+:root:not(.dark) .border-amber-500\/30 { border-color: rgba(217,119,6,0.3) !important; }
+:root:not(.dark) .border-amber-500\/40 { border-color: rgba(217,119,6,0.4) !important; }
+:root:not(.dark) .border-rose-500\/30 { border-color: rgba(220,38,38,0.3) !important; }
+:root:not(.dark) .border-rose-500\/40 { border-color: rgba(220,38,38,0.4) !important; }
+:root:not(.dark) .border-rose-500\/50 { border-color: rgba(220,38,38,0.5) !important; }
 
-/* Light mode: darken ring accent colors */
-:root:not(.dark) .ring-cyan-500\/30 { --tw-ring-color: oklch(0.55 0.18 195 / 40%) !important; }
-:root:not(.dark) .ring-violet-500\/30 { --tw-ring-color: oklch(0.55 0.2 290 / 40%) !important; }
-:root:not(.dark) .ring-emerald-500\/30 { --tw-ring-color: oklch(0.6 0.18 155 / 40%) !important; }
-:root:not(.dark) .ring-amber-500\/30 { --tw-ring-color: oklch(0.7 0.18 80 / 40%) !important; }
-:root:not(.dark) .ring-rose-500\/30 { --tw-ring-color: oklch(0.55 0.22 25 / 40%) !important; }
-:root:not(.dark) .ring-sky-500\/30 { --tw-ring-color: oklch(0.55 0.18 240 / 40%) !important; }
+/* Light mode: ring colors */
+:root:not(.dark) .ring-cyan-500\/30 { --tw-ring-color: rgba(23,105,170,0.3) !important; }
+:root:not(.dark) .ring-violet-500\/30 { --tw-ring-color: rgba(47,128,237,0.3) !important; }
+:root:not(.dark) .ring-emerald-500\/30 { --tw-ring-color: rgba(22,163,74,0.3) !important; }
+:root:not(.dark) .ring-amber-500\/30 { --tw-ring-color: rgba(217,119,6,0.3) !important; }
+:root:not(.dark) .ring-rose-500\/30 { --tw-ring-color: rgba(220,38,38,0.3) !important; }
+:root:not(.dark) .ring-sky-500\/30 { --tw-ring-color: rgba(47,128,237,0.3) !important; }
 
-/* Light mode: fix fill colors for SVG icons */
-:root:not(.dark) svg text { fill: oklch(0.2 0.02 265) !important; }
+/* Light mode: SVG text fill */
+:root:not(.dark) svg text { fill: #102A43 !important; }
 
-/* Light mode: fix primary text color on primary background */
-:root:not(.dark) .text-primary { color: oklch(0.5 0.18 195) !important; }
-:root:not(.dark) .bg-primary\/15 { background-color: oklch(0.55 0.18 195 / 12%) !important; }
-:root:not(.dark) .bg-primary\/10 { background-color: oklch(0.55 0.18 195 / 10%) !important; }
-:root:not(.dark) .ring-primary\/30 { --tw-ring-color: oklch(0.55 0.18 195 / 40%) !important; }
+/* Light mode: primary color overrides */
+:root:not(.dark) .text-primary { color: #1769AA !important; }
+:root:not(.dark) .bg-primary\/15 { background-color: rgba(23,105,170,0.1) !important; }
+:root:not(.dark) .bg-primary\/10 { background-color: rgba(23,105,170,0.08) !important; }
+:root:not(.dark) .ring-primary\/30 { --tw-ring-color: rgba(23,105,170,0.3) !important; }
 
-/* Light mode: fix skeleton shimmer */
+/* Light mode: skeleton shimmer */
 :root:not(.dark) .skeleton-shimmer {
-  background: linear-gradient(90deg, oklch(0.94 0.005 240) 0%, oklch(0.88 0.005 240) 50%, oklch(0.94 0.005 240) 100%) !important;
+  background: linear-gradient(90deg, #F1F6FA 0%, #EAF4FF 50%, #F1F6FA 100%) !important;
   background-size: 1000px 100% !important;
+}
+
+/* Light mode: footer stays dark for contrast */
+:root:not(.dark) footer {
+  background: #102A43 !important;
+  color: #FFFFFF !important;
+  border-color: #1A3A52 !important;
+}
+:root:not(.dark) footer * {
+  color: #B8C7D6 !important;
+}
+:root:not(.dark) footer a,
+:root:not(.dark) footer button {
+  color: #EAF4FF !important;
+}
+:root:not(.dark) footer a:hover,
+:root:not(.dark) footer button:hover {
+  color: #2F80ED !important;
 }

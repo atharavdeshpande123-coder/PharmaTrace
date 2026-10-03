@@ -812,3 +812,42 @@ Unresolved / next-phase recommendations:
 - Consider adding a "System Health" alert threshold (notify when response time > 500ms).
 - Consider adding a notification sound test button in Settings.
 - Consider adding a "Favorites" auto-sync across devices (currently localStorage only).
+
+---
+Task ID: ANIM-1
+Agent: Z.ai Code (main session)
+Task: Recreate the pharmaceutical supply-chain verification animation shown in the user-uploaded reference image, and integrate it into the LandingView hero section. The animation features a central glass medicine vial on a glowing platform, a DNA double helix on the left, a hub-and-spoke supply-chain network graph on the right, floating bokeh particles, and a faint hexagonal grid background.
+
+Work Log:
+- Read previous worklog (CRON-10) — PharmaTrace stable with 24 views, sound effects, auto-refresh, search results page.
+- Analyzed the uploaded reference image `/home/z/my-project/upload/Screenshot 2026-10-03 130029.png` using the VLM skill (z-ai vision CLI) to extract a detailed visual breakdown: central 3D medicine vial (glass body + chrome cap + blue liquid + "GENUINE MEDICINE" label + blue cross icon + barcode), glowing circular platform with concentric pulse rings + radar sweep, DNA double helix on the left (two intertwining sine waves + rungs + depth-shaded nodes), hub-and-spoke network graph on the right (central hexagon hub with cube icon + 6 supply-chain nodes: Factory/Truck/Warehouse/Store/Users/Batch + flowing data pulses along connecting lines), floating bokeh particles, hexagonal grid background, medical-blue color palette.
+- Created new component `src/components/pharmatrace/PharmaVerificationScene.tsx` (~570 lines) with 5 sub-components:
+  - `PharmaVerificationScene` (root): themed background panel (light `#F0F6FC` / dark `#0B1A2E`), hex grid SVG pattern, floating particles, 3-column grid layout (DNA | vial+platform | network) with mobile fallback.
+  - `MedicineVial`: SVG vial with chrome cap (ridges + highlight), glass body (multi-stop gradient), blue liquid (gradient + surface ellipse + bubbles), left glass shine, white label with blue cross icon, "GENUINE" text, barcode strip, outer glow.
+  - `PlatformPulse`: SVG platform with base glow ellipse, 3 static concentric ellipses, 3 animated expanding pulse rings (staggered delays), rotating radar sweep arc.
+  - `DNAHelix`: SVG with 22 pre-computed helix points (sine waves offset by π), two continuous strand paths, rung lines, depth-shaded nodes, vertical center axis.
+  - `NetworkGraph`: SVG hub-and-spoke with central rotating hexagon ring + solid hex + cube icon, 6 outer nodes (circles + icons + labels + pulse rings), connecting lines with animated flowing dash pulses (strokeDashoffset animation).
+- Integrated the new scene into `src/components/pharmatrace/views/LandingView.tsx` hero section, replacing the previous `VerificationCore` (kept the old component file since it's still used in VerifyView). Removed the now-unused `VerificationCore` import.
+- Respects `prefers-reduced-motion` via Framer Motion's `useReducedMotion()` hook (disables all infinite animations when reduced motion is preferred).
+- Fixed 2 hydration mismatch bugs discovered via agent-browser console:
+  1. Floating-point precision divergence between Node SSR and browser V8 in DNA helix + network node coordinates — fixed by rounding all computed coords to 3 decimal places inside `useMemo`.
+  2. `Math.random()` in the particle field produced different values on server vs client — fixed by gating particle rendering behind a `mounted` state (`useState(false)` → `useEffect(() => setMounted(true), [])`) so particles only render after client mount.
+- Added theme-aware background: light mode uses `#F0F6FC` ice-blue panel + `#1769AA` hex strokes; dark mode uses `#0B1A2E` deep navy + `#2F80ED` brighter hex strokes. Hex grid opacity tuned per mode (light 0.14, dark 0.10).
+- Verified with agent-browser + VLM skill:
+  - Dark mode: 9/10 — all elements present (vial centered, DNA left, network right with all 6 labeled nodes MFG/BATCH/PATIENT/PHARMACY/WHOLESALER/LOGISTICS, hex grid, particles, ripple base). Composition balanced.
+  - Light mode: 8/10 — vial, DNA helix, network graph, hex grid, particles all visible on soft ice-blue tinted panel. Minor note: node labels are small.
+  - No hydration errors (console count = 0 after fixes).
+  - No "1 Issue" badge.
+  - `bun run lint` clean (0 errors, 0 warnings).
+
+Stage Summary:
+- New signature hero animation `PharmaVerificationScene` recreates the reference image's pharmaceutical verification scene: central glass vial on a glowing pulse-ring platform, DNA double helix left, hub-and-spoke supply-chain network right, floating particles, hex grid — all medical-blue themed, light/dark compatible, reduced-motion aware.
+- Replaced the simpler `VerificationCore` in the LandingView hero (old component preserved for VerifyView).
+- 2 hydration-mismatch bugs fixed (floating-point rounding + client-only particle rendering).
+- Visually verified end-to-end via agent-browser + VLM: dark 9/10, light 8/10, zero console errors, lint clean.
+
+Unresolved / next-phase recommendations:
+- Consider also swapping the `VerificationCore` in VerifyView for the new richer scene (or a compact variant) for visual consistency.
+- The node labels on the network graph are small in light mode — consider enlarging or adding tooltips on hover.
+- Consider adding subtle pulse animations to the network connection lines (VLM suggested this) to emphasize "live verification".
+- The vial currently shows a static liquid surface — could add a subtle wave/ripple animation to the liquid for extra realism.

@@ -29,7 +29,7 @@ export const POST = withHandler(async (req: NextRequest) => {
   // ── Supabase path ────────────────────────────────────────────────
   if (isSupabaseConfigured) {
     const { createServerSupabase } = await import('@/lib/supabase')
-    const supabase = createServerSupabase()
+    const supabase = await createServerSupabase()
     if (!supabase) return fail('Auth service unavailable', 503)
 
     const { data, error } = await supabase.auth.signInWithPassword({

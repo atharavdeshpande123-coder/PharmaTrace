@@ -13,7 +13,10 @@ import {
  */
 export async function middleware(req: NextRequest) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const supabaseAnon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  // Newer Supabase projects expose a "publishable key"; older ones expose an "anon key".
+  const supabaseAnon =
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ??
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
   if (!supabaseUrl || !supabaseAnon) return NextResponse.next()
 
   const res = NextResponse.next({ request: req })

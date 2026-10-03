@@ -60,7 +60,7 @@ export const POST = withHandler(async (req: NextRequest) => {
   if (isSupabaseConfigured) {
     // Lazy import to keep this route server-only.
     const { createServerSupabase } = await import('@/lib/supabase')
-    const supabase = createServerSupabase()
+    const supabase = await createServerSupabase()
     if (!supabase) return fail('Auth service unavailable', 503)
 
     // Make sure no PharmaTrace profile already exists for this email.

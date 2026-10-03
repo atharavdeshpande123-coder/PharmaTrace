@@ -3,8 +3,9 @@
  *
  * Configuration:
  *   NEXT_PUBLIC_SUPABASE_URL
- *   NEXT_PUBLIC_SUPABASE_ANON_KEY   (safe for browser)
- *   SUPABASE_SERVICE_ROLE_KEY       (server-only, bypasses RLS)
+ *   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY  (newer Supabase projects, sb_publishable_...)
+ *     OR NEXT_PUBLIC_SUPABASE_ANON_KEY    (older projects, eyJ...)
+ *   SUPABASE_SERVICE_ROLE_KEY             (server-only, bypasses RLS)
  *
  * When Supabase env vars are NOT set (e.g. local dev without Supabase),
  * `isSupabaseConfigured` returns false and the app falls back to the
@@ -14,7 +15,12 @@ import { createBrowserClient } from '@supabase/ssr'
 import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 
 export const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? ''
-export const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? ''
+// Newer Supabase projects expose a "publishable key" (sb_publishable_...);
+// older projects expose an "anon key" (eyJ...). Both work with the JS SDK.
+export const SUPABASE_ANON_KEY =
+  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ??
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ??
+  ''
 export const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY ?? ''
 
 /** True when both public Supabase env vars are present. */
@@ -38,24 +44,30 @@ export function createBrowserSupabase() {
  * Server-side Supabase client using the anon key + the user's session
  * cookies (resolves the current user server-side via getUser()).
  * Use inside Server Components / Route Handlers.
+ *
+ * Note on Next.js 16 cookies() API: `cookies()` returns a
+ * ReadonlyRequestCookies store. `.getAll()` is the correct method on the
+ * store. In some Next 16 versions `cookies()` itself is async, so we await it.
  */
-export function createServerSupabase() {
+export async function createServerSupabase() {
   if (!isSupabaseConfigured) return null
-  // Lazy import to avoid loading cookies() in the browser bundle.
+  // Lazy import to keep this server-only code out of the browser bundle.
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const { cookies } = require('next/headers') as typeof import('next/headers')
+  const store = await cookies()
   return createBrowserClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
     cookies: {
       getAll() {
-        return cookies().getAll()
+        return store.getAll()
       },
       setAll(cookiesToSet) {
         try {
           cookiesToSet.forEach(({ name, value, options }) =>
-            cookies().set(name, value, options),
+            store.set(name, value, options),
           )
         } catch {
-          // Called from a Server Component — safe to ignore (middleware refreshes).
+          // Called from a Server Component (read-only store) — safe to ignore;
+          // the middleware refreshes the session on the next request.
         }
       },
     },

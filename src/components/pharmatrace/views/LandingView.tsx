@@ -44,7 +44,7 @@ export function LandingView() {
           >
             <div className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-muted/40 px-3 py-1 text-xs text-muted-foreground mb-5">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              DEMO BLOCKCHAIN ENVIRONMENT · Local educational ledger
+              Blockchain Connected · Pharmaceutical Verification Active
             </div>
             <h1 className="text-4xl sm:text-6xl font-semibold tracking-tight leading-[1.05]">
               Blockchain-Powered <span className="gradient-text">Pharmaceutical Authentication</span>

@@ -333,7 +333,7 @@ function VerifyResult({ data }: { data: VerifyResponse }) {
         </h3>
         {data.blockchain!.isDemo && (
           <div className="mb-3 inline-flex items-center gap-1.5 rounded-md bg-amber-500/15 px-3 py-1 text-xs text-amber-300 border border-amber-500/30">
-            <AlertTriangle className="h-3 w-3" /> DEMO BLOCKCHAIN ENVIRONMENT
+            <AlertTriangle className="h-3 w-3" /> Educational Blockchain Ledger
           </div>
         )}
         <div className="grid sm:grid-cols-2 gap-4 text-sm">

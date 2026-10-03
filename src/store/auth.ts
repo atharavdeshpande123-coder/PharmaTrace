@@ -1,7 +1,8 @@
 /**
  * Auth store — keeps the current user + helper actions. Talks to the
- * `/api/auth/*` endpoints. The user object is populated on first mount
- * of the shell via `/api/auth/me`.
+ * `/api/auth/*` endpoints (which themselves delegate to Supabase when
+ * configured). The user object is populated on first mount of the shell
+ * via `/api/auth/me`.
  */
 
 import { create } from 'zustand'

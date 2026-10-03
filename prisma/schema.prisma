@@ -6,22 +6,33 @@ generator client {
   binaryTargets = ["native", "debian-openssl-3.0.x", "rhel-openssl-3.0.x"]
 }
 
-// For Vercel deployment:
-//   1. Set DATABASE_URL to your PostgreSQL connection string
-//   2. Change provider to "postgresql" below
+// DATABASE:
+//   - Local dev:  set DATABASE_URL to a local Postgres or your Supabase
+//     pooled connection string (port 6543).
+//   - Vercel:     set DATABASE_URL to the Supabase pooled connection
+//     string in Project Settings → Environment Variables.
+//   Auth is handled by Supabase (NEXT_PUBLIC_SUPABASE_URL, etc. in .env),
+//   but the PharmaTrace role/profile rows live in this same Postgres DB
+//   (the User table below). Supabase Auth users are linked by their `id`.
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 // =====================================================
 // USER MODEL
 // =====================================================
+// PharmaTrace application profile. Authentication is handled by Supabase
+// Auth; the `supabaseUid` column links a Supabase Auth user (auth.users.id)
+// to their PharmaTrace role/profile row here. The `passwordHash` is kept
+// for backward compatibility with the legacy JWT-only auth fallback
+// (used when Supabase credentials are not configured).
 model User {
   id            String   @id @default(cuid())
   email         String   @unique
   name          String
-  passwordHash  String
+  passwordHash  String   @default("") // legacy JWT fallback; empty when Supabase-only
+  supabaseUid   String?  @unique // Supabase Auth user id (auth.users.id)
   role          String   @default("CUSTOMER") // MANUFACTURER | DISTRIBUTOR | WHOLESALER | PHARMACY | ADMIN | CUSTOMER
   organization  String?
   location      String?
@@ -38,6 +49,8 @@ model User {
   transactionsActor Transaction[]   @relation("TransactionActor")
   verifications    VerificationRecord[]
   notifications    Notification[]
+
+  @@index([supabaseUid])
 }
 
 // =====================================================

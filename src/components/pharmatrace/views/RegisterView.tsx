@@ -44,10 +44,20 @@ export function RegisterView() {
     }
     setLoading(true)
     try {
-      await apiPost('/api/auth/register', {
-        name: form.name, email: form.email, password: form.password,
-        role: form.role, organization: form.organization, location: form.location,
-      })
+      const res = await apiPost<{ provider?: string; session?: unknown }>(
+        '/api/auth/register',
+        {
+          name: form.name, email: form.email, password: form.password,
+          role: form.role, organization: form.organization, location: form.location,
+        },
+      )
+      // When Supabase is configured AND email confirmation is enabled, no
+      // session is returned — the user must confirm their email first.
+      if (res.provider === 'supabase' && !res.session) {
+        toast.success('Account created — please check your email to confirm, then sign in.')
+        navigate('login')
+        return
+      }
       await fetchMe()
       toast.success('Account created — welcome to PharmaTrace')
       navigate('dashboard')
